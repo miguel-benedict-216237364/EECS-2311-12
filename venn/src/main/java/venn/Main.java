@@ -6,6 +6,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		System.out.println("I have access, Benedict");
 		System.out.println("I have access test 2, Benedict");
+		System.out.println("I have access test 3, Prince");
 	}
 
 }
