@@ -12,6 +12,7 @@ public class Main {
 		//test
 		//YEOOEOOOOOOOO it workssssss
 		//this is a test
+		System.out.println("new test");
 	}
 
 }
