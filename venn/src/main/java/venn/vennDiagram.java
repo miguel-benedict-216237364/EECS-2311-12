@@ -3,10 +3,20 @@ package venn;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.Box;
+import java.awt.Color;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import java.awt.GridBagLayout;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 public class vennDiagram {
 
 	private JFrame frame;
+	private JTextField txtThisWork;
 
 	/**
 	 * Launch the application.
@@ -36,8 +46,17 @@ public class vennDiagram {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		txtThisWork = new JTextField();
+		txtThisWork.setText("This works!");
+		txtThisWork.setBounds(27, 44, 130, 26);
+		frame.getContentPane().add(txtThisWork);
+		txtThisWork.setColumns(10);
+		
+		JTextPane txtpnThisWorks = new JTextPane();
+		txtpnThisWorks.setText("This works!");
+		txtpnThisWorks.setBounds(80, 124, 178, 16);
+		frame.getContentPane().add(txtpnThisWorks);
 	}
-
 }
