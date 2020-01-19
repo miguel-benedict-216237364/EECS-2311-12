@@ -12,6 +12,13 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JButton;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import java.awt.event.ActionListener;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 
 public class testDiagram extends JFrame {
 
@@ -22,7 +29,7 @@ public class testDiagram extends JFrame {
 	private JTextField leftTextField;
 	private JTextField middleTextField;
 	private JTextField rightTextField;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -66,7 +73,7 @@ public class testDiagram extends JFrame {
 		leftTitle = new JTextField();
 		leftTitle.setBounds(62, 11, 116, 24);
 		leftTitle.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		leftTitle.setText("leftTitle");
+		leftTitle.setText("         leftTitle");
 		leftPanel.add(leftTitle);
 		leftTitle.setColumns(10);
 		
@@ -84,7 +91,7 @@ public class testDiagram extends JFrame {
 		
 		rightTitle = new JTextField();
 		rightTitle.setBounds(58, 6, 116, 24);
-		rightTitle.setText("rightTitle");
+		rightTitle.setText("        rightTitle");
 		rightTitle.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		rightTitle.setColumns(10);
 		rightPanel.add(rightTitle);
@@ -102,7 +109,7 @@ public class testDiagram extends JFrame {
 		
 		middleTitle = new JTextField();
 		middleTitle.setBounds(19, 5, 116, 24);
-		middleTitle.setText("middleTitle");
+		middleTitle.setText("      middleTitle");
 		middleTitle.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		middleTitle.setColumns(10);
 		middlePanel.add(middleTitle);
