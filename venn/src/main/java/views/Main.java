@@ -1,4 +1,4 @@
-package venn;
+package views;
 
 public class Main {
 
