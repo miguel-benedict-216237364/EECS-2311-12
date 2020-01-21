@@ -1,30 +1,11 @@
 package venn;
 
-import java.awt.BorderLayout;
+
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Graphics;
-import java.awt.Color;
-import javax.swing.JRadioButton;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.border.BevelBorder;
-import java.awt.GridLayout;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.border.CompoundBorder;
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
-import javax.swing.DropMode;
-import java.awt.TextField;
-import javax.swing.JTextArea;
-import java.awt.Label;
-import javax.swing.JTextPane;
 
 public class benedictVennDiagram extends JFrame {
 
@@ -64,11 +45,7 @@ public class benedictVennDiagram extends JFrame {
 		createEvents();
 			
 	}
-	
-	
-	
-	
-	
+
 	//////////////////////////////////////////////
 	// This method contains the events
 	/////////////////////////////////////////////
@@ -78,13 +55,13 @@ public class benedictVennDiagram extends JFrame {
 		
 	}
 	
-/*
+
 	public void paintComponent(Graphics i) {
 		i.setColor(Color.BLACK);
 		i.drawOval(500, 80, 600, 600);
 		i.drawOval(240, 80, 600, 600);		
 	}
-*/
+
 //////////////////////////////////////////////
 //	This method contains the code for creating and initiializing parts
 /////////////////////////////////////////////
