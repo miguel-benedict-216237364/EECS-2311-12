@@ -2,7 +2,7 @@ package venn;
 
 
 
-import java.awt.EventQueue;
+import javax.swing.JComponent;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -55,16 +55,24 @@ public class benedictVennDiagram extends JFrame {
 		
 	}
 	
-
+/*
 	public void paintComponent(Graphics i) {
-		i.setColor(Color.BLACK);
-		i.drawOval(500, 80, 600, 600);
-		i.drawOval(240, 80, 600, 600);		
+			
 	}
-
+*/
+	
 //////////////////////////////////////////////
 //	This method contains the code for creating and initiializing parts
 /////////////////////////////////////////////
+/*
+	public void paint(Graphics g) {
+	        //super.paintComponents(g);
+	      g.setColor(Color.BLACK);
+		g.drawOval(500, 80, 600, 600);
+		g.drawOval(240, 80, 600, 600);	
+	    }
+*/
+	
 
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,6 +87,12 @@ public class benedictVennDiagram extends JFrame {
 		pnlMain.setLayout(null);
 		pnlMain.setVisible(true);
 		pnlMain.setOpaque(false);
+	
+		makeCircle test = new makeCircle();
+		pnlMain.add(test);
+		this.add(test);
+	
+		/*
 		
 		JTextPane txtpLeft = new JTextPane();
 		txtpLeft.setText("1\r\n1\r\n1\r\n1\r\n11\r\n");
@@ -93,9 +107,7 @@ public class benedictVennDiagram extends JFrame {
 		txtpRight.setBounds(850, 180, 150, 350);
 		pnlMain.add(txtpRight);
 		
-		
-		
-	
+		*/
 		
 	}
 }
