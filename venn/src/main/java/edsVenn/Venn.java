@@ -28,7 +28,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 	 
-	public class HelloWorld extends Application {
+	public class Venn extends Application {
 	    public static void main(String[] args) {
 	        launch(args);
 	    }
