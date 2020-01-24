@@ -84,6 +84,39 @@ public class benVennDiagram {
 		twoCircle.setVisible(false);
 		twoCircle.setEnabled(false);
 		twoCircle.setLayout(null);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 
 		threeCircle threeCircle = new threeCircle();
 		frame.getContentPane().add(threeCircle, "name_592021830095400");
