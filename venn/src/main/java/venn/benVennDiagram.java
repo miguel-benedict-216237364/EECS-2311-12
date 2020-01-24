@@ -73,92 +73,77 @@ public class benVennDiagram {
 	 */
 	private void initialize() {
 
-		/////////////////////////////////////////////////////////////////////
-		///////// THIS SECTION IS FOR TEXTS
-		/////////////////////////////////////////////////////////////////////
-		//////// START
-
 		setNumberC(0);
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
-		
-		
-		
-		
+
 		twoCircle twoCircle = new twoCircle();
 		frame.getContentPane().add(twoCircle, "name_592021815164900");
 		twoCircle.setVisible(false);
 		twoCircle.setEnabled(false);
 		twoCircle.setLayout(null);
-		
+
 		threeCircle threeCircle = new threeCircle();
 		frame.getContentPane().add(threeCircle, "name_592021830095400");
 		threeCircle.setLayout(null);
 		threeCircle.setVisible(false);
 		threeCircle.setEnabled(false);
 		threeCircle.setOpaque(false);
-		
+
 		JPanel pnlCircleSelection = new JPanel();
 		frame.getContentPane().add(pnlCircleSelection, "name_592277363698600");
 		pnlCircleSelection.setLayout(null);
 		pnlCircleSelection.setEnabled(true);
 		pnlCircleSelection.setVisible(true);
-		
+
 		JRadioButton rdbtnTwo = new JRadioButton("2");
 		rdbtnTwo.setBounds(513, 288, 109, 23);
 		pnlCircleSelection.add(rdbtnTwo);
 
 		ButtonGroup btnGtest = new ButtonGroup();
 		btnGtest.add(rdbtnTwo);
-		
+
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		btnConfirm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (rdbtnTwo.isSelected()) {
-				///TEST
-			
-					initialize2(twoCircle,frame);
-				
-					
-				/// END TEST
-				pnlCircleSelection.setEnabled(false);
-				pnlCircleSelection.setVisible(false);
-				frame.revalidate();
-				frame.repaint();
-			
+
+					initializeTwo(twoCircle, frame);
+
+					pnlCircleSelection.setEnabled(false);
+					pnlCircleSelection.setVisible(false);
+					frame.revalidate();
+					frame.repaint();
+
 				}
-				
+
 			}
 		});
 		btnConfirm.setBounds(513, 352, 158, 76);
 		pnlCircleSelection.add(btnConfirm);
-		
+
 		JRadioButton rdbtnThree = new JRadioButton("3");
 		rdbtnThree.setBounds(513, 314, 109, 23);
 		pnlCircleSelection.add(rdbtnThree);
-		
+
 		JLabel lblNewLabel = new JLabel("Select Number of Intersecting Lines");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 17));
 		lblNewLabel.setBounds(473, 242, 272, 36);
 		pnlCircleSelection.add(lblNewLabel);
-		
+
 		JLabel lblBorder = new JLabel("");
 		lblBorder.setBackground(Color.BLACK);
 		lblBorder.setBounds(413, 193, 379, 286);
 		pnlCircleSelection.add(lblBorder);
-		
-		
-		
 
-		
 	}
 
-	public void initialize2(twoCircle twoCircle, JFrame frame) {
+	public void initializeTwo(twoCircle twoCircle, JFrame frame) {
 
 		txtLeftTitle = new JTextField();
 		txtLeftTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -170,13 +155,12 @@ public class benVennDiagram {
 		txtLeftTitle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				if (txtLeftTitle.getText().equals("Tap to Edit")) {
-				txtLeftTitle.setText("");
-			}
+					txtLeftTitle.setText("");
+				}
 			}
 		});
-		
 
 		txtRightTitle = new JTextField();
 		txtRightTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -188,18 +172,16 @@ public class benVennDiagram {
 		txtRightTitle.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (txtRightTitle.getText().equals("")|| txtRightTitle.getText().equals("Tap to Edit")) {
+				if (txtRightTitle.getText().equals("") || txtRightTitle.getText().equals("Tap to Edit")) {
 					txtRightTitle.setText("");
 				}
-			
+
 			}
 		});
-
 
 		JTextArea txtaLeft = new JTextArea();
 		txtaLeft.setBounds(345, 205, 151, 314);
 		twoCircle.add(txtaLeft);
-		
 
 		JTextArea txtaRight = new JTextArea();
 		txtaRight.setBounds(791, 205, 151, 314);
@@ -209,7 +191,6 @@ public class benVennDiagram {
 		txtaMiddle.setBounds(569, 241, 151, 233);
 		twoCircle.add(txtaMiddle);
 
-	
 		JButton btnLeftReset = new JButton("Clear");
 		btnLeftReset.addMouseListener(new MouseAdapter() {
 			@Override
@@ -240,7 +221,6 @@ public class benVennDiagram {
 		});
 		btnRightReset.setBounds(791, 614, 89, 23);
 		twoCircle.add(btnRightReset);
-
 
 	}
 
