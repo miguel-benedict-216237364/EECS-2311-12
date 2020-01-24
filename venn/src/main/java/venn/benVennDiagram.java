@@ -32,6 +32,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class benVennDiagram {
 
@@ -92,6 +95,26 @@ public class benVennDiagram {
 		twoCircle.setVisible(false);
 		twoCircle.setEnabled(false);
 		twoCircle.setLayout(null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 89, 21);
+		twoCircle.add(menuBar);
+		frame.setJMenuBar(menuBar);
+		
+		JMenu file = new JMenu("File");
+		JMenu help = new JMenu("Help"); 
+		menuBar.add(file);
+		menuBar.add(help); 
+		JMenuItem save = new JMenuItem("Save");
+		JMenuItem open = new JMenuItem("Open");
+		JMenuItem exit = new JMenuItem("Exit");
+		file.add(save);
+		file.add(open);
+		file.add(exit);
+		
+		
+		JMenuItem about = new JMenuItem("About");
+		help.add(about);
 		
 		threeCircle threeCircle = new threeCircle();
 		frame.getContentPane().add(threeCircle, "name_592021830095400");
