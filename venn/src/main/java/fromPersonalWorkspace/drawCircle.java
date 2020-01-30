@@ -11,14 +11,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class drawCircle extends JPanel {
+	public drawCircle() {
+	}
 
 	
 	public void paint(Graphics g) {
 
 		Color c = new Color(0, 255, 255, 50);
 		g.setColor(c);
-		g.fillOval(50, 10, 500, 500);
-		g.fillOval(300, 10, 500, 500);
+		g.fillOval(0, 0, 500, 500);
+		g.fillOval(250, 0, 500, 500);
 		
 		
 	}
