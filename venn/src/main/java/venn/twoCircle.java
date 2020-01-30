@@ -14,10 +14,11 @@ public class twoCircle extends JPanel{
 	
 	public void paintComponent(Graphics g) {
 	
+		Color c = new Color(0,255,255,50);
+		g.setColor(c);
 		
-		g.setColor(Color.BLACK);
-		g.drawOval(525, 100, 500, 500);
-		g.drawOval(265, 100, 500, 500);	
+		g.fillOval(525, 100, 500, 500);
+		g.fillOval(265, 100, 500, 500);	
 		}
 	
 }
