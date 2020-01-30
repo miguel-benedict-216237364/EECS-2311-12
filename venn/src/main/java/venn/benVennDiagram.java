@@ -284,6 +284,7 @@ public class benVennDiagram {
 				
 				spTemp = new JScrollPane();
 				spTemp.setBounds(leftPaneDimensions[0], leftPaneDimensions[1], leftPaneDimensions[2], leftPaneDimensions[3]);
+				
 				leftPaneDimensions[1]= leftPaneDimensions[1]+30;
 				//leftPaneDimensions[3] =leftPaneDimensions[3]+30;
 				spTemp.setOpaque(true);
