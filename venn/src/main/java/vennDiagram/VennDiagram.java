@@ -1,4 +1,4 @@
-package fromPersonalWorkspace;
+package vennDiagram;
 
 import javax.swing.*;
 import java.awt.*;

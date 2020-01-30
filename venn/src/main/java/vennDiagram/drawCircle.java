@@ -1,4 +1,4 @@
-package fromPersonalWorkspace;
+package vennDiagram;
 
 import java.awt.Canvas;
 import java.awt.Color;
