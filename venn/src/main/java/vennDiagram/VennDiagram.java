@@ -55,6 +55,14 @@ public class VennDiagram {
 		JMenuItem save = new JMenuItem("Save");
 		JMenuItem open = new JMenuItem("Open");
 		JMenuItem exit = new JMenuItem("Exit");
+
+		// Exit Event Handler
+		exit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				System.exit(0);
+			}
+		});
 		file.add(save);
 		file.add(open);
 		file.add(exit);
@@ -189,6 +197,7 @@ public class VennDiagram {
 	}
 
 	// Refreshes the main Frame and the main Panel
+
 	public static void refresh() {
 		mainFrame.revalidate();
 		mainFrame.repaint();
