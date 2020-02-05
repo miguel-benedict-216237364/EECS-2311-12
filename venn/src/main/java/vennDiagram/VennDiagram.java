@@ -22,9 +22,8 @@ public class VennDiagram {
 
 	public static void main(String[] args) {
 		// JFrame mainFrame = new JFrame();
-
-		initialize();
 		initializeMenu();
+		initialize();		
 		initializeTwo();
 	}
 
