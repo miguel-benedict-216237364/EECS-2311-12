@@ -302,6 +302,7 @@ public class benVennDiagram {
 				textArea.setColumns(10);
 				frame.revalidate();
 				frame.repaint();
+				textArea.setBorder(BorderFactory.createBevelBorder(1, Color.BLACK, Color.BLACK));
 				textArea.requestFocus();
 				textArea.setWrapStyleWord(true);
 				textArea.setLineWrap(true);
