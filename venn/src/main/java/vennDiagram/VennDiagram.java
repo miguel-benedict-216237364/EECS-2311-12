@@ -1,5 +1,5 @@
 package vennDiagram;
-
+//this is a comment
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,9 +22,8 @@ public class VennDiagram {
 
 	public static void main(String[] args) {
 		// JFrame mainFrame = new JFrame();
-
-		initialize();
 		initializeMenu();
+		initialize();		
 		initializeTwo();
 	}
 
