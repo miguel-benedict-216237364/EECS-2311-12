@@ -34,10 +34,21 @@ public class Main {
 		//this if the final test
 		
 		//This is a line for the lab
+<<<<<<< HEAD
 		//TEST
 		//Testing
 		//Changes
 		//Merging with Master
 	}//Algorithm 
+=======
+		
+		//This test is for benedict
+		//yooyoyoyoy
+		//Algorithm
+		//Sorting
+		//Tested Sort
+		//Added Customization
+	}
+>>>>>>> refs/remotes/origin/master
 
 }
