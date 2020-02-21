@@ -423,6 +423,7 @@ public class VennDiagram {
 			}
 		}
 		return result;
+		//
 	}
 
 	public static int getStringPixel(JTextArea textarea) {
