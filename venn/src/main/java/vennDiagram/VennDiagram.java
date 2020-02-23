@@ -35,6 +35,7 @@ public class VennDiagram {
 	private static JTextArea textArea;
 	private static JPanel panel;
 	private static String unchanged = "Insert Title";
+	static Color c = new Color(0, 00, 00, 75);
 
 	// Create necesarry variables and Arraylist
 	static ArrayList<JPanel> leftList = new ArrayList<JPanel>();
@@ -114,7 +115,6 @@ public class VennDiagram {
 		tfLeftTitle.setOpaque(false);
 		Font tmp = new Font("Times New Roman", Font.PLAIN, 20);
 		tfLeftTitle.setFont(tmp);
-		Color c = new Color(0, 00, 00, 75);
 		tfLeftTitle.setForeground(c);
 		tfLeftTitle.setText("Insert Title");
 		tfLeftTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -129,12 +129,13 @@ public class VennDiagram {
 			public void focusGained(FocusEvent e) {
 
 				tfLeftTitle.setForeground(null);
+				tfLeftTitle.selectAll();
 				refresh();
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (tfLeftTitle.getText().equals(unchanged) || tfLeftTitle.getText().equals("Insert Title")) {
+				if (tfLeftTitle.getText().equals(unchanged) || tfLeftTitle.getText().equals("")) {
 					tfLeftTitle.setForeground(c);
 					tfLeftTitle.setText("Insert Title");
 				}
@@ -160,11 +161,12 @@ public class VennDiagram {
 
 				tfRightTitle.setForeground(null);
 				refresh();
+				tfRightTitle.selectAll();
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (tfRightTitle.getText().equals(unchanged) || tfRightTitle.getText().equals("Insert Title")) {
+				if (tfRightTitle.getText().equals(unchanged) || tfRightTitle.getText().equals("")) {
 					tfRightTitle.setForeground(c);
 					tfRightTitle.setText("Insert Title");
 				}
@@ -218,7 +220,9 @@ public class VennDiagram {
 				panel.add(textArea);
 				leftList.add(panel);
 				refresh();
+
 				textArea.requestFocusInWindow();
+
 				textArea.getDocument().addDocumentListener(new DocumentListener() {
 					public void changedUpdate(DocumentEvent e) {
 
@@ -268,6 +272,8 @@ public class VennDiagram {
 
 					}
 				});
+
+				refresh();
 			}
 		});
 
@@ -479,6 +485,7 @@ public class VennDiagram {
 		for (int i = 0; i < list.size(); i++) {
 
 			if (result < list.get(i).getY()) {
+				
 				result = i;
 			}
 		}
@@ -486,14 +493,14 @@ public class VennDiagram {
 		//
 	}
 
-	public static int getStringPixel(JTextArea textarea) {
-
-		Font font = textArea.getFont();
-		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		FontMetrics fm = img.getGraphics().getFontMetrics(font);
-		int width = fm.stringWidth(textArea.getText());
-		return width;
-	}
+//	public static int getStringPixel(JTextArea textarea) {
+//
+//		Font font = textArea.getFont();
+//		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+//		FontMetrics fm = img.getGraphics().getFontMetrics(font);
+//		int width = fm.stringWidth(textArea.getText());
+//		return width;
+//	}
 
 	public static void removeEmptyTextArea(ArrayList<JPanel> list) {
 		for (int i = 0; i < allTextArea.size(); i++) {
