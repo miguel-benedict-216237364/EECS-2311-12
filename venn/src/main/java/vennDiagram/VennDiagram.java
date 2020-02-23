@@ -17,14 +17,24 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.View;
+
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 
 public class VennDiagram {
 	static JFrame mainFrame = new JFrame();
 	static JLayeredPane pnlMain = new JLayeredPane();
-	private static JTextField txtInsertTitle;
+	private static JTextField tfLeftTitle;
 	private static JTextArea textArea;
 	private static JPanel panel;
+	private static String unchanged = "Insert Title";
 
 	// Create necesarry variables and Arraylist
 	static ArrayList<JPanel> leftList = new ArrayList<JPanel>();
@@ -38,6 +48,7 @@ public class VennDiagram {
 	static int[] leftPanelDimensions = { 10, 11, 161, 23 };
 
 	static int leftTextAreaHeight = 14;
+	private static JTextField tfRightTitle;
 
 	public static void main(String[] args) {
 		// JFrame mainFrame = new JFrame();
@@ -56,6 +67,12 @@ public class VennDiagram {
 		mainFrame.getContentPane().add(pnlMain, BorderLayout.CENTER);
 		pnlMain.setLayout(null);
 		pnlMain.setOpaque(false);
+		pnlMain.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pnlMain.requestFocusInWindow();
+			}
+		});
 
 	}
 
@@ -92,15 +109,67 @@ public class VennDiagram {
 	// Initializes Venn Diagram with Two Circles
 	public static void initializeTwo() {
 
-		// Create Title
-		txtInsertTitle = new JTextField();
-		txtInsertTitle.setOpaque(false);
-		txtInsertTitle.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		txtInsertTitle.setText("Insert Title");
-		txtInsertTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		txtInsertTitle.setBounds(497, 40, 250, 30);
-		pnlMain.add(txtInsertTitle);
-		txtInsertTitle.setColumns(10);
+		// Left Title
+		tfLeftTitle = new JTextField();
+		tfLeftTitle.setOpaque(false);
+		Font tmp = new Font("Times New Roman", Font.PLAIN, 20);
+		tfLeftTitle.setFont(tmp);
+		Color c = new Color(0, 00, 00, 75);
+		tfLeftTitle.setForeground(c);
+		tfLeftTitle.setText("Insert Title");
+		tfLeftTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		tfLeftTitle.setBorder(null);
+		tfLeftTitle.setBounds(360, 150, 175, 30);
+		pnlMain.add(tfLeftTitle);
+		tfLeftTitle.setColumns(10);
+		pnlMain.setLayer(tfLeftTitle, 0);
+
+		tfLeftTitle.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				tfLeftTitle.setForeground(null);
+				refresh();
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (tfLeftTitle.getText().equals(unchanged) || tfLeftTitle.getText().equals("Insert Title")) {
+					tfLeftTitle.setForeground(c);
+					tfLeftTitle.setText("Insert Title");
+				}
+			}
+		});
+
+		// Right Title
+		tfRightTitle = new JTextField();
+		tfRightTitle.setText("Insert Title");
+		tfRightTitle.setOpaque(false);
+		tfRightTitle.setBorder(null);
+		tfRightTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		tfRightTitle.setForeground(new Color(0, 0, 0, 75));
+		tfRightTitle.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		tfRightTitle.setColumns(10);
+		tfRightTitle.setBounds(715, 150, 175, 30);
+		pnlMain.add(tfRightTitle);
+		pnlMain.setLayer(tfRightTitle, 0);
+
+		tfRightTitle.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				tfRightTitle.setForeground(null);
+				refresh();
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (tfRightTitle.getText().equals(unchanged) || tfRightTitle.getText().equals("Insert Title")) {
+					tfRightTitle.setForeground(c);
+					tfRightTitle.setText("Insert Title");
+				}
+			}
+		});
 
 		// the first Panel for TextArea
 		panel = new JPanel();
@@ -134,8 +203,7 @@ public class VennDiagram {
 				pnlLeft.add(panel);
 				panel.setLayout(null);
 				panel.setOpaque(false);
-				txtInsertTitle.setText(Integer.toString(leftList.get(lowestTextArea(leftList)).getHeight())
-						+ (Integer.toString(leftTextAreaHeight)));
+				pnlLeft.add(panel);
 
 				// Create the text Area
 				textArea = new JTextArea();
@@ -143,23 +211,21 @@ public class VennDiagram {
 				textArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 				textArea.setOpaque(false);
 				textArea.setText("- This is text number " + leftList.size());
-				textArea.requestFocus();
+				// textArea.requestFocusInWindow();
 				textArea.setLineWrap(true);
 				textArea.setWrapStyleWord(true);
 				allTextArea.add(textArea);
 				panel.add(textArea);
 				leftList.add(panel);
 				refresh();
-
+				textArea.requestFocusInWindow();
 				textArea.getDocument().addDocumentListener(new DocumentListener() {
 					public void changedUpdate(DocumentEvent e) {
 
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						Math.ceil(width / 140.0);
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 						removeEmptyTextArea(leftList);
 						resortTextAreaList(leftList);
@@ -170,9 +236,9 @@ public class VennDiagram {
 
 					public void removeUpdate(DocumentEvent e) {
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 
 						if (textArea.getText().equals("")) {
@@ -191,10 +257,9 @@ public class VennDiagram {
 
 					public void insertUpdate(DocumentEvent e) {
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						Math.ceil(width / 140.0);
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 						removeEmptyTextArea(leftList);
 						resortTextAreaList(leftList);
@@ -226,8 +291,6 @@ public class VennDiagram {
 				pnlRight.add(panel);
 				panel.setLayout(null);
 				panel.setOpaque(false);
-				txtInsertTitle.setText(Integer.toString(rightList.get(lowestTextArea(rightList)).getHeight())
-						+ (Integer.toString(leftTextAreaHeight)));
 
 				// Create the text Area
 				textArea = new JTextArea();
@@ -235,23 +298,22 @@ public class VennDiagram {
 				textArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 				textArea.setOpaque(false);
 				textArea.setText("- This is text number " + rightList.size());
-				textArea.requestFocus();
+				textArea.requestFocusInWindow();
 				textArea.setLineWrap(true);
 				textArea.setWrapStyleWord(true);
 				allTextArea.add(textArea);
 				panel.add(textArea);
+				pnlRight.add(panel);
 				rightList.add(panel);
 				refresh();
-
+				textArea.requestFocusInWindow();
 				textArea.getDocument().addDocumentListener(new DocumentListener() {
 					public void changedUpdate(DocumentEvent e) {
 
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						Math.ceil(width / 140.0);
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 						removeEmptyTextArea(rightList);
 						resortTextAreaList(rightList);
@@ -262,9 +324,9 @@ public class VennDiagram {
 
 					public void removeUpdate(DocumentEvent e) {
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 
 						if (textArea.getText().equals("")) {
@@ -283,10 +345,9 @@ public class VennDiagram {
 
 					public void insertUpdate(DocumentEvent e) {
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						Math.ceil(width / 140.0);
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 						removeEmptyTextArea(rightList);
 						resortTextAreaList(rightList);
@@ -318,8 +379,7 @@ public class VennDiagram {
 				pnlMiddle.add(panel);
 				panel.setLayout(null);
 				panel.setOpaque(false);
-				txtInsertTitle.setText(Integer.toString(middleList.get(lowestTextArea(middleList)).getHeight())
-						+ (Integer.toString(leftTextAreaHeight)));
+				pnlMiddle.add(panel);
 
 				// Create the text Area
 				textArea = new JTextArea();
@@ -327,23 +387,22 @@ public class VennDiagram {
 				textArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 				textArea.setOpaque(false);
 				textArea.setText("- This is text number " + middleList.size());
-				textArea.requestFocus();
+
 				textArea.setLineWrap(true);
 				textArea.setWrapStyleWord(true);
 				allTextArea.add(textArea);
 				panel.add(textArea);
 				middleList.add(panel);
 				refresh();
+				textArea.requestFocusInWindow();
 
 				textArea.getDocument().addDocumentListener(new DocumentListener() {
 					public void changedUpdate(DocumentEvent e) {
 
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						Math.ceil(width / 140.0);
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 						removeEmptyTextArea(middleList);
 						resortTextAreaList(middleList);
@@ -354,9 +413,9 @@ public class VennDiagram {
 
 					public void removeUpdate(DocumentEvent e) {
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 
 						if (textArea.getText().equals("")) {
@@ -375,10 +434,9 @@ public class VennDiagram {
 
 					public void insertUpdate(DocumentEvent e) {
 						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-						int width = getStringPixel(textArea);
-						txtInsertTitle.setText(Integer.toString(width));
-						Math.ceil(width / 140.0);
-						textArea.setSize(textArea.getWidth(), (int) ((int) 20 * Math.ceil(width / 145.0)));
+
+						int width = getWrappedLines(textArea);
+						textArea.setSize(textArea.getWidth(), 20 * width);
 						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
 						removeEmptyTextArea(middleList);
 						resortTextAreaList(middleList);
@@ -394,7 +452,9 @@ public class VennDiagram {
 		drawCircle circle = new drawCircle();
 		circle.setBounds(247, 80, 750, 500);
 		pnlMain.add(circle);
-		pnlMain.setLayer(circle, 1);
+		pnlMain.setLayer(circle, 0);
+		circle.setLayout(null);
+		pnlMain.setLayer(circle, 0);
 
 	}
 
@@ -453,5 +513,19 @@ public class VennDiagram {
 				list.remove(i);
 			}
 		}
+	}
+
+	// *********************************
+	// The method getWrappedLines(JTextComponent component) was created by
+	// Rob Comick on October 26, 2008
+	// The method is in the site, without the brackets:
+	// "https://tips4java.wordpress.com/2008/10/26/text-utilities/"
+	// *********************************
+
+	public static int getWrappedLines(JTextArea component) {
+		View view = component.getUI().getRootView(component).getView(0);
+		int preferredHeight = (int) view.getPreferredSpan(View.Y_AXIS);
+		int lineHeight = component.getFontMetrics(component.getFont()).getHeight();
+		return preferredHeight / lineHeight;
 	}
 }
