@@ -11,7 +11,7 @@ public class VennTest {
 	private VennDiagram venn;
 
 	@Test
-
+//Tests
 	public void test() {
 		venn = new VennDiagram();
 		VennDiagram.initialize();
