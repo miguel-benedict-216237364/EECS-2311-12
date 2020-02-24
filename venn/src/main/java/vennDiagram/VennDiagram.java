@@ -64,6 +64,7 @@ public class VennDiagram {
 		mainFrame.setSize(1280, 720);
 		mainFrame.setVisible(true);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.requestFocusInWindow();
 
 		mainFrame.getContentPane().add(pnlMain, BorderLayout.CENTER);
 		pnlMain.setLayout(null);
@@ -110,6 +111,39 @@ public class VennDiagram {
 	// Initializes Venn Diagram with Two Circles
 	public static void initializeTwo() {
 
+Font font = new Font("Times New Roman", Font.PLAIN, 20);
+		
+		// Add the main title
+	JTextField tfMainTitle = new JTextField();
+		tfMainTitle.setBounds(486, 41, 275, 30);
+		pnlMain.add(tfMainTitle);
+		tfMainTitle.setOpaque(false);
+		tfMainTitle.setColumns(10);
+		tfMainTitle.setText("Insert Title");
+		tfMainTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		tfMainTitle.setFont(font);
+		tfMainTitle.setForeground(c);
+		tfMainTitle.setBorder(null);
+		pnlMain.setLayer(tfMainTitle,0);
+		
+		tfMainTitle.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+
+				tfMainTitle.setForeground(null);
+				tfMainTitle.selectAll();
+				refresh();
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (tfMainTitle.getText().equals(unchanged) || tfMainTitle.getText().equals("")) {
+					tfMainTitle.setForeground(c);
+					tfMainTitle.setText("Insert Title");
+				}
+			}
+		});
+		
 		// Left Title
 		tfLeftTitle = new JTextField();
 		tfLeftTitle.setOpaque(false);
