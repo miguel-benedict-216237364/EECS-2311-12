@@ -12,6 +12,7 @@ public class VennTest {
 
 	@Test
 //Tests
+	
 	public void test() {
 		venn = new VennDiagram();
 		VennDiagram.initialize();
