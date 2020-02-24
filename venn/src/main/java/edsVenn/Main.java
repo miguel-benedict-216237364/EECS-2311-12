@@ -25,37 +25,56 @@ public class Main extends Application {
 	}
 	
 	/* Acceptance Test Cases
-	 * •	If the user clicks the middle 
-	 * of the Venn diagram and types, 
-	 * after deleting ‘This is text number 1’:
+	 * •	If the user clicks 
+	 * the middle 
+	 * of the Venn 
+	 * diagram and types, 
+	 * after deleting 
+	 * ‘This is text number 1’:
 
-“His palms are sweaty, knees weak, arms are heavy. 
-There's vomit on his sweater already, 
+“His palms 
+are sweaty, 
+knees weak, 
+arms are heavy. 
+There's vomit on 
+his sweater already, 
 mom's spaghetti. He's nervous, 
 but on the surface, 
 he looks calm and ready. 
-To drop bombs, but he keeps on forgettin. 
+To drop bombs, but he keeps on 
+forgettin. 
 What he wrote down, 
-the whole crowd goes so loud. He opens his mouth, 
-but the words won't come out. 
+the whole crowd goes so loud. 
+He opens his mouth, 
+but the words 
+won't come out. 
 He's chokin' how, 
 everybody's jokin' now. 
-The clocks runs out, time's up, 
-over. Blow” (Eminem, 2002)!
+The clocks runs out, 
+time's up, 
+over. Blow” 
+(Eminem, 2002)!
 
 After clicking enter, 
-the following 328 characters should be displayed,
+the 
+following 328 
+characters should 
+be displayed,
 ”His palms are sweaty, 
-knees weak, arms are heavy. 
-There's vomit on his sweater already, 
+knees weak, 
+arms are heavy. 
+There's vomit on 
+his sweater already, 
 mom's spaghetti. 
 He's nervous, 
 but on the surface, 
-he looks calm and ready. 
+he looks calm 
+and ready. 
 To drop bombs, 
 but he keeps on forgettin. 
 What he wrote down, 
-the whole crowd goes so loud. 
+the whole 
+crowd goes so loud. 
 He opens his mouth, 
 but the words won't come out. 
 He's chokin' how, 
