@@ -38,17 +38,9 @@ public class VennTest {
 		VennDiagram.resortTextAreaList(new ArrayList<JPanel>());
 	}
 	
-	@Test
-	public void test4() {
-		venn = new VennDiagram();
-		VennDiagram.initialize();
-		VennDiagram.initializeTwo();
-		VennDiagram.initializeMenu();
-		VennDiagram.main(null);
-	}
 	
 	@Test
-	public void test5() {
+	public void test4() {
 		venn = new VennDiagram();
 		VennDiagram.initialize();
 		VennDiagram.initializeTwo();
@@ -57,7 +49,7 @@ public class VennTest {
 	}
 	
 	@Test
-	public void test6() {
+	public void test5() {
 		venn = new VennDiagram();
 		VennDiagram.initialize();
 		VennDiagram.initializeTwo();
