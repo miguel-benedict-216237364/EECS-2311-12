@@ -25,8 +25,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import java.awt.event.WindowAdapter;
 
 public class VennDiagram {
 	static JFrame mainFrame = new JFrame();
@@ -56,10 +59,13 @@ public class VennDiagram {
 		initializeMenu();
 		initialize();
 		initializeTwo();
+		
 	}
 
 	// Initializes the main JFrame and the main Panel
 	public static void initialize() {
+
+	
 		mainFrame.setAlwaysOnTop(true);
 		mainFrame.setSize(1280, 720);
 		mainFrame.setVisible(true);
@@ -124,8 +130,8 @@ Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		tfMainTitle.setFont(font);
 		tfMainTitle.setForeground(c);
 		tfMainTitle.setBorder(null);
+		tfMainTitle.addFocusListener(new FocusEventDemo());
 		pnlMain.setLayer(tfMainTitle,0);
-		
 		tfMainTitle.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -226,6 +232,7 @@ Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		pnlMain.add(pnlLeft);
 		pnlLeft.setLayout(null);
 		pnlMain.setLayer(pnlLeft, 1);
+		
 
 		// Create Action Event for Left Panel
 		pnlLeft.addMouseListener(new MouseAdapter() {
@@ -238,7 +245,7 @@ Font font = new Font("Times New Roman", Font.PLAIN, 20);
 				panel.setBounds(0, leftTextAreaHeight, 161, 26);
 				pnlLeft.add(panel);
 				panel.setLayout(null);
-				panel.setOpaque(false);
+				panel.setOpaque(true);
 				pnlLeft.add(panel);
 
 				// Create the text Area
@@ -254,240 +261,13 @@ Font font = new Font("Times New Roman", Font.PLAIN, 20);
 				panel.add(textArea);
 				leftList.add(panel);
 				refresh();
-
-				textArea.requestFocusInWindow();
-
-				textArea.getDocument().addDocumentListener(new DocumentListener() {
-					public void changedUpdate(DocumentEvent e) {
-
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-						removeEmptyTextArea(leftList);
-						resortTextAreaList(leftList);
-
-						refresh();
-
-					}
-
-					public void removeUpdate(DocumentEvent e) {
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-
-						if (textArea.getText().equals("")) {
-							for (int i = 1; i < leftList.size(); i++) {
-								if (textArea.getParent().equals(leftList.get(i))) {
-									leftList.remove(i);
-									break;
-								}
-							}
-						}
-
-						resortTextAreaList(leftList);
-						refresh();
-
-					}
-
-					public void insertUpdate(DocumentEvent e) {
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-						removeEmptyTextArea(leftList);
-						resortTextAreaList(leftList);
-
-						refresh();
-
-					}
-				});
-
-				refresh();
+				textArea.requestFocusInWindow();		
+				
 			}
 		});
 
-		// Create Right Panel
-		JPanel pnlRight = new JPanel();
-		pnlRight.setOpaque(false);
-		pnlMain.setLayer(pnlRight, 1);
-		pnlRight.setLayout(null);
-		pnlRight.setBounds(760, 180, 175, 300);
-		pnlMain.add(pnlRight);
 
-		// Create Action Event for Right Panel
-		pnlRight.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				leftTextAreaHeight = rightList.get(lowestTextArea(rightList)).getY()
-						+ rightList.get(lowestTextArea(rightList)).getHeight() + 10;
-				// Create a panel
-				panel = new JPanel();
-				panel.setBounds(0, leftTextAreaHeight, 161, 26);
-				pnlRight.add(panel);
-				panel.setLayout(null);
-				panel.setOpaque(false);
-
-				// Create the text Area
-				textArea = new JTextArea();
-				textArea.setBounds(13, 7, 155, 20);
-				textArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-				textArea.setOpaque(false);
-				textArea.setText("- This is text number " + rightList.size());
-				textArea.requestFocusInWindow();
-				textArea.setLineWrap(true);
-				textArea.setWrapStyleWord(true);
-				allTextArea.add(textArea);
-				panel.add(textArea);
-				pnlRight.add(panel);
-				rightList.add(panel);
-				refresh();
-				textArea.requestFocusInWindow();
-				textArea.getDocument().addDocumentListener(new DocumentListener() {
-					public void changedUpdate(DocumentEvent e) {
-
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-						removeEmptyTextArea(rightList);
-						resortTextAreaList(rightList);
-
-						refresh();
-
-					}
-
-					public void removeUpdate(DocumentEvent e) {
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-
-						if (textArea.getText().equals("")) {
-							for (int i = 1; i < rightList.size(); i++) {
-								if (textArea.getParent().equals(rightList.get(i))) {
-									rightList.remove(i);
-									break;
-								}
-							}
-						}
-
-						resortTextAreaList(rightList);
-						refresh();
-
-					}
-
-					public void insertUpdate(DocumentEvent e) {
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-						removeEmptyTextArea(rightList);
-						resortTextAreaList(rightList);
-
-						refresh();
-
-					}
-				});
-			}
-		});
-
-		// Create Middle Panel
-		JPanel pnlMiddle = new JPanel();
-		pnlMain.setLayer(pnlMiddle, 1);
-		pnlMiddle.setLayout(null);
-		pnlMiddle.setOpaque(false);
-		pnlMiddle.setBounds(535, 180, 175, 300);
-		pnlMain.add(pnlMiddle);
-
-		// Create Action Event for Middle Panel
-		pnlMiddle.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				leftTextAreaHeight = middleList.get(lowestTextArea(middleList)).getY()
-						+ middleList.get(lowestTextArea(middleList)).getHeight() + 10;
-				// Create a panel
-				panel = new JPanel();
-				panel.setBounds(0, leftTextAreaHeight, 161, 26);
-				pnlMiddle.add(panel);
-				panel.setLayout(null);
-				panel.setOpaque(false);
-				pnlMiddle.add(panel);
-
-				// Create the text Area
-				textArea = new JTextArea();
-				textArea.setBounds(13, 7, 155, 20);
-				textArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-				textArea.setOpaque(false);
-				textArea.setText("- This is text number " + middleList.size());
-
-				textArea.setLineWrap(true);
-				textArea.setWrapStyleWord(true);
-				allTextArea.add(textArea);
-				panel.add(textArea);
-				middleList.add(panel);
-				refresh();
-				textArea.requestFocusInWindow();
-
-				textArea.getDocument().addDocumentListener(new DocumentListener() {
-					public void changedUpdate(DocumentEvent e) {
-
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-						removeEmptyTextArea(middleList);
-						resortTextAreaList(middleList);
-
-						refresh();
-
-					}
-
-					public void removeUpdate(DocumentEvent e) {
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-
-						if (textArea.getText().equals("")) {
-							for (int i = 1; i < middleList.size(); i++) {
-								if (textArea.getParent().equals(middleList.get(i))) {
-									middleList.remove(i);
-									break;
-								}
-							}
-						}
-
-						resortTextAreaList(middleList);
-						refresh();
-
-					}
-
-					public void insertUpdate(DocumentEvent e) {
-						textArea = (JTextArea) KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-
-						int width = getWrappedLines(textArea);
-						textArea.setSize(textArea.getWidth(), 20 * width);
-						textArea.getParent().setSize(textArea.getWidth() + 6, textArea.getHeight() + 6);
-						removeEmptyTextArea(middleList);
-						resortTextAreaList(middleList);
-
-						refresh();
-
-					}
-				});
-			}
-		});
-
+	
 		// Draw circle
 		drawCircle circle = new drawCircle();
 		circle.setBounds(247, 80, 750, 500);
@@ -527,14 +307,6 @@ Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		//
 	}
 
-//	public static int getStringPixel(JTextArea textarea) {
-//
-//		Font font = textArea.getFont();
-//		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-//		FontMetrics fm = img.getGraphics().getFontMetrics(font);
-//		int width = fm.stringWidth(textArea.getText());
-//		return width;
-//	}
 
 	public static void removeEmptyTextArea(ArrayList<JPanel> list) {
 		for (int i = 0; i < allTextArea.size(); i++) {
@@ -568,5 +340,12 @@ Font font = new Font("Times New Roman", Font.PLAIN, 20);
 		int preferredHeight = (int) view.getPreferredSpan(View.Y_AXIS);
 		int lineHeight = component.getFontMetrics(component.getFont()).getHeight();
 		return preferredHeight / lineHeight;
+	}
+
+	public static void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		if (mainFrame.getFocusOwner() instanceof JTextArea) {
+			tfLeftTitle.setText("I Got It!");
+		}
 	}
 }
