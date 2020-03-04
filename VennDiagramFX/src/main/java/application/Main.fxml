@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Ellipse?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="Window" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
@@ -92,7 +91,6 @@
                                        </font>
                                     </Label>
                                     <ChoiceBox fx:id="textSize" layoutX="80.0" layoutY="56.0" prefHeight="25.0" prefWidth="110.0" />
-                                    <ChoiceBox fx:id="textColour" layoutX="10.0" layoutY="245.0" prefHeight="25.0" prefWidth="180.0" />
                                     <ChoiceBox fx:id="textStyle" layoutX="10.0" layoutY="185.0" prefHeight="25.0" prefWidth="180.0" />
                                     <ChoiceBox fx:id="textFont" layoutX="10.0" layoutY="125.0" prefHeight="25.0" prefWidth="180.0" />
                                     <Label layoutX="47.0" layoutY="14.0" text="Text Properties">
@@ -108,6 +106,7 @@
                                     <TextArea fx:id="textArea" layoutX="10.0" layoutY="305.0" prefHeight="210.0" prefWidth="175.0" wrapText="true" />
                                     <Button fx:id="textDelete" layoutX="72.0" layoutY="581.0" mnemonicParsing="false" onMouseClicked="#textDelete" text="Delete" />
                                     <Label fx:id="toDelete" layoutX="72.0" layoutY="534.0" text="Label" />
+                                    <ColorPicker fx:id="textColour" layoutX="10.0" layoutY="245.0" prefHeight="30.0" prefWidth="180.0" />
                                  </children>
                               </Pane>
                               <Separator layoutY="620.0" prefWidth="200.0" AnchorPane.bottomAnchor="56.0" />
@@ -176,7 +175,7 @@
                      <children>
                         <Pane fx:id="centrePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1073.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Circle fx:id="rightCircle" fill="#21fff866" layoutX="665.0" layoutY="350.0" onMouseClicked="#test2" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                              <Circle fx:id="rightCircle" fill="#21fff866" layoutX="665.0" layoutY="350.0" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                               <Circle fx:id="leftCircle" fill="#21fff866" layoutX="415.0" layoutY="350.0" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                               <TextField fx:id="rightTitle" alignment="CENTER" layoutX="617.0" layoutY="170.0" onMouseClicked="#highlight" style="-fx-background-color: transparent;" text="Insert Title">
                                  <font>
@@ -188,7 +187,7 @@
                                     <Font name="Times New Roman" size="20.0" />
                                  </font>
                               </TextField>
-                              <Label fx:id="testLabel" layoutX="38.0" layoutY="54.0" text="Console ">
+                              <Label fx:id="lblConsole" layoutX="38.0" layoutY="54.0" text="Console ">
                                  <font>
                                     <Font name="Times New Roman" size="25.0" />
                                  </font>
@@ -198,7 +197,6 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </TextField>
-                              <Ellipse fx:id="ellipse" fill="#216aa649" layoutX="540.0" layoutY="350.0" onMouseClicked="#test1" radiusX="125.0" radiusY="215.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                            </children>
                         </Pane>
                      </children>

@@ -37,6 +37,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 public class Controller implements Initializable {
 	@FXML
@@ -74,19 +76,17 @@ public class Controller implements Initializable {
 	@FXML
 	private Tab Design;
 	@FXML
-	private Label testLabel;
-	@FXML
-	private Ellipse ellipse;
+	private Label lblConsole;
 	@FXML
 	private TextArea TA;
 	@FXML
 	private ChoiceBox<Double> textSize;
 	@FXML
-	private ChoiceBox<Font> textFont;
+	private ChoiceBox<String> textFont;
 	@FXML
-	private ChoiceBox textStyle;
+	private ChoiceBox<String> textStyle;
 	@FXML
-	private ChoiceBox textColour;
+	private ColorPicker textColour;
 	@FXML
 	private TextArea textArea;
 	@FXML
@@ -106,16 +106,11 @@ public class Controller implements Initializable {
 
 	static private ArrayList<Label> labelList = new ArrayList<Label>();
 
-	private TextArea addedTextArea = new TextArea();
-
 	private Label test = new Label("");
 
 	Font defaultFont = new Font("Times New Roman", 12);
 
-	private int leftY = 225;
-
-	private int defaultLeftLength = 150;
-	private int defaulLeftWidth = 0;
+	Double defaultSize = (double) 12;
 
 	Color defaultColour = Color.LIGHTGRAY;
 
@@ -144,8 +139,53 @@ public class Controller implements Initializable {
 		});
 		// END
 
+		// Add all Sizes
+		double tmpSize = 4;
+		for (int i = 0; i <= 25; i++) {
+			textSize.getItems().add(tmpSize);
+			tmpSize = tmpSize + 2;
+		}
+		textSize.setValue(textSize.getItems().get(4));
+		textSize.valueProperty().addListener(new ChangeListener<Double>() {
+			@Override
+			public void changed(ObservableValue<? extends Double> arg0, Double arg1, Double arg2) {
+				// TODO Auto-generated method stub
+				removeFocus();
+			}
+		});
+
+		// Add all Fonts
+		for (int i = 0; i < Font.getFontNames().size(); i++) {
+			textFont.getItems().add(Font.getFontNames().get(i));
+		}
+		textFont.setValue(textFont.getItems().get(529));
+		textFont.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				removeFocus();
+			}
+		});
+
+		// Add all Styles
+
+		textStyle.getItems().add("Default");
+		textStyle.getItems().add("Bold");
+		textStyle.getItems().add("Italics");
+		textStyle.getItems().add("Underlined");
+		textStyle.setValue(textStyle.getItems().get(0));
+		textStyle.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				removeFocus();
+			}
+
+		});
+
+		// Set text Color to default
+		textColour.setValue(Color.BLACK);
+
 		// Tab Menu Add all and set Default
-		Menu.getSelectionModel().select(File);
+		Menu.getSelectionModel().select(Home);
 
 		// Set sliders to default
 		tfSlider.textProperty().bindBidirectional(sizeSlider.valueProperty(), NumberFormat.getNumberInstance());
@@ -178,10 +218,8 @@ public class Controller implements Initializable {
 				}
 			}
 		});
-		// End
 
 		// Slider
-		// Start
 		sizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if (designTabComboBox.getValue().equals("Select All")) {
 				sizeSlider.setValue(newValue.intValue());
@@ -195,10 +233,8 @@ public class Controller implements Initializable {
 				rightCircle.setRadius(sizeSlider.getValue());
 			}
 		});
-		// End
 
 		// Colour picker
-		// start
 		colourPicker.valueProperty().addListener(new ChangeListener<Color>() {
 			@Override
 			public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
@@ -213,16 +249,14 @@ public class Controller implements Initializable {
 			}
 		});
 
-		// End
-
 		// Delete selected Label
 		centrePane.onKeyPressedProperty().set(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyPressed) {
 				if (!test.equals(null) && test instanceof Label) {
-					if (keyPressed.getCode() == KeyCode.DELETE||keyPressed.getCode()==KeyCode.BACK_SPACE) {
+					if (keyPressed.getCode() == KeyCode.DELETE || keyPressed.getCode() == KeyCode.BACK_SPACE) {
 						centrePane.getChildren().remove(test);
-						testLabel.setText(keyPressed.getCode().toString());
+						lblConsole.setText(keyPressed.getCode().toString());
 						counter--;
 					}
 				}
@@ -235,12 +269,8 @@ public class Controller implements Initializable {
 				addLabel(event);
 			}
 		});
-		
 
-		
 	}
-	
-	
 
 	public void removeFocus() {
 		centrePane.requestFocus();
@@ -256,65 +286,55 @@ public class Controller implements Initializable {
 		}
 	}
 
-	public void test() {
-		testLabel.setText("It works");
-	}
-
-	public void test1() {
-		testLabel.setText("Left Works");
-	}
-
-	public void test2() {
-		testLabel.setText("Right Works");
-	}
-
 	public void addLabel(MouseEvent initEvent) {
-		if (isAddLabel.isSelected() && initEvent.isStillSincePress()) {
-		test = new Label("Insert Text " + counter);
-		test.setFont(defaultFont);
-		test.setLayoutX(initEvent.getX());
-		test.setLayoutY(initEvent.getY());
-		centrePane.getChildren().add(test);
-		Menu.getSelectionModel().select(Home);
-		removeFocus();
-		counter++;
-		textArea.setText(test.getText());
-		toDelete.setText(test.getText().toString());
-		
-		test.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				
-				textArea.textProperty().unbind();
-				test = (Label) event.getSource();				
-				System.out.println(test.getText());
-				Menu.getSelectionModel().select(Home);
-				textArea.setText(test.getText());
-				toDelete.setText(test.getText().toString());			
-				
-				
-				initX = event.getX();
-				initY = event.getY();
-			}
-		});
-		test.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseDragged) {
-				if (isDraggable.isSelected()) {
-					test.setLayoutX(test.getLayoutX() + (mouseDragged.getX()-initX));
-					test.setLayoutY(test.getLayoutY() + (mouseDragged.getY()-initY));
-					// testLabel.setText("X is: " + event.getX() + "Y is " + event.getY());	
+		if (isAddLabel.isSelected() && initEvent.isStillSincePress() && centrePane.isFocused()) {
+			test = new Label("Insert Text " + counter);
+			test.setMaxWidth(100);
+
+			test.setFont(new Font(textFont.getValue(), textSize.getValue()));
+			test.setTextFill(textColour.getValue());
+			test.setLayoutX(initEvent.getX());
+			test.setLayoutY(initEvent.getY());
+			centrePane.getChildren().add(test);
+			Menu.getSelectionModel().select(Home);
+			removeFocus();
+			counter++;
+			textArea.setText(test.getText());
+			toDelete.setText(test.getText().toString());
+
+			test.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+
+					textArea.textProperty().unbind();
+					test = (Label) event.getSource();
+					System.out.println(test.getText());
+					Menu.getSelectionModel().select(Home);
+					textArea.setText(test.getText());
+					toDelete.setText(test.getText().toString());
+
+					initX = event.getX();
+					initY = event.getY();
 				}
-			}
-		});
-	
-		test.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-				System.out.println("Label Text Changed");
-			}
-		});
-		
+			});
+			test.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent mouseDragged) {
+					if (isDraggable.isSelected()) {
+						test.setLayoutX(test.getLayoutX() + (mouseDragged.getX() - initX));
+						test.setLayoutY(test.getLayoutY() + (mouseDragged.getY() - initY));
+						// testLabel.setText("X is: " + event.getX() + "Y is " + event.getY());
+					}
+				}
+			});
+
+			test.textProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+					System.out.println("Label Text Changed");
+				}
+			});
+
 		}
 	}
 
