@@ -220,9 +220,10 @@ public class Controller implements Initializable {
 			@Override
 			public void handle(KeyEvent keyPressed) {
 				if (!test.equals(null) && test instanceof Label) {
-					if (keyPressed.getCode() == KeyCode.DELETE) {
+					if (keyPressed.getCode() == KeyCode.DELETE||keyPressed.getCode()==KeyCode.BACK_SPACE) {
 						centrePane.getChildren().remove(test);
 						testLabel.setText(keyPressed.getCode().toString());
+						counter--;
 					}
 				}
 			}
