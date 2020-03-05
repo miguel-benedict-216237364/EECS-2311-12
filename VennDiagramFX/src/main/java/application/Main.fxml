@@ -159,7 +159,7 @@
          <center>
             <BorderPane onMouseClicked="#removeFocus" BorderPane.alignment="CENTER">
                <bottom>
-                  <AnchorPane prefHeight="50.0" prefWidth="1080.0" BorderPane.alignment="CENTER">
+                  <AnchorPane BorderPane.alignment="CENTER">
                      <children>
                         <CheckBox fx:id="isDraggable" layoutX="10.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#removeFocus" selected="true" text="Drag Text">
                            <font>
@@ -171,9 +171,9 @@
                   </AnchorPane>
                </bottom>
                <center>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <AnchorPane>
                      <children>
-                        <Pane fx:id="centrePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1073.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
+                        <Pane fx:id="centrePane" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Circle fx:id="rightCircle" fill="#21fff866" layoutX="665.0" layoutY="350.0" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                               <Circle fx:id="leftCircle" fill="#21fff866" layoutX="415.0" layoutY="350.0" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
