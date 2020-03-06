@@ -104,8 +104,6 @@ public class Controller implements Initializable {
 
 	private int counter = 1;
 
-	static private ArrayList<Label> labelList = new ArrayList<Label>();
-
 	private Label test = new Label("");
 
 	Font defaultFont = new Font("Times New Roman", 12);
@@ -116,28 +114,36 @@ public class Controller implements Initializable {
 
 	double defaultOpaq = 0.5;
 
-	// static Color defaultColor = new Color();
+	static ArrayList<Label> focusList = new ArrayList<Label>();
+
+	static ArrayList<Label> labelList = new ArrayList<Label>();
 
 	static ObservableList<TextField> textFieldTitle = FXCollections
 			.observableArrayList(tf -> new Observable[] { tf.textProperty() });
-	static ObservableList<Label> labelListObservable = FXCollections.observableArrayList(labelList);
+
+	// static ObservableList<Label> labelListObservable =
+	// FXCollections.observableArrayList(labelList);
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		// DO NOT TOUCH
 		// START
-		ArrayList<TextField> labelList = new ArrayList<TextField>();
-		labelList.add(mainTitle);
-		labelList.add(leftTitle);
-		labelList.add(rightTitle);
+//		ArrayList<TextField> labelList = new ArrayList<TextField>();
+//		labelList.add(mainTitle);
+//		labelList.add(leftTitle);
+//		labelList.add(rightTitle);
 
-		textFieldTitle.addAll(labelList);
-		Model.setDefault(textFieldTitle);
-		textFieldTitle.addListener((ListChangeListener.Change<? extends TextField> c) -> {
-			Model.setDefault(textFieldTitle);
-		});
+//		textFieldTitle.addAll(labelList);
+//		Model.setDefault(textFieldTitle);
+//		textFieldTitle.addListener((ListChangeListener.Change<? extends TextField> c) -> {
+//			Model.setDefault(textFieldTitle);
+//		});
 		// END
+
+		// Set focus on centre pane
+		//centrePane.requestFocus();
+		lblConsole.setText(Boolean.toString(centrePane.isFocused()));
 
 		// Add all Sizes
 		double tmpSize = 4;
@@ -234,7 +240,7 @@ public class Controller implements Initializable {
 			}
 		});
 
-		// Colour picker
+		// Circle Colour Picker
 		colourPicker.valueProperty().addListener(new ChangeListener<Color>() {
 			@Override
 			public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
@@ -266,8 +272,27 @@ public class Controller implements Initializable {
 		centrePane.onMouseClickedProperty().set(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				double x = event.getX();
+				double y = event.getY();
+				// int i =0;
+
+//			
+//				if (labelList.size() > 0) {
+//					for (int i =0;i<labelList.size();i++) {
+//						if (x < (labelList.get(i).getLayoutX())|| x>(labelList.get(i).getLayoutX()+labelList.get(i).getWidth())) {
+//							lblConsole.setText("Valid");
+//						}else {
+//							lblConsole.setText("Invalid");
+//							
+//						}
+//					}
+//					
+//				}else {
+//					addLabel(event);
+//				}
 				addLabel(event);
 			}
+
 		});
 
 	}
@@ -288,9 +313,9 @@ public class Controller implements Initializable {
 
 	public void addLabel(MouseEvent initEvent) {
 		if (isAddLabel.isSelected() && initEvent.isStillSincePress() && centrePane.isFocused()) {
+
 			test = new Label("Insert Text " + counter);
 			test.setMaxWidth(100);
-
 			test.setFont(new Font(textFont.getValue(), textSize.getValue()));
 			test.setTextFill(textColour.getValue());
 			test.setLayoutX(initEvent.getX());
@@ -301,20 +326,29 @@ public class Controller implements Initializable {
 			counter++;
 			textArea.setText(test.getText());
 			toDelete.setText(test.getText().toString());
+			labelList.add(test);
+			System.out.println(labelList.size());
+
+			// textArea.requestFocus();
 
 			test.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
 
-					textArea.textProperty().unbind();
 					test = (Label) event.getSource();
+					textArea.textProperty().unbind();
 					System.out.println(test.getText());
 					Menu.getSelectionModel().select(Home);
+					initX = event.getX(); // Initial position of the mouse (x)
+					initY = event.getY(); // Initial position of the moouse (y)
+
+					// Add created label to list of all labels
+					// Add to focusList
+					// focusList.add(test);
+
 					textArea.setText(test.getText());
 					toDelete.setText(test.getText().toString());
 
-					initX = event.getX();
-					initY = event.getY();
 				}
 			});
 			test.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
@@ -341,4 +375,5 @@ public class Controller implements Initializable {
 	public void textDelete() {
 		centrePane.getChildren().remove(test);
 	}
+
 }
