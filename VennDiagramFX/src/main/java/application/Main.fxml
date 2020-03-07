@@ -28,22 +28,22 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#removeFocus" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button layoutX="-1.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="New">
+                              <Button focusTraversable="false" layoutX="-1.0" layoutY="10.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="New">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="-1.0" layoutY="60.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Save">
+                              <Button focusTraversable="false" layoutX="-1.0" layoutY="60.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Save">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="-1.0" layoutY="110.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Load">
+                              <Button focusTraversable="false" layoutX="-1.0" layoutY="110.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Load">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="-1.0" layoutY="160.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Help">
+                              <Button focusTraversable="false" layoutX="-1.0" layoutY="160.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Help">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -54,7 +54,7 @@
                                     <Font name="Times New Roman Bold" size="15.0" />
                                  </font>
                               </TextField>
-                              <Button layoutX="-1.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="About Us">
+                              <Button focusTraversable="false" layoutX="-1.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="About Us">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -68,50 +68,62 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="689.0" prefWidth="219.0">
                            <children>
-                              <Pane prefHeight="690.0" prefWidth="200.0">
+                              <Pane fx:id="homePane" prefHeight="690.0" prefWidth="200.0">
                                  <children>
-                                    <Label layoutX="10.0" layoutY="60.0" text="Size">
-                                       <font>
-                                          <Font name="Times New Roman" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="100.0" text="Font">
-                                       <font>
-                                          <Font name="Times New Roman" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="160.0" text="Text Style">
-                                       <font>
-                                          <Font name="Times New Roman" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="10.0" layoutY="220.0" text="Text Colour">
-                                       <font>
-                                          <Font name="Times New Roman" size="14.0" />
-                                       </font>
-                                    </Label>
-                                    <ChoiceBox fx:id="textSize" layoutX="80.0" layoutY="56.0" prefHeight="25.0" prefWidth="110.0" />
-                                    <ChoiceBox fx:id="textStyle" layoutX="10.0" layoutY="185.0" prefHeight="25.0" prefWidth="180.0" />
-                                    <ChoiceBox fx:id="textFont" layoutX="10.0" layoutY="125.0" prefHeight="25.0" prefWidth="180.0" />
-                                    <Label layoutX="47.0" layoutY="14.0" text="Text Properties">
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="60.0" text="Size">
                                        <font>
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="280.0" text="Text">
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="160.0" text="Text Style">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="220.0" text="Text Colour">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <ChoiceBox fx:id="textSize" focusTraversable="false" layoutX="80.0" layoutY="56.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <ChoiceBox fx:id="textFont" focusTraversable="false" layoutX="10.0" layoutY="125.0" prefHeight="25.0" prefWidth="180.0" />
+                                    <Label focusTraversable="false" layoutX="47.0" layoutY="14.0" text="Text Properties">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="80.0" layoutY="371.0" text="Text">
                                        <font>
                                           <Font name="Times New Roman" size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextArea fx:id="textArea" layoutX="10.0" layoutY="305.0" prefHeight="210.0" prefWidth="175.0" wrapText="true" />
-                                    <Button fx:id="textDelete" layoutX="72.0" layoutY="581.0" mnemonicParsing="false" onMouseClicked="#textDelete" text="Delete" />
-                                    <Label fx:id="toDelete" layoutX="72.0" layoutY="534.0" text="Label" />
-                                    <ColorPicker fx:id="textColour" layoutX="10.0" layoutY="245.0" prefHeight="30.0" prefWidth="180.0" />
+                                    <Button fx:id="textDelete" focusTraversable="false" layoutX="56.0" layoutY="598.0" mnemonicParsing="false" onMouseClicked="#textDelete" text="Delete Label" />
+                                    <ColorPicker fx:id="textColour" focusTraversable="false" layoutX="10.0" layoutY="245.0" prefHeight="30.0" prefWidth="180.0" />
+                                    <TextArea fx:id="textArea" layoutX="27.0" layoutY="396.0" prefHeight="191.0" prefWidth="146.0" wrapText="true" />
+                                    <CheckBox fx:id="isBold" layoutX="20.0" layoutY="185.0" mnemonicParsing="false" text="Bold">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox fx:id="isItalic" layoutX="90.0" layoutY="185.0" mnemonicParsing="false" text="Italics">
+                                       <font>
+                                          <Font name="System Italic" size="14.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="100.0" text="Font">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </Pane>
                               <Separator layoutY="620.0" prefWidth="200.0" AnchorPane.bottomAnchor="56.0" />
-                              <Button layoutX="55.0" layoutY="645.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="20.0" />
+                              <Button focusTraversable="false" layoutX="55.0" layoutY="645.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="20.0" />
                               <Separator layoutY="40.0" prefWidth="200.0" />
+                              <Separator layoutY="215.0" prefWidth="200.0" />
+                              <Separator layoutY="155.0" prefWidth="200.0" />
+                              <Separator layoutY="90.0" prefWidth="200.0" />
+                              <Separator layoutY="290.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -122,32 +134,32 @@
                            <children>
                               <Pane onMouseClicked="#removeFocus" prefHeight="690.0" prefWidth="200.0">
                                  <children>
-                                    <ComboBox fx:id="designTabComboBox" layoutX="25.0" layoutY="14.0" prefWidth="150.0" promptText="Select Circle(s)" />
-                                    <Label layoutX="10.0" layoutY="62.0" text="Size">
+                                    <ComboBox fx:id="designTabComboBox" focusTraversable="false" layoutX="25.0" layoutY="14.0" prefWidth="150.0" promptText="Select Circle(s)" />
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="62.0" text="Size">
                                        <font>
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Slider fx:id="sizeSlider" blockIncrement="250.0" layoutX="10.0" layoutY="95.0" max="350.0" min="50.0" minorTickCount="1" prefHeight="35.0" prefWidth="175.0" showTickLabels="true" showTickMarks="true" value="250.0" />
-                                    <Label layoutX="10.0" layoutY="152.0" text="Colour">
+                                    <Slider fx:id="sizeSlider" blockIncrement="250.0" focusTraversable="false" layoutX="10.0" layoutY="95.0" max="350.0" min="50.0" minorTickCount="1" prefHeight="35.0" prefWidth="175.0" showTickLabels="true" showTickMarks="true" value="250.0" />
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="152.0" text="Colour">
                                        <font>
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <ColorPicker fx:id="colourPicker" editable="true" layoutX="10.0" layoutY="177.0" prefHeight="25.0" prefWidth="175.0" />
+                                    <ColorPicker fx:id="colourPicker" editable="true" focusTraversable="false" layoutX="10.0" layoutY="177.0" prefHeight="25.0" prefWidth="175.0" />
                                     <Separator layoutX="-3.0" layoutY="50.0" prefWidth="200.0" />
                                     <Separator layoutX="1.0" layoutY="137.0" prefWidth="200.0" />
                                     <Separator layoutY="217.0" prefWidth="200.0" />
-                                    <TextField fx:id="tfSlider" accessibleRoleDescription="ed" layoutX="120.0" layoutY="57.0" prefHeight="25.0" prefWidth="60.0" />
-                                    <Label layoutX="10.0" layoutY="232.0" text="Component Allignment">
+                                    <TextField fx:id="tfSlider" accessibleRoleDescription="ed" focusTraversable="false" layoutX="120.0" layoutY="57.0" prefHeight="25.0" prefWidth="60.0" />
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="232.0" text="Component Allignment">
                                        <font>
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox layoutX="10.0" layoutY="257.0" prefHeight="25.0" prefWidth="175.0" />
+                                    <ComboBox focusTraversable="false" layoutX="10.0" layoutY="257.0" prefHeight="25.0" prefWidth="175.0" />
                                  </children>
                               </Pane>
-                              <Button layoutX="55.0" layoutY="645.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="20.0" />
+                              <Button focusTraversable="false" layoutX="55.0" layoutY="645.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="20.0" />
                               <Separator layoutY="620.0" prefWidth="200.0" AnchorPane.bottomAnchor="56.0" />
                            </children>
                         </AnchorPane>
@@ -159,35 +171,26 @@
          <center>
             <BorderPane onMouseClicked="#removeFocus" BorderPane.alignment="CENTER">
                <bottom>
-                  <AnchorPane BorderPane.alignment="CENTER">
-                     <children>
-                        <CheckBox fx:id="isDraggable" layoutX="10.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#removeFocus" selected="true" text="Drag Text">
-                           <font>
-                              <Font name="Times New Roman" size="12.0" />
-                           </font>
-                        </CheckBox>
-                        <CheckBox fx:id="isAddLabel" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#removeFocus" selected="true" text="Click to add Text" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane BorderPane.alignment="CENTER" />
                </bottom>
                <center>
                   <AnchorPane>
                      <children>
-                        <Pane fx:id="centrePane" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Pane fx:id="centrePane" focusTraversable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0">
                            <children>
-                              <Circle fx:id="rightCircle" fill="#21fff866" layoutX="665.0" layoutY="350.0" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-                              <Circle fx:id="leftCircle" fill="#21fff866" layoutX="415.0" layoutY="350.0" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                              <Circle fx:id="rightCircle" centerX="665.0" centerY="350.0" fill="#21fff866" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                              <Circle fx:id="leftCircle" centerX="415.0" centerY="350.0" fill="#21fff866" radius="250.0" stroke="TRANSPARENT" strokeType="INSIDE" />
                               <TextField fx:id="rightTitle" alignment="CENTER" layoutX="617.0" layoutY="170.0" onMouseClicked="#highlight" style="-fx-background-color: transparent;" text="Insert Title">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </TextField>
-                              <TextField fx:id="mainTitle" alignment="CENTER" editable="false" layoutX="399.0" layoutY="50.0" onMouseClicked="#highlight" text="Insert Title">
+                              <TextField fx:id="mainTitle" alignment="CENTER" layoutX="399.0" layoutY="50.0" onMouseClicked="#highlight" text="Insert Title">
                                  <font>
                                     <Font name="Times New Roman" size="20.0" />
                                  </font>
                               </TextField>
-                              <Label fx:id="lblConsole" layoutX="38.0" layoutY="54.0" text="Console ">
+                              <Label fx:id="lblConsole" layoutX="283.0" layoutY="626.0" text="Console ">
                                  <font>
                                     <Font name="Times New Roman" size="25.0" />
                                  </font>
@@ -197,6 +200,12 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </TextField>
+                              <CheckBox fx:id="isDraggable" layoutX="14.0" layoutY="690.0" mnemonicParsing="false" onMouseClicked="#removeFocus" selected="true" text="Drag Text">
+                                 <font>
+                                    <Font name="Times New Roman" size="12.0" />
+                                 </font>
+                              </CheckBox>
+                              <CheckBox fx:id="isAddLabel" layoutX="14.0" layoutY="670.0" mnemonicParsing="false" onMouseClicked="#removeFocus" selected="true" text="Click to add Text" />
                            </children>
                         </Pane>
                      </children>
