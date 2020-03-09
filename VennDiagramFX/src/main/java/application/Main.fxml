@@ -43,7 +43,7 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button focusTraversable="false" layoutX="-1.0" layoutY="160.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Help">
+                              <Button disable="true" focusTraversable="false" layoutX="-1.0" layoutY="160.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Help">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -54,7 +54,7 @@
                                     <Font name="Times New Roman Bold" size="15.0" />
                                  </font>
                               </TextField>
-                              <Button focusTraversable="false" layoutX="-1.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="About Us">
+                              <Button disable="true" focusTraversable="false" layoutX="-1.0" layoutY="210.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="About Us">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -97,7 +97,6 @@
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="textDelete" focusTraversable="false" layoutX="56.0" layoutY="598.0" mnemonicParsing="false" onMouseClicked="#textDelete" text="Delete Label" />
                                     <ColorPicker fx:id="textColour" focusTraversable="false" layoutX="10.0" layoutY="245.0" prefHeight="30.0" prefWidth="180.0" />
                                     <TextArea fx:id="textArea" layoutX="27.0" layoutY="320.0" prefHeight="191.0" prefWidth="146.0" wrapText="true" />
                                     <CheckBox fx:id="isBold" layoutX="20.0" layoutY="185.0" mnemonicParsing="false" text="Bold">
@@ -118,7 +117,7 @@
                                  </children>
                               </Pane>
                               <Separator layoutY="620.0" prefWidth="200.0" AnchorPane.bottomAnchor="56.0" />
-                              <Button focusTraversable="false" layoutX="55.0" layoutY="649.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="15.0" />
+                              <Button disable="true" focusTraversable="false" layoutX="55.0" layoutY="649.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="15.0" />
                               <Separator layoutY="40.0" prefWidth="200.0" />
                               <Separator layoutY="215.0" prefWidth="200.0" />
                               <Separator layoutY="155.0" prefWidth="200.0" />
@@ -151,7 +150,7 @@
                                     <Separator layoutX="1.0" layoutY="137.0" prefWidth="200.0" />
                                     <Separator layoutY="217.0" prefWidth="200.0" />
                                     <TextField fx:id="tfSlider" accessibleRoleDescription="ed" focusTraversable="false" layoutX="120.0" layoutY="57.0" prefHeight="25.0" prefWidth="60.0" />
-                                    <Label focusTraversable="false" layoutX="10.0" layoutY="230.0" text="Component Allignment">
+                                    <Label focusTraversable="false" layoutX="10.0" layoutY="230.0" text="Component Alignment">
                                        <font>
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
@@ -159,7 +158,7 @@
                                     <ChoiceBox fx:id="labelAlignment" layoutX="10.0" layoutY="260.0" prefHeight="25.0" prefWidth="175.0" />
                                  </children>
                               </Pane>
-                              <Button focusTraversable="false" layoutX="55.0" layoutY="649.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="15.0" />
+                              <Button disable="true" focusTraversable="false" layoutX="55.0" layoutY="649.0" mnemonicParsing="false" text="Reset Default" AnchorPane.bottomAnchor="15.0" />
                               <Separator layoutY="620.0" prefWidth="200.0" AnchorPane.bottomAnchor="56.0" />
                            </children>
                         </AnchorPane>
@@ -190,7 +189,7 @@
                                     <Font name="Times New Roman" size="20.0" />
                                  </font>
                               </TextField>
-                              <Label fx:id="lblConsole" layoutX="283.0" layoutY="626.0" text="Console ">
+                              <Label fx:id="lblConsole" layoutX="283.0" layoutY="626.0" text="Console " visible="false">
                                  <font>
                                     <Font name="Times New Roman" size="25.0" />
                                  </font>

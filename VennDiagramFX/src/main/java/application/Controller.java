@@ -183,8 +183,72 @@ public class Controller implements Initializable {
 //		});
 		// END
 
-		lblConsole.setVisible(false);
+//		lblConsole.setVisible(false);
+		
+		Menu.getSelectionModel().select(Home);
 
+		leftTitle.setOpacity(0.5);
+
+		leftTitle.onMouseClickedProperty().set(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				if (leftTitle.getText().equals("Insert Title")) {
+					leftTitle.selectAll();
+				}
+			}
+		});
+
+		leftTitle.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				leftTitle.setOpacity(1.0);
+
+			}
+		});
+
+		rightTitle.setOpacity(0.5);
+
+		rightTitle.onMouseClickedProperty().set(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				if (rightTitle.getText().equals("Insert Title")) {
+					rightTitle.selectAll();
+				}
+			}
+		});
+
+		rightTitle.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				rightTitle.setOpacity(1.0);
+
+			}
+		});
+
+		mainTitle.setOpacity(0.5);
+
+		mainTitle.onMouseClickedProperty().set(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				if (mainTitle.getText().equals("Insert Title")) {
+					mainTitle.selectAll();
+				}
+			}
+		});
+
+		mainTitle.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+				mainTitle.setOpacity(1.0);
+
+			}
+		});
 		// Add Possible Alignments
 		labelAlignment.getItems().add("Custom");
 		labelAlignment.getItems().add("Left Justified");
@@ -396,6 +460,7 @@ public class Controller implements Initializable {
 				texttmp = Font.getFamilies().get(i).toString();
 			}
 		}
+
 		textFont.setValue(texttmp);
 		textFont.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -494,13 +559,14 @@ public class Controller implements Initializable {
 
 					while (focusList.size() != 0) {
 						centrePane.getChildren().remove(focusList.get(0));
-						focusList.remove(0);
+					
 						for (int i = 0; i < labelList.size(); i++) {
 							if (focusList.size() > 0 && labelList.get(i) == focusList.get(0)) {
 								labelList.remove(i);
 								counter--;
 							}
 						}
+						focusList.remove(0);
 					}
 
 					focusList.clear();
@@ -524,7 +590,7 @@ public class Controller implements Initializable {
 		centrePane.onKeyReleasedProperty().set(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyPressed) {
-				if (keyPressed.getCode() == KeyCode.SHIFT) {
+				if (keyPressed.getCode() == KeyCode.SHIFT && !leftTitle.isFocused()) {
 					isShift = false;
 				}
 				if (keyPressed.getCode() == KeyCode.A && keyPressed.isControlDown()) {
@@ -728,6 +794,7 @@ public class Controller implements Initializable {
 		for (int i = 0; i < focusList.size(); i++) {
 			centrePane.getChildren().remove(focusList.get(i));
 		}
+		removeFocus();
 
 	}
 
