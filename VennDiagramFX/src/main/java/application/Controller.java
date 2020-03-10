@@ -834,5 +834,11 @@ public class Controller implements Initializable {
 		Font result = Font.font(selectedTextFont.getName(), selectedTextWeight, selectedTextPosture, selectedTextSize);
 		return result;
 	}
+	
+	
+	public void save() {
+		Save save = new Save();
+		save.save(this);
+	}
 
 }
