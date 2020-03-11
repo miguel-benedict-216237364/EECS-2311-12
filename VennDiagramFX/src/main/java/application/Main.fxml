@@ -33,7 +33,7 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button disable="true" focusTraversable="false" layoutX="-1.0" layoutY="60.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Save">
+                              <Button onAction="#save" fx:id="save" disable="false" focusTraversable="false" layoutX="-1.0" layoutY="60.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Save">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
