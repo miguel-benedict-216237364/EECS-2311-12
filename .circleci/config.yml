@@ -74,7 +74,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+          key: v1-dependencies-{{ checksum "EECS-2311-12/VennDiagramFX/build.gradle" }}
 
       # run tests!
      # - run: gradle test
