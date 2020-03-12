@@ -1,5 +1,10 @@
 package application;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -15,7 +20,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -27,11 +31,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -42,6 +44,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Controller implements Initializable {
 	@FXML
@@ -110,7 +115,7 @@ public class Controller implements Initializable {
 	private CheckBox autoFocusText;
 	@FXML
 	private ChoiceBox<String> labelAlignment;
-
+	
 	static double[] defaultCircleLeftAlignment = { 220, 680, 540 }; // X values for left alignment ( Left, Right, Middle
 																	// )
 
@@ -184,7 +189,7 @@ public class Controller implements Initializable {
 		// END
 
 //		lblConsole.setVisible(false);
-		
+
 		Menu.getSelectionModel().select(Home);
 
 		leftTitle.setOpacity(0.5);
@@ -559,7 +564,7 @@ public class Controller implements Initializable {
 
 					while (focusList.size() != 0) {
 						centrePane.getChildren().remove(focusList.get(0));
-					
+
 						for (int i = 0; i < labelList.size(); i++) {
 							if (focusList.size() > 0 && labelList.get(i) == focusList.get(0)) {
 								labelList.remove(i);
@@ -683,10 +688,17 @@ public class Controller implements Initializable {
 
 	public void addLabel(MouseEvent initEvent) {
 		if (centrePane.isFocused()) { // sees of the click happened in the proper pane, which is the centrePane
+		lblTmp = new Label("Insert Text " + counter);
+		addLabelHelper(lblTmp, initEvent.getX(), initEvent.getY());
+		}
+	}
+
+	public void addLabelHelper(Label lblTmp, Double x, Double y) {
+		
 			removeBindToList();
 			lblTmp.textProperty().unbind();
-			lblTmp = new Label("Insert Text " + counter); // Sets the text of the label created, counter counts how may
-															// labels have been created
+			// Sets the text of the label created, counter counts how may
+			// labels have been created
 			lblTmp.setMaxWidth(150); // Sets the maximum width of the label, which works with the wrapping of the
 										// label.
 			textArea.setMaxWidth(lblTmp.getMaxWidth()); // Sets the text area maximum width to reflect how the text
@@ -694,10 +706,10 @@ public class Controller implements Initializable {
 			lblTmp.setFont(getFont(isBold, isItalic)); // Sets to the font and size to the current font and size
 														// selected
 			lblTmp.setTextFill(selectedTextColour); // Sets the colour with the colour selected
-			lblTmp.setLayoutX(initEvent.getX()); // Position the x direction of the label to be on the x position of the
-													// mouse
-			lblTmp.setLayoutY(initEvent.getY()); // Position the y direction of the label to be on the y position of the
-													// mouse
+			lblTmp.setLayoutX(x); // Position the x direction of the label to be on the x position of the
+									// mouse
+			lblTmp.setLayoutY(y); // Position the y direction of the label to be on the y position of the
+									// mouse
 			centrePane.getChildren().add(lblTmp); // Adds the label create to the centrePane
 			Menu.getSelectionModel().select(Home); // Sets the tab to the Home tab
 			lblTmp.setWrapText(true); // Allow label to wrap text
@@ -723,7 +735,7 @@ public class Controller implements Initializable {
 																					// label
 				@Override
 				public void handle(MouseEvent event) {
-					lblTmp = (Label) event.getSource(); // Select the Label
+					final Label lblTmp = (Label) event.getSource(); // Select the Label
 					Menu.getSelectionModel().select(Home); // Set the tab to Home
 					textArea.setText(lblTmp.getText()); // Set the text area to the selected Label
 					if (isShift) { // If shift is selected, then add the label pressed to the focus List
@@ -787,7 +799,7 @@ public class Controller implements Initializable {
 			});
 
 		}
-	}
+	
 
 	public void textDelete() {
 		counter = counter - focusList.size();
@@ -834,11 +846,126 @@ public class Controller implements Initializable {
 		Font result = Font.font(selectedTextFont.getName(), selectedTextWeight, selectedTextPosture, selectedTextSize);
 		return result;
 	}
+
+	public void load() throws IOException {	
+		String path = this.loader();
+		//clears the centrePane and then reinitalizes it
+		this.centrePane.getChildren().clear();
+		this.centrePane.getChildren().add(this.leftCircle);
+		this.centrePane.getChildren().add(rightCircle);
+		this.centrePane.getChildren().add(isDraggable);
+		this.centrePane.getChildren().add(this.autoFocusText);
+		this.centrePane.getChildren().add(this.isAddLabel);
+		this.centrePane.getChildren().add(this.leftTitle);
+		this.centrePane.getChildren().add(this.rightTitle);
+		this.centrePane.getChildren().add(this.mainTitle);
+		
+		String line = "";//used to copy text from the file
+		
+		LineNumberReader lineReader = new LineNumberReader(new FileReader(path));
+		line= lineReader.readLine();
+		this.leftTitle.setText(line);
+		
+		line= lineReader.readLine();		
+		this.mainTitle.setText(line);
+		
+		line= lineReader.readLine();
+		this.rightTitle.setText(line);
+		
+		line= lineReader.readLine();		
+		
+		while(!line.contentEquals("----------------LabelEnd-------------------")){
+			Label tempL = new Label(); 
+			int lineCount = 0;
+			String tempString = "";
+			while(!line.contentEquals("----------------text----------------")) {		  
+				if(lineCount == 0) { 
+					tempString = tempString + line; 
+				}else { 
+				  tempString =  tempString + line +"\n"; 
+				}
+				line = lineReader.readLine();
+				System.out.println(line + " 6" );
+		  } 
+		  
+			if (line != null) {
+				tempL.setText(tempString);
+				
+				line = lineReader.readLine();
+				tempL.setLayoutX(Double.parseDouble(line));
+				
+				line = lineReader.readLine();
+				tempL.setLayoutY(Double.parseDouble(line));
+				/*
+				 * line= lineReader.readLine(); System.out.println(line + "  9");
+				 * tempL.setTextFill(Paint.valueOf(line));
+				 */
+				this.lblTmp = tempL;
+				this.addLabelHelper(this.lblTmp, tempL.getLayoutX(), tempL.getLayoutY());
+				line = lineReader.readLine();
+
+		  }
+		  
+		 }
+		 
+		 lineReader.close();
+		 }
+		  
+		  
 	
-	
-	public void save() {
-		Save save = new Save();
-		save.save(this);
+		 
+	private String loader() {
+		final FileChooser filechooser = new FileChooser();
+		Stage stage = (Stage) Window.getScene().getWindow();
+		File file = filechooser.showOpenDialog(stage);
+		String path = "";
+		if(file != null) {
+			path = file.getAbsolutePath();
+		}
+		
+		return path;
+	}
+
+	public void save() throws FileNotFoundException {
+		
+		 Save save = new Save();
+		 FileChooser fileChooser = new FileChooser();
+		 Stage stage = (Stage) Window.getScene().getWindow();
+         //Set extension filter for text files
+         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+         fileChooser.getExtensionFilters().add(extFilter);
+
+         //Show save file dialog
+         File file = fileChooser.showSaveDialog(stage);
+
+         if (file != null) {
+           save.save(this, file);
+         }
+		
+	}
+
+	public String getLeftTitle() {
+		return this.leftTitle.getText();
+	}
+
+	public String getRightTitle() {
+		return this.rightTitle.getText();
+	}
+
+	public String getMainTitle() {
+		return this.mainTitle.getText();
+	}
+
+	public void setLeftTitle(String s) {
+		this.leftTitle.setText(s);
+	}
+
+	public void setRightTitle(String s) {
+		this.rightTitle.setText(s);
+	}
+
+	public void setCenterTitle(String s) {
+		this.mainTitle.setText(s);
 	}
 
 }
