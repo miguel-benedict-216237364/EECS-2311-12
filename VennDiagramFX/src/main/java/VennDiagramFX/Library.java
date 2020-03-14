@@ -8,3 +8,5 @@ public class Library {
         return true;
     }
 }
+
+//User Manual
