@@ -249,8 +249,51 @@ the user can slide
 the colour tool bar 
 to the middle of 
 the green section 
-and drag the small circle in the square on the left all the way to the top right to get the right custom colour. If the user wants to use this colour again in the future, they can click the ‘Save’ button on the bottom right or they can click the ‘Use’ button if they only want to use it this one time. 
-Now to change the right circle’s colour to Blue (#334db3), the user will select ‘Right Circle’ under the design tab. Then click the drop-down menu under ‘Colour’ and select the default blue colour in the fourth row and second column. The colours should be changed of both circles now. 
-To change the size of the entire Venn diagram, select ‘Both Circles’ under the design tab. And the user can either use the toolbar to drag the circle to 240 or manually change the size to 240 by editing the small box beside the ‘Size’ section. 
+and drag the small 
+circle in the square 
+on the left all the 
+way to the top right 
+to get the right 
+custom colour. If 
+the user wants to 
+use this colour again 
+in the future, they 
+can click the ‘Save’ 
+button on the bottom 
+right or they can 
+click the ‘Use’ 
+button if they only 
+want to use it this 
+one time. 
+
+Now to change the 
+right circle’s colour 
+to Blue (#334db3), 
+the user will select 
+‘Right Circle’ under 
+the design tab. Then 
+click the drop-down 
+menu under ‘Colour’ 
+and select the 
+default blue colour 
+in the fourth row 
+and second column. 
+The colours should 
+be changed of both 
+circles now. 
+
+To change the size 
+of the entire Venn 
+diagram, select 
+‘Both Circles’ under 
+the design tab. And 
+the user can either 
+use the toolbar to 
+drag the circle to 
+240 or manually 
+change the size to 
+240 by editing the 
+small box beside 
+the ‘Size’ section. 
 
 */
