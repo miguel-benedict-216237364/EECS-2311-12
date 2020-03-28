@@ -18,7 +18,7 @@ public class Save {
 		this.initializeSave();
 	}
 	
-	public void save(Controller control, File file) throws FileNotFoundException {
+	public void save(Controller control, File file, double lRadius, double rRadius) throws FileNotFoundException {
 		this.control = control;		
 		this.initializeSave();
 		/*
@@ -31,6 +31,9 @@ public class Save {
 		printWriter.println(control.getLeftTitle());
 		printWriter.println(control.getMainTitle());
 		printWriter.println(control.getRightTitle());
+		printWriter.println(lRadius);
+		printWriter.println(rRadius);
+		
 		//printWriter.println("------------------------TitlesEnd--------------------");
 		for(int i =0 ; i < control.labelList.size(); i++){
 				Label label = control.labelList.get(i);

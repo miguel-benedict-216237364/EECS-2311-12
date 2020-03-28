@@ -872,6 +872,10 @@ public class Controller implements Initializable {
 		line= lineReader.readLine();
 		this.rightTitle.setText(line);
 		
+		this.leftCircle.setRadius(Double.parseDouble(lineReader.readLine()));
+		this.rightCircle.setRadius(Double.parseDouble(lineReader.readLine()));
+		
+		
 		line= lineReader.readLine();		
 		
 		while(!line.contentEquals("----------------LabelEnd-------------------")){
@@ -937,9 +941,9 @@ public class Controller implements Initializable {
 
          //Show save file dialog
          File file = fileChooser.showSaveDialog(stage);
-
+         
          if (file != null) {
-           save.save(this, file);
+           save.save(this, file, this.leftCircle.getRadius(), this.rightCircle.getRadius());
          }
 		
 	}
