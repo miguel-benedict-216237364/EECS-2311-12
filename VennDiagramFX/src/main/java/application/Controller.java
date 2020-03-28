@@ -32,6 +32,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -44,7 +46,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -124,7 +125,8 @@ public class Controller implements Initializable {
 
 	static double[] defaultCircleMiddleAlignment = { 320, 750, 540 }; // X values for right alignment ( Left, Right,
 																		// Middle )
-
+	static final KeyCombination undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.SHORTCUT_DOWN);
+	
 	static double defaultYAlignment = 250;
 
 	static boolean isShift = false;
@@ -490,7 +492,9 @@ public class Controller implements Initializable {
 				removeFocus();
 			}
 		});
-
+		
+	
+		
 		// Tab Menu Add all and set Default
 		// Menu.getSelectionModel().select(Home);
 
@@ -589,6 +593,7 @@ public class Controller implements Initializable {
 					removeFocus();
 					removeFocusToList();
 				}
+				
 			}
 		});
 
@@ -847,78 +852,86 @@ public class Controller implements Initializable {
 		return result;
 	}
 
-	public void load() throws IOException {	
-		String path = this.loader();
-		//clears the centrePane and then reinitalizes it
-		this.centrePane.getChildren().clear();
-		this.centrePane.getChildren().add(this.leftCircle);
-		this.centrePane.getChildren().add(rightCircle);
-		this.centrePane.getChildren().add(isDraggable);
-		this.centrePane.getChildren().add(this.autoFocusText);
-		this.centrePane.getChildren().add(this.isAddLabel);
-		this.centrePane.getChildren().add(this.leftTitle);
-		this.centrePane.getChildren().add(this.rightTitle);
-		this.centrePane.getChildren().add(this.mainTitle);
-		
-		String line = "";//used to copy text from the file
-		
-		LineNumberReader lineReader = new LineNumberReader(new FileReader(path));
-		line= lineReader.readLine();
-		this.leftTitle.setText(line);
-		
-		line= lineReader.readLine();		
-		this.mainTitle.setText(line);
-		
-		line= lineReader.readLine();
-		this.rightTitle.setText(line);
-		
-		this.leftCircle.setRadius(Double.parseDouble(lineReader.readLine()));
-		this.rightCircle.setRadius(Double.parseDouble(lineReader.readLine()));
-		
-		
-		line= lineReader.readLine();		
-		
-		while(!line.contentEquals("----------------LabelEnd-------------------")){
-			Label tempL = new Label(); 
-			int lineCount = 0;
-			String tempString = "";
-			while(!line.contentEquals("----------------text----------------")) {		  
-				if(lineCount == 0) { 
-					tempString = tempString + line; 
-				}else { 
-				  tempString =  tempString + line +"\n"; 
-				}
-				line = lineReader.readLine();
-				System.out.println(line + " 6" );
-		  } 
-		  
-			if (line != null) {
-				tempL.setText(tempString);
-				
-				line = lineReader.readLine();
-				tempL.setLayoutX(Double.parseDouble(line));
-				
-				line = lineReader.readLine();
-				tempL.setLayoutY(Double.parseDouble(line));
-				/*
-				 * line= lineReader.readLine(); System.out.println(line + "  9");
-				 * tempL.setTextFill(Paint.valueOf(line));
-				 */
-				this.lblTmp = tempL;
-				this.addLabelHelper(this.lblTmp, tempL.getLayoutX(), tempL.getLayoutY());
-				line = lineReader.readLine();
+	public void load() {	
+		String path ="";
+		path = this.loader();
+		try {		
+		this.fileReader(path);
+		}catch (IOException e) {
+			System.out.println("No File Was Selected Or Wrong File Was Selected");
+		}
+	}
+		  	
+		private void fileReader(String path) throws IOException{
+			//clears the centrePane and then reinitalizes it
+			String line = "";//used to copy text from the file			
+			LineNumberReader lineReader = new LineNumberReader(new FileReader(path));
+			line= lineReader.readLine();
+			this.centrePane.getChildren().clear();
+			this.centrePane.getChildren().add(this.leftCircle);
+			this.centrePane.getChildren().add(rightCircle);
+			this.centrePane.getChildren().add(isDraggable);
+			this.centrePane.getChildren().add(this.autoFocusText);
+			this.centrePane.getChildren().add(this.isAddLabel);
+			this.centrePane.getChildren().add(this.leftTitle);
+			this.centrePane.getChildren().add(this.rightTitle);
+			this.centrePane.getChildren().add(this.mainTitle);
+			
+			this.leftTitle.setText(line);
+			
+			line= lineReader.readLine();		
+			this.mainTitle.setText(line);
+			
+			line= lineReader.readLine();
+			this.rightTitle.setText(line);
+			
+			this.leftCircle.setRadius(Double.parseDouble(lineReader.readLine()));
+			this.rightCircle.setRadius(Double.parseDouble(lineReader.readLine()));
+			
+			
+			line= lineReader.readLine();		
+			
+			while(!line.contentEquals("----------------LabelEnd-------------------")){
+				Label tempL = new Label(); 
+				int lineCount = 0;
+				String tempString = "";
+				while(!line.contentEquals("----------------text----------------")) {		  
+					if(lineCount == 0) { 
+						tempString = tempString + line; 
+					}else { 
+					  tempString =  tempString + line +"\n"; 
+					}
+					line = lineReader.readLine();
+					System.out.println(line + " 6" );
+			  } 
+			  
+				if (line != null) {
+					tempL.setText(tempString);
+					
+					line = lineReader.readLine();
+					tempL.setLayoutX(Double.parseDouble(line));
+					
+					line = lineReader.readLine();
+					tempL.setLayoutY(Double.parseDouble(line));
+					/*
+					 * line= lineReader.readLine(); System.out.println(line + "  9");
+					 * tempL.setTextFill(Paint.valueOf(line));
+					 */
+					this.lblTmp = tempL;
+					this.addLabelHelper(this.lblTmp, tempL.getLayoutX(), tempL.getLayoutY());
+					line = lineReader.readLine();
 
-		  }
-		  
-		 }
-		 
-		 lineReader.close();
-		 }
-		  
-		  
-	
-		 
-	private String loader() {
+			  }
+			  
+			 }
+			 
+			 lineReader.close();
+			}
+		
+			
+		
+		
+		private String loader() {
 		final FileChooser filechooser = new FileChooser();
 		Stage stage = (Stage) Window.getScene().getWindow();
 		File file = filechooser.showOpenDialog(stage);
@@ -929,6 +942,7 @@ public class Controller implements Initializable {
 		
 		return path;
 	}
+
 
 	public void save() throws FileNotFoundException {
 		
@@ -947,9 +961,11 @@ public class Controller implements Initializable {
          }
 		
 	}
-
+	
+	
 	public String getLeftTitle() {
 		return this.leftTitle.getText();
+		
 	}
 
 	public String getRightTitle() {
@@ -972,4 +988,5 @@ public class Controller implements Initializable {
 		this.mainTitle.setText(s);
 	}
 
+	
 }
