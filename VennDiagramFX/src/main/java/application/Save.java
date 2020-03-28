@@ -10,22 +10,13 @@ import java.io.PrintWriter;
 import javafx.scene.control.Label;
 
 public class Save {
-	private FileWriter writer;
 	DataOutputStream dataOutStream;
-	private Controller control;
 	
 	public Save() {
-		this.initializeSave();
+		
 	}
 	
-	public void save(Controller control, File file, double lRadius, double rRadius) throws FileNotFoundException {
-		this.control = control;		
-		this.initializeSave();
-		/*
-		 * PrintWriter printWriter2 = new PrintWriter(writer); printWriter2.print("");
-		 * printWriter2.close();
-		 */
-		
+	public void save(Controller control, File file, double lRadius, double rRadius) throws FileNotFoundException {		
 		PrintWriter printWriter = new PrintWriter(file);
 		
 		printWriter.println(control.getLeftTitle());
@@ -48,17 +39,6 @@ public class Save {
 		
 		
 		printWriter.close();
-	}
-	
-	public void initializeSave() {
-		try {
-			this.writer = new FileWriter("C:/Users/edshi/git/EECS-2311-12(4)/VennDiagramFX/save.txt");
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }
