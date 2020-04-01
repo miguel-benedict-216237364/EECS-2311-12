@@ -1117,6 +1117,14 @@ public class Controller implements Initializable {
 			
 		}else  {
 			lblConsole.setText("Tie");
+			double height = rightCircle.getCenterY()-rightCircle.getRadius();
+			double maximum = mainTitle.getPrefHeight()+30;
+			if (height>maximum) { // Circle is below the threshold
+				mainTitle.setLayoutY(rightCircle.getCenterY()-rightCircle.getRadius()-mainTitle.getPrefHeight() - 15);
+			}else if (height<maximum) {
+			//	lblConsole.setText("Move Down");
+				rightCircle.setCenterY(rightCircle.getCenterY() + (maximum-height));
+			}
 		}
 
 		leftTitle.setFont(Font.font(leftTitle.getFont().getFamily(), 16 + ((leftCircle.getRadius() - 250) / 20)));
