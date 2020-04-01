@@ -14,6 +14,7 @@ public class ControllerCopy {
 	TextField leftTitle;
 	TextField rightTitle;
 	TextField centerTitle;
+	boolean addLabelBox = true;
 	
 	
 	public ControllerCopy(ArrayList<Label> l, Circle leftC, Circle rightC, TextField left, TextField right, TextField center) {
@@ -26,15 +27,16 @@ public class ControllerCopy {
 		for(int i = 0; i < l.size(); i++) {
 			labels.add(l.get(i));			
 		}
-		leftCircle.setLayoutX(leftC.getLayoutX());
-		leftCircle.setLayoutY(leftC.getLayoutY());
+
 		leftCircle.setRadius(leftC.getRadius());
 		
-		rightCircle.setLayoutX(rightC.getLayoutX());
-		rightCircle.setLayoutY(rightC.getLayoutY());
 		rightCircle.setRadius(rightC.getRadius());
 		
 	
+	}
+	
+	public void setAddLabelBox(boolean b) {
+		this.addLabelBox = b;
 	}
 	
 @Override
