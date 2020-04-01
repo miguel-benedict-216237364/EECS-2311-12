@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 public class Main extends Application {
 
 	public static double stageWidth;
+	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -21,9 +22,14 @@ public class Main extends Application {
 			primaryStage.sizeToScene();
 			primaryStage.requestFocus();
 			primaryStage.show();
+			
+			primaryStage.setTitle("Venn DiagramFX");
+			
+			primaryStage.setMinHeight(720);
+			primaryStage.setMinWidth(1280);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	public static void main(String[] args) {
