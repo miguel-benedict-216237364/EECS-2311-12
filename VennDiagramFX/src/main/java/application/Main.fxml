@@ -48,6 +48,11 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
+                              <Button disable="true" focusTraversable="false" layoutX="-1.0" layoutY="260.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Undo">
+                                 <font>
+                                    <Font name="Times New Roman" size="16.0" />
+                                 </font>
+                              </Button>
                               <Label layoutX="64.0" layoutY="659.0" text="Vesion: 2.0" AnchorPane.bottomAnchor="13.0" />
                               <TextField alignment="CENTER" editable="false" layoutX="8.0" layoutY="628.0" prefHeight="28.0" prefWidth="182.0" text="Venn Diagram" AnchorPane.bottomAnchor="33.0">
                                  <font>
