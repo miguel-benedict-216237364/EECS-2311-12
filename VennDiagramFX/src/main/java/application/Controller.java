@@ -105,7 +105,7 @@ public class Controller implements Initializable {
 	@FXML
 	private Label toDelete;
 	@FXML
-	private CheckBox isAddLabel;
+	CheckBox isAddLabel;
 	@FXML
 	private CheckBox isDraggable;
 	@FXML
@@ -176,6 +176,7 @@ public class Controller implements Initializable {
 
 	static ObservableList<TextField> textFieldTitle = FXCollections.observableArrayList(tf -> new Observable[] { tf.textProperty() });
 	int undoPointer = 0;
+	boolean undoWasClicked = false;
 
 
 	// static ObservableList<Label> labelListObservable =
@@ -785,9 +786,24 @@ public class Controller implements Initializable {
 
 		});
 		
+		isAddLabel.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		    	
+		    
+		    	undoPointer ++;
+		    	System.out.println("UndoPointer is at: " + undoPointer);
+		    	undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+		    	undoStack.get(undoPointer).setAddLabelBox(newValue);
+		    	
+		    }
+		});
+		System.out.println("UndoPointer is at: " + undoPointer);
 		undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-		undoPointer ++;
+		
 	}
+//---------------------END OF INITIALIZE-------------------------------
+	
 
 	public void removeFocus() {
 		centrePane.requestFocus();
@@ -807,8 +823,10 @@ public class Controller implements Initializable {
 		if (centrePane.isFocused()) { // sees of the click happened in the proper pane, which is the centrePane
 			lblTmp = new Label("Insert Text " + counter);
 			addLabelHelper(lblTmp, initEvent.getX(), initEvent.getY());
-			undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
 			undoPointer ++;
+			System.out.println("UndoPointer is at: " + undoPointer);
+			undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+			
 		}
 	}
 
@@ -918,6 +936,8 @@ public class Controller implements Initializable {
 		});
 
 	}
+	
+	
 
 	public void textDelete() {
 		counter = counter - focusList.size();
@@ -929,6 +949,7 @@ public class Controller implements Initializable {
 	}
 
 	static void addFocusToList() {
+		
 		for (int i = 0; i < focusList.size(); i++) {
 			focusList.get(i).setStyle("-fx-border-style: dashed;");
 		}
@@ -965,6 +986,44 @@ public class Controller implements Initializable {
 		return result;
 	}
 
+	public void undo() {
+		if(undoPointer - 1 >= 0) {
+			undoWasClicked = true;
+			undoPointer --;
+			
+			ControllerCopy copy = undoStack.get(undoPointer);
+			this.reinitialize();
+			this.leftCircle.setRadius(copy.leftCircle.getRadius());
+			this.rightCircle.setRadius(copy.rightCircle.getRadius());
+			this.leftTitle.setText(copy.leftTitle.getText());
+			this.rightTitle.setText(copy.rightTitle.getText());
+			this.setCenterTitle(copy.centerTitle.getText());
+			if(this.isAddLabel.isSelected() != copy.addLabelBox) {
+			this.isAddLabel.setSelected(copy.addLabelBox);
+			undoPointer --;
+			}
+			System.out.println("UndoPointer is at: " + undoPointer);
+			
+			for(int i = 0; i< copy.labels.size(); i++) {
+				Label l = copy.labels.get(i);
+				this.addLabelHelper(l, l.getLayoutX(), l.getLayoutY());
+			}
+		}
+	}
+	
+	public void reinitialize() {
+	this.centrePane.getChildren().clear();
+	this.labelList.clear();
+	this.centrePane.getChildren().add(this.leftCircle);
+	this.centrePane.getChildren().add(rightCircle);
+	this.centrePane.getChildren().add(isDraggable);
+	this.centrePane.getChildren().add(this.autoFocusText);
+	this.centrePane.getChildren().add(this.isAddLabel);
+	this.centrePane.getChildren().add(this.leftTitle);
+	this.centrePane.getChildren().add(this.rightTitle);
+	this.centrePane.getChildren().add(this.mainTitle);
+	
+	}
 	public void load() {
 		String path = "";
 		path = this.loader();
@@ -980,15 +1039,7 @@ public class Controller implements Initializable {
 		String line = "";// used to copy text from the file
 		LineNumberReader lineReader = new LineNumberReader(new FileReader(path));
 		line = lineReader.readLine();
-		this.centrePane.getChildren().clear();
-		this.centrePane.getChildren().add(this.leftCircle);
-		this.centrePane.getChildren().add(rightCircle);
-		this.centrePane.getChildren().add(isDraggable);
-		this.centrePane.getChildren().add(this.autoFocusText);
-		this.centrePane.getChildren().add(this.isAddLabel);
-		this.centrePane.getChildren().add(this.leftTitle);
-		this.centrePane.getChildren().add(this.rightTitle);
-		this.centrePane.getChildren().add(this.mainTitle);
+		this.reinitialize();
 
 		this.leftTitle.setText(line);
 
