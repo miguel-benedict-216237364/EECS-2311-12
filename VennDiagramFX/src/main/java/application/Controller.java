@@ -733,7 +733,12 @@ public class Controller implements Initializable {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
+				
+				
+				isDraggable.setLayoutY(centrePane.getHeight()-20);
+				isAddLabel.setLayoutY(isDraggable.getLayoutY()-20);
+				autoFocusText.setLayoutY(isAddLabel.getLayoutY()-20);
+				lblConsole.setText(Double.toString(isDraggable.getLayoutY()));
 			}
 
 		});
