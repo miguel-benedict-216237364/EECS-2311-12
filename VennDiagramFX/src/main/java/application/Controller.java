@@ -17,6 +17,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,11 +57,11 @@ public class Controller implements Initializable {
 	@FXML
 	private ComboBox<String> designTabComboBox;
 	@FXML
-	private TextField mainTitle;
+	 TextField mainTitle;
 	@FXML
-	private TextField leftTitle;
+	 TextField leftTitle;
 	@FXML
-	private TextField rightTitle;
+	 TextField rightTitle;
 	@FXML
 	private AnchorPane Window;
 	@FXML
@@ -70,9 +71,9 @@ public class Controller implements Initializable {
 	@FXML
 	private Slider sizeSlider;
 	@FXML
-	private Circle leftCircle;
+	 Circle leftCircle;
 	@FXML
-	private Circle rightCircle;
+	 Circle rightCircle;
 	@FXML
 	private Label warningLabel;
 	@FXML
@@ -168,10 +169,13 @@ public class Controller implements Initializable {
 
 	static ArrayList<Label> labelList = new ArrayList<Label>();
 
+
+	static ArrayList<ControllerCopy> undoStack = new ArrayList<ControllerCopy>();
+  
 	static ArrayList<TextField> textFieldFocus = new ArrayList<TextField>();
 
-	static ObservableList<TextField> textFieldTitle = FXCollections
-			.observableArrayList(tf -> new Observable[] { tf.textProperty() });
+	static ObservableList<TextField> textFieldTitle = FXCollections.observableArrayList(tf -> new Observable[] { tf.textProperty() });
+
 
 	// static ObservableList<Label> labelListObservable =
 	// FXCollections.observableArrayList(labelList);
@@ -257,6 +261,8 @@ public class Controller implements Initializable {
 		});
 
 		mainTitle.textProperty().addListener(new ChangeListener<String>() {
+			
+			
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
@@ -668,6 +674,7 @@ public class Controller implements Initializable {
 		});
 
 		centrePane.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
+			
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -689,13 +696,13 @@ public class Controller implements Initializable {
 					}
 					if (isOnTop && isAddLabel.isSelected() && event.isStillSincePress()) {
 						addLabel(event);
+						undoStack.add(new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle ));
 					}
 				} else {
 					removeFocusToList();
 				}
 			}
 		});
-
 		isBold.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
