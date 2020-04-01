@@ -175,6 +175,7 @@ public class Controller implements Initializable {
 	static ArrayList<TextField> textFieldFocus = new ArrayList<TextField>();
 
 	static ObservableList<TextField> textFieldTitle = FXCollections.observableArrayList(tf -> new Observable[] { tf.textProperty() });
+	int undoPointer = 0;
 
 
 	// static ObservableList<Label> labelListObservable =
@@ -696,7 +697,8 @@ public class Controller implements Initializable {
 					}
 					if (isOnTop && isAddLabel.isSelected() && event.isStillSincePress()) {
 						addLabel(event);
-						undoStack.add(new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle ));
+						
+						
 					}
 				} else {
 					removeFocusToList();
@@ -782,7 +784,9 @@ public class Controller implements Initializable {
 			}
 
 		});
-
+		
+		undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+		undoPointer ++;
 	}
 
 	public void removeFocus() {
@@ -803,6 +807,8 @@ public class Controller implements Initializable {
 		if (centrePane.isFocused()) { // sees of the click happened in the proper pane, which is the centrePane
 			lblTmp = new Label("Insert Text " + counter);
 			addLabelHelper(lblTmp, initEvent.getX(), initEvent.getY());
+			undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+			undoPointer ++;
 		}
 	}
 
