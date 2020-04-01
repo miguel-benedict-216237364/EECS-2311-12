@@ -8,7 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       #- image: circleci/openjdk:8-jdk
-      - image: eecs2311/j8-gradle-node:1.0
+      - image: eecs2311/j11-gradle-node:1.0
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -48,10 +48,10 @@ jobs:
             NOW="$(date)" 
             ZIP_FILE_NAME=VennDiagramFX
             TAG=Release-$(date '+%Y-%m-%d-%H-%M-%S')
-            cd CounterCI
+            cd VennDiagramFX
             gradle jar
             cd ./build/libs/
-            zip ${ZIP_FILE_NAME}.zip CounterCI.jar 
+            zip ${ZIP_FILE_NAME}.zip VennDiagramFX.jar 
             github-release upload --token ${GITHUB_TOKEN} --owner ${PROJECT_USERNAME} --repo ${PROJECT_REPONAME} --tag ${TAG} --name ${TAG} --body "Release date: ${NOW}" ${ZIP_FILE_NAME}.zip
 workflows:
   version: 2
