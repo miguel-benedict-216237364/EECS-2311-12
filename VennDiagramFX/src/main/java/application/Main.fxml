@@ -33,12 +33,12 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="save" disable="false" focusTraversable="false" layoutX="-1.0" layoutY="60.0" mnemonicParsing="false" onAction="#save" prefHeight="40.0" prefWidth="125.0" text="Save">
+                              <Button fx:id="save" disable="false" focusTraversable="false" layoutX="-1.0" layoutY="60.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="40.0" prefWidth="125.0" text="Save">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button disable="false" focusTraversable="false" layoutX="-1.0" layoutY="110.0" mnemonicParsing="false" onAction="#load" prefHeight="40.0" prefWidth="125.0" text="Load">
+                              <Button disable="false" focusTraversable="false" layoutX="-1.0" layoutY="110.0" mnemonicParsing="false" onMouseClicked="#load" prefHeight="40.0" prefWidth="125.0" text="Load">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -48,7 +48,7 @@
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
                               </Button>
-                              <Button onAction="#undo" disable="false" focusTraversable="false" layoutX="-1.0" layoutY="260.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Undo">
+                              <Button disable="false" focusTraversable="false" layoutX="-1.0" layoutY="260.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Undo">
                                  <font>
                                     <Font name="Times New Roman" size="16.0" />
                                  </font>
@@ -97,13 +97,12 @@
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="10.0" layoutY="295.0" text="Text">
+                                    <Label layoutX="10.0" layoutY="295.0" text="Main Text">
                                        <font>
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
                                     <ColorPicker fx:id="textColour" focusTraversable="false" layoutX="10.0" layoutY="245.0" prefHeight="30.0" prefWidth="180.0" />
-                                    <TextArea fx:id="textArea" layoutX="27.0" layoutY="320.0" prefHeight="191.0" prefWidth="146.0" wrapText="true" />
                                     <CheckBox fx:id="isBold" layoutX="20.0" layoutY="185.0" mnemonicParsing="false" text="Bold">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
@@ -119,6 +118,13 @@
                                           <Font name="Times New Roman Bold" size="16.0" />
                                        </font>
                                     </Label>
+                                    <Label layoutX="10.0" layoutY="378.0" text="Additional Text">
+                                       <font>
+                                          <Font name="Times New Roman Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <TextArea fx:id="additionalText" layoutX="27.0" layoutY="410.0" prefHeight="160.0" prefWidth="145.0" promptText="Additional Information can be added here." wrapText="true" />
+                                    <TextField fx:id="textField" layoutX="27.0" layoutY="330.0" prefHeight="30.0" prefWidth="145.0" />
                                  </children>
                               </Pane>
                               <Separator layoutY="620.0" prefWidth="200.0" AnchorPane.bottomAnchor="56.0" />
@@ -128,6 +134,7 @@
                               <Separator layoutY="155.0" prefWidth="200.0" />
                               <Separator layoutY="90.0" prefWidth="200.0" />
                               <Separator layoutY="290.0" prefWidth="200.0" />
+                              <Separator layoutY="370.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                     </content>

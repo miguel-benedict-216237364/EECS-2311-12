@@ -9,8 +9,8 @@ import javafx.scene.shape.Circle;
 
 public class Model {
 
-	static ArrayList<Label> getLeftLabel(ArrayList<Label> list, Circle leftCircle, Circle rightCircle) {
-		ArrayList<Label> result = new ArrayList<Label>();
+	static ArrayList<CustomLabel> getLeftLabel(ArrayList<CustomLabel> list, Circle leftCircle, Circle rightCircle) {
+		ArrayList<CustomLabel> result = new ArrayList<CustomLabel>();
 		double rightMax = rightCircle.getCenterX() - rightCircle.getRadius();
 		double leftMax = leftCircle.getCenterX() - leftCircle.getRadius();
 		double topMax = 0;
@@ -23,8 +23,8 @@ public class Model {
 			bottomMax = rightCircle.getCenterY() - rightCircle.getRadius();
 		}
 		for (int i = 0; i < list.size(); i++) {
-			double width = list.get(i).getLayoutX() + (list.get(i).getWidth() / 2);
-			double height = list.get(i).getLayoutY() + (list.get(i).getHeight() / 2);
+			double width = list.get(i).getLABEL().getLayoutX() + (list.get(i).getLABEL().getWidth() / 2);
+			double height = list.get(i).getLABEL().getLayoutY() + (list.get(i).getLABEL().getHeight() / 2);
 
 			if (width > leftMax && width < rightMax && height < topMax && height > bottomMax) {
 				result.add(list.get(i));
@@ -34,8 +34,8 @@ public class Model {
 		return result;
 	}
 
-	static ArrayList<Label> getRightLabel(ArrayList<Label> list, Circle leftCircle, Circle rightCircle) {
-		ArrayList<Label> result = new ArrayList<Label>();
+	static ArrayList<CustomLabel> getRightLabel(ArrayList<CustomLabel> list, Circle leftCircle, Circle rightCircle) {
+		ArrayList<CustomLabel> result = new ArrayList<CustomLabel>();
 		double rightMax = rightCircle.getCenterX() + rightCircle.getRadius();
 		double leftMax = leftCircle.getCenterX() + leftCircle.getRadius();
 		double topMax = 0;
@@ -48,8 +48,8 @@ public class Model {
 			bottomMax = rightCircle.getCenterY() - rightCircle.getRadius();
 		}
 		for (int i = 0; i < list.size(); i++) {
-			double width = list.get(i).getLayoutX() + (list.get(i).getWidth() / 2);
-			double height = list.get(i).getLayoutY() + (list.get(i).getHeight() / 2);
+			double width = list.get(i).getLABEL().getLayoutX() + (list.get(i).getLABEL().getWidth() / 2);
+			double height = list.get(i).getLABEL().getLayoutY() + (list.get(i).getLABEL().getHeight() / 2);
 
 			if (width > leftMax && width < rightMax && height < topMax && height > bottomMax) {
 				result.add(list.get(i));
@@ -59,8 +59,8 @@ public class Model {
 		return result;
 	}
 
-	static ArrayList<Label> getMiddleLabel(ArrayList<Label> list, Circle leftCircle, Circle rightCircle) {
-		ArrayList<Label> result = new ArrayList<Label>();
+	static ArrayList<CustomLabel> getMiddleLabel(ArrayList<CustomLabel> list, Circle leftCircle, Circle rightCircle) {
+		ArrayList<CustomLabel> result = new ArrayList<CustomLabel>();
 		double rightMax = leftCircle.getCenterX() + leftCircle.getRadius();
 		double leftMax = rightCircle.getCenterX() - rightCircle.getRadius();
 		double topMax = 0;
@@ -73,8 +73,8 @@ public class Model {
 			bottomMax = rightCircle.getCenterY() - rightCircle.getRadius();
 		}
 		for (int i = 0; i < list.size(); i++) {
-			double width = list.get(i).getLayoutX() + (list.get(i).getWidth() / 2);
-			double height = list.get(i).getLayoutY() + (list.get(i).getHeight() / 2);
+			double width = list.get(i).getLABEL().getLayoutX() + (list.get(i).getLABEL().getWidth() / 2);
+			double height = list.get(i).getLABEL().getLayoutY() + (list.get(i).getLABEL().getHeight() / 2);
 
 			if (width > leftMax && width < rightMax && height < topMax && height > bottomMax) {
 				result.add(list.get(i));
