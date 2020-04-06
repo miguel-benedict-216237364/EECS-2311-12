@@ -18,6 +18,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,11 +29,13 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -44,12 +47,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Controller implements Initializable {
 	@FXML
@@ -87,7 +92,7 @@ public class Controller implements Initializable {
 	@FXML
 	private Tab Design;
 	@FXML
-	private Label lblConsole;
+	public Label lblConsole;
 	@FXML
 	private TextArea TA;
 	@FXML
@@ -99,7 +104,7 @@ public class Controller implements Initializable {
 	@FXML
 	private ColorPicker textColour;
 	@FXML
-	private TextArea textArea;
+	private TextField textField;
 	@FXML
 	private Button textDelete;
 	@FXML
@@ -118,6 +123,11 @@ public class Controller implements Initializable {
 	private CheckBox autoFocusText;
 	@FXML
 	private ChoiceBox<String> labelAlignment;
+	@FXML
+	private TextArea additionalText;
+
+	
+	
 
 	static double[] defaultCircleLeftAlignment = { 220, 680, 540 }; // X values for left alignment ( Left, Right, Middle
 																	// )
@@ -131,7 +141,6 @@ public class Controller implements Initializable {
 
 	static double defaultYAlignment = 250;
 
-	static boolean isShift = false;
 
 	static double initX;
 
@@ -139,40 +148,43 @@ public class Controller implements Initializable {
 
 	private int counter = 1;
 
-	private Label lblTmp = new Label("");
-
-	static Font defaultTextFont = new Font("Times New Roman", 12);
-
-	static Font selectedTextFont = defaultTextFont;
-
-	static FontPosture defaultTextPosture = FontPosture.REGULAR;
-
-	static FontPosture selectedTextPosture = defaultTextPosture;
-
-	static FontWeight defaultTextWeight = FontWeight.NORMAL;
-
-	static FontWeight selectedTextWeight = defaultTextWeight;
-
+	static String defaultTextFont = "Times New Roman";
+	
 	static Double defaultTextSize = (double) 12;
-
-	static double selectedTextSize = defaultTextSize;
-
+	
 	static Color defaultTextColour = Color.BLACK;
 
-	static Color selectedTextColour = defaultTextColour;
+	static String selectedTextFont = defaultTextFont;
 
+	static double selectedTextSize  = defaultTextSize;
+
+	static Color selectedTextColour = defaultTextColour;
+	
+	static boolean isItalicBoolean = false;
+	
+	static boolean isBoldBoolean = false;
+	
 	static Color defaultColour = Color.LIGHTGRAY; // This is for the circle
 
 	static double defaultOpaq = 0.5;
 
-	static ArrayList<Label> focusList = new ArrayList<Label>();
+	public static ArrayList<CustomLabel> focusList = new ArrayList<CustomLabel>();
 
-	static ArrayList<Label> labelList = new ArrayList<Label>();
-
-
+	public static ArrayList<CustomLabel> customLabelList = new ArrayList<CustomLabel>(); // List of Labels
+	
+	static Tooltip labelTooltip = new Tooltip();
+	
 	static ArrayList<ControllerCopy> undoStack = new ArrayList<ControllerCopy>();
   
 	static ArrayList<TextField> textFieldFocus = new ArrayList<TextField>();
+	
+	static CustomLabel customLabel;
+	
+	static String mainTitleText = "Insert Title";
+	
+	static String leftTitleText= "Insert Title";
+	
+	static String rightTitleText= "Insert Title";
 
 	static ObservableList<TextField> textFieldTitle = FXCollections.observableArrayList(tf -> new Observable[] { tf.textProperty() });
 	int undoPointer = 0;
@@ -199,7 +211,7 @@ public class Controller implements Initializable {
 //		});
 		// END
 
-//		lblConsole.setVisible(false);
+//		lblConsole.setVisible(false);		
 
 		mainTitle.setPrefWidth(250); // For some reason on launch, without this code the prefWidth is 0
 		leftTitle.setPrefWidth(200);
@@ -223,7 +235,7 @@ public class Controller implements Initializable {
 		leftTitle.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
+				leftTitleText   = newValue;
 				leftTitle.setOpacity(1.0);
 
 			}
@@ -244,7 +256,7 @@ public class Controller implements Initializable {
 		rightTitle.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
+				rightTitleText   = newValue;		
 				rightTitle.setOpacity(1.0);
 
 			}
@@ -267,7 +279,7 @@ public class Controller implements Initializable {
 			
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
+				mainTitleText = newValue;
 				mainTitle.setOpacity(1.0);
 
 			}
@@ -281,176 +293,176 @@ public class Controller implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (designTabComboBox.getValue().equals("Left Circle")) { // left Circle is selected
-					ArrayList<Label> tmp = Model.getLeftLabel(labelList, leftCircle, rightCircle);
+					ArrayList<CustomLabel> tmp = Model.getLeftLabel(customLabelList, leftCircle, rightCircle);
 					double height = defaultYAlignment;
 
 					if (labelAlignment.getValue().equals("Left Justified")) { // Left Justified
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleLeftAlignment[0]);
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleLeftAlignment[0]);
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.LEFT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.LEFT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					} else if (labelAlignment.getValue().equals("Right Justified")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleRightAlignment[0] - tmp.get(i).getWidth());
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleRightAlignment[0] - tmp.get(i).getLABEL().getWidth());
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.RIGHT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.RIGHT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 
 					} else if (labelAlignment.getValue().equals("Centred")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleMiddleAlignment[0] - (tmp.get(i).getWidth() / 2));
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleMiddleAlignment[0] - (tmp.get(i).getLABEL().getWidth() / 2));
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.CENTER);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.CENTER);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					}
 				} else if (designTabComboBox.getValue().equals("Right Circle")) { // Right Circle is selected
-					ArrayList<Label> tmp = Model.getRightLabel(labelList, leftCircle, rightCircle);
+					ArrayList<CustomLabel> tmp = Model.getRightLabel(customLabelList, leftCircle, rightCircle);
 					double height = defaultYAlignment;
 
 					if (labelAlignment.getValue().equals("Left Justified")) { // Left Justified
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleLeftAlignment[1]);
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleLeftAlignment[1]);
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.LEFT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.LEFT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					} else if (labelAlignment.getValue().equals("Right Justified")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleRightAlignment[1] - tmp.get(i).getWidth());
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleRightAlignment[1] - tmp.get(i).getLABEL().getWidth());
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.RIGHT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.RIGHT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 
 					} else if (labelAlignment.getValue().equals("Centred")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleMiddleAlignment[1] - (tmp.get(i).getWidth() / 2));
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleMiddleAlignment[1] - (tmp.get(i).getLABEL().getWidth() / 2));
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.CENTER);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.CENTER);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					}
 
 				} else if (designTabComboBox.getValue().equals("Select All")) { // Centre Justified
 
-					ArrayList<Label> tmp = Model.getLeftLabel(labelList, leftCircle, rightCircle);
+					ArrayList<CustomLabel> tmp = Model.getLeftLabel(customLabelList, leftCircle, rightCircle);
 					double height = defaultYAlignment;
 
 					if (labelAlignment.getValue().equals("Left Justified")) { // Left Justified
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleLeftAlignment[0]);
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleLeftAlignment[0]);
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.LEFT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.LEFT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					} else if (labelAlignment.getValue().equals("Right Justified")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleRightAlignment[0] - tmp.get(i).getWidth());
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleRightAlignment[0] - tmp.get(i).getLABEL().getWidth());
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.RIGHT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.RIGHT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 
 					} else if (labelAlignment.getValue().equals("Centred")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleMiddleAlignment[0] - (tmp.get(i).getWidth() / 2));
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleMiddleAlignment[0] - (tmp.get(i).getLABEL().getWidth() / 2));
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.CENTER);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.CENTER);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					}
 
 					// Right Circle
-					tmp = Model.getRightLabel(labelList, leftCircle, rightCircle);
+					tmp = Model.getRightLabel(customLabelList, leftCircle, rightCircle);
 
 					if (labelAlignment.getValue().equals("Left Justified")) { // Left Justified
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleLeftAlignment[1]);
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleLeftAlignment[1]);
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.LEFT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.LEFT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					} else if (labelAlignment.getValue().equals("Right Justified")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleRightAlignment[1] - tmp.get(i).getWidth());
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleRightAlignment[1] - tmp.get(i).getLABEL().getWidth());
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.RIGHT);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.RIGHT);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 
 					} else if (labelAlignment.getValue().equals("Centred")) {
 						for (int i = 0; i < tmp.size(); i++) {
-							tmp.get(i).setLayoutX(defaultCircleMiddleAlignment[1] - (tmp.get(i).getWidth() / 2));
+							tmp.get(i).getLABEL().setLayoutX(defaultCircleMiddleAlignment[1] - (tmp.get(i).getLABEL().getWidth() / 2));
 							if (i > 0) {
-								height = height + tmp.get(i - 1).getHeight() + 10;
+								height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 							} else {
 								height = defaultYAlignment;
 							}
-							tmp.get(i).setTextAlignment(TextAlignment.CENTER);
-							tmp.get(i).setLayoutY(height);
+							tmp.get(i).getLABEL().setTextAlignment(TextAlignment.CENTER);
+							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					}
 
 				}
-				ArrayList<Label> tmp = Model.getMiddleLabel(labelList, leftCircle, rightCircle);
+				ArrayList<CustomLabel> tmp = Model.getMiddleLabel(customLabelList, leftCircle, rightCircle);
 				double height = defaultYAlignment;
 				for (int i = 0; i < tmp.size(); i++) {
-					tmp.get(i).setLayoutX(defaultCircleLeftAlignment[2] - (tmp.get(i).getWidth()) / 2);
+					tmp.get(i).getLABEL().setLayoutX(defaultCircleLeftAlignment[2] - (tmp.get(i).getLABEL().getWidth()) / 2);
 					if (i > 0) {
-						height = height + tmp.get(i - 1).getHeight() + 10;
+						height = height + tmp.get(i - 1).getLABEL().getHeight() + 10;
 					} else {
 						height = defaultYAlignment;
 					}
-					tmp.get(i).setTextAlignment(TextAlignment.CENTER);
-					tmp.get(i).setLayoutY(height);
+					tmp.get(i).getLABEL().setTextAlignment(TextAlignment.CENTER);
+					tmp.get(i).getLABEL().setLayoutY(height);
 				}
 			}
 
@@ -466,10 +478,9 @@ public class Controller implements Initializable {
 		textSize.valueProperty().addListener(new ChangeListener<Double>() {
 			@Override
 			public void changed(ObservableValue<? extends Double> arg0, Double oldV, Double newV) {
-
 				selectedTextSize = newV;
 				for (int i = 0; i < focusList.size(); i++) {
-					focusList.get(i).setFont(Font.font(selectedTextFont.getFamily(), selectedTextSize));
+					focusList.get(i).getLABEL().setFont(getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean));
 				}
 				removeFocus();
 			}
@@ -488,21 +499,21 @@ public class Controller implements Initializable {
 		textFont.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String oldV, String newV) {
-				selectedTextFont = Font.font(newV, selectedTextSize);
+				selectedTextFont = newV;
 				if (mainTitle.isFocused()) {
-					Font tmp = Font.font(newV, mainTitle.getFont().getSize());
+					Font tmp =getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean);
 					mainTitle.setFont(tmp);
 				}
 				if (leftTitle.isFocused()) {
-					Font tmp = Font.font(newV, leftTitle.getFont().getSize());
+					Font tmp = getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean);
 					leftTitle.setFont(tmp);
 				}
 				if (rightTitle.isFocused()) {
-					Font tmp = Font.font(newV, rightTitle.getFont().getSize());
+					Font tmp = getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean);
 					rightTitle.setFont(tmp);
 				}
 				for (int i = 0; i < focusList.size(); i++) {
-					focusList.get(i).setFont(Font.font(newV, selectedTextSize));
+					focusList.get(i).getLABEL().setFont(getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean));
 				}
 				removeFocus();
 			}
@@ -514,9 +525,31 @@ public class Controller implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
 				selectedTextColour = newValue;
-
 				for (int i = 0; i < focusList.size(); i++) {
-					focusList.get(i).setTextFill(selectedTextColour);
+					focusList.get(i).getLABEL().setTextFill(selectedTextColour);
+				}
+				removeFocus();
+			}
+		});
+		
+		isBold.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				isBoldBoolean = isBold.isSelected();
+				for (int i = 0; i < focusList.size(); i++) {
+					focusList.get(i).getLABEL().setFont(getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean));
+				}
+				removeFocus();
+			}
+
+		});
+
+		isItalic.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				isItalicBoolean = isItalic.isSelected();
+				for (int i = 0; i < focusList.size(); i++) {
+					focusList.get(i).getLABEL().setFont(getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean));
 				}
 				removeFocus();
 			}
@@ -584,23 +617,7 @@ public class Controller implements Initializable {
 						leftCircle.setCenterX(-rightCircle.getRadius() + rightCircle.getCenterX());
 					}
 				}
-				double leftX = leftCircle.getCenterX()-leftCircle.getRadius();
-				double rightX= rightCircle.getCenterX() + rightCircle.getRadius();
-				if (leftX<0) {
-					lblConsole.setText(Double.toString(leftX));
-					double distance = Math.abs(leftX);
-					leftCircle.setCenterX(leftCircle.getCenterX()+distance);
-					rightCircle.setCenterX(rightCircle.getCenterX()+distance);
-					moveTitles();
-				}else if (rightX>centrePane.getWidth()) {
-					lblConsole.setText(Double.toString(rightX));
-					double distance = Math.abs(centrePane.getWidth()-rightX);
-					leftCircle.setCenterX(leftCircle.getCenterX()-distance);
-					rightCircle.setCenterX(rightCircle.getCenterX()-distance);
-					moveTitles();
-				}
-
-				moveTitles();
+			
 
 			}
 
@@ -625,120 +642,143 @@ public class Controller implements Initializable {
 		centrePane.onKeyPressedProperty().set(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyPressed) {
-				if (keyPressed.getCode() == KeyCode.DELETE || keyPressed.getCode() == KeyCode.BACK_SPACE) {
 
-					while (focusList.size() != 0) {
-						centrePane.getChildren().remove(focusList.get(0));
-
-						for (int i = 0; i < labelList.size(); i++) {
-							if (focusList.size() > 0 && labelList.get(i) == focusList.get(0)) {
-								labelList.remove(i);
-								counter--;
+				if (keyPressed.getCode() == KeyCode.A && keyPressed.isControlDown()) {
+					removeFocusToList();
+					for (int i = 0; i < customLabelList.size(); i++) {
+						focusList.add(customLabelList.get(i));
+					}
+					lblConsole.setText(Integer.toString(customLabelList.size()));
+					addFocusToList();
+				}else if (keyPressed.getCode() == KeyCode.DELETE) {		
+					CustomLabel tmp = null;					
+				
+					while (focusList.size()!=0) {
+						tmp = focusList.get(focusList.size()-1);
+						for (int i=0;i<customLabelList.size();i++) {
+							if (tmp.equals(customLabelList.get(i))) {
+								centrePane.getChildren().remove(tmp.getLABEL());
+								focusList.remove(focusList.size()-1);
+								customLabelList.remove(tmp);
+								CustomLabel.counter--;
+								
 							}
 						}
-						focusList.remove(0);
 					}
-
-					focusList.clear();
-					// counter--;
-
-					textArea.setText("");
-					removeFocusToList();
 				}
-
-				if (keyPressed.getCode() == KeyCode.SHIFT) {
-					removeFocus();
-					isShift = true;
-				}
-				if (keyPressed.getCode() == KeyCode.ESCAPE) {
-					removeFocus();
-					removeFocusToList();
-				}
-
+			
+				
 			}
 		});
 
-		centrePane.onKeyReleasedProperty().set(new EventHandler<KeyEvent>() {
+		centrePane.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
 			@Override
-			public void handle(KeyEvent keyPressed) {
-				if (keyPressed.getCode() == KeyCode.SHIFT && !leftTitle.isFocused()) {
-					isShift = false;
-				}
-				if (keyPressed.getCode() == KeyCode.A && keyPressed.isControlDown()) {
-					removeFocusToList();
-					for (int i = 0; i < labelList.size(); i++) {
-						focusList.add(labelList.get(i));
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (newValue) {
+					CustomLabel tmp=null;
+					for (int i =0;i<customLabelList.size();i++) {
+						if (customLabelList.get(i).getLabelText().trim().length()<=0) {
+							tmp = customLabelList.get(i);
+							centrePane.getChildren().remove(tmp.getLABEL());
+							customLabelList.remove(tmp);
+							CustomLabel.counter--;
+						
+						}
 					}
-					lblConsole.setText(Integer.toString(labelList.size()));
-					addFocusToList();
 				}
+				
 			}
+			
 		});
 
 		centrePane.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
-			
+
 			@Override
 			public void handle(MouseEvent event) {
+
 				if (event.getButton().equals(MouseButton.PRIMARY)) {
 					Point2D pointTmp = new Point2D(event.getX(), event.getY());
-					lblConsole.setText(pointTmp.toString());
-//				lblConsole.setText(pointTmp.toString());
-//				if ((leftCircle.contains(pointTmp) || rightCircle.contains(pointTmp))) { // Check if the mouse clicked inside the circle
-					double x = event.getX();
-					double y = event.getY();
-					boolean isOnTop = true;
-					for (int i = 0; i < labelList.size(); i++) { // Checks if the mouse is on top of another label
-						if (((x > (labelList.get(i).getLayoutX() - labelList.get(i).getWidth() / 2)
-								&& x < (labelList.get(i).getLayoutX() + labelList.get(i).getWidth()))
-								&& y > (labelList.get(i).getLayoutY() - 10)
-								&& y < (labelList.get(i).getLayoutY() + labelList.get(i).getHeight()))) {
-							isOnTop = false;
-							break;
+					if ((leftCircle.contains(pointTmp) || rightCircle.contains(pointTmp))) {
+						double x = event.getX();
+						double y = event.getY();
+						boolean isNotOnTop = true;
+						for (int i = 0; i < customLabelList.size(); i++) { // Checks if the mouse is on top of another label
+							if (((x > (customLabelList.get(i).getLABEL().getLayoutX() - customLabelList.get(i).getLABEL().getWidth() / 2)
+									&& x < (customLabelList.get(i).getLABEL().getLayoutX() + customLabelList.get(i).getLABEL().getWidth()))
+									&& y > (customLabelList.get(i).getLABEL().getLayoutY() - 10)
+									&& y < (customLabelList.get(i).getLABEL().getLayoutY() + customLabelList.get(i).getLABEL().getHeight()))) {
+								isNotOnTop = false;
+								break;
+							}
+						}
+						if (isNotOnTop && isAddLabel.isSelected() && event.isStillSincePress()
+								&& (leftCircle.contains(pointTmp) || rightCircle.contains(pointTmp))) {
+							removeFocusToList();
+							customLabel = new CustomLabel(textField.getText(),additionalText.getText());
+							customLabel.getLABEL().setLayoutX(event.getX());
+							customLabel.getLABEL().setLayoutY(event.getY());
+							centrePane.getChildren().add(customLabel.getLABEL());
+							lblConsole.setText(customLabel.getLABEL().getText());
+
+							if (event.isShiftDown()) {
+								focusList.add(customLabel);
+							}else {
+								focusList.clear();
+								focusList.add(customLabel);
+							}
+							addFocusToList();
+						
+							if (autoFocusText.isSelected()) {
+								Platform.runLater(() -> textField.requestFocus());
+							}
+							
 						}
 					}
-					if (isOnTop && isAddLabel.isSelected() && event.isStillSincePress()) {
-						addLabel(event);
-						
-						
-					}
-				} else {
+				}else {
 					removeFocusToList();
 				}
-			}
-		});
-		isBold.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				for (int i = 0; i < focusList.size(); i++) {
-					focusList.get(i).setFont(getFont(isBold, isItalic));
+				if (focusList.size()>1) {
+					textField.setText(focusList.get(focusList.size()-1).getLabelText());
+				}else if (focusList.size()==1){
+					textField.setText(focusList.get(0).getLabelText());
+					additionalText.setText(focusList.get(0).getToolTip().getText());
+					Platform.runLater(() -> textField.requestFocus());
 				}
-				removeFocus();
 			}
 
 		});
-
-		isItalic.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				for (int i = 0; i < focusList.size(); i++) {
-					focusList.get(i).setFont(getFont(isBold, isItalic));
-				}
-				removeFocus();
-			}
-		});
-
-		textArea.textProperty().addListener(new ChangeListener<String>() {
+		
+		textField.textProperty().addListener(new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (textArea.isFocused()) {
-					for (int i = 0; i < focusList.size(); i++) {
-						focusList.get(i).setText(newValue);
+				if (textField.isFocused()) {
+					for (int i=0;i<focusList.size();i++) {
+						focusList.get(i).setLabelText(newValue);				
 					}
 				}
+				
 			}
+		
 		});
 
+	
+
+		additionalText.textProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				for (int i=0;i<focusList.size();i++) {
+					focusList.get(i).getToolTip().setText(newValue);
+					
+				}
+				
+			}
+			
+		});
+
+		
 		centrePane.heightProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
@@ -749,6 +789,8 @@ public class Controller implements Initializable {
 				isAddLabel.setLayoutY(isDraggable.getLayoutY()-20);
 				autoFocusText.setLayoutY(isAddLabel.getLayoutY()-20);
 				lblConsole.setText(Double.toString(isDraggable.getLayoutY()));
+				moveTitles();
+				CustomLabel.setMaxHeight((Double)newValue);
 			}
 
 		});
@@ -775,39 +817,46 @@ public class Controller implements Initializable {
 				leftCircle.setCenterX(leftCircle.getCenterX() + offSetX);
 				rightCircle.setCenterX(rightCircle.getCenterX() + offSetX);
 
-				for (int i = 0; i < labelList.size(); i++) {
-					labelList.get(i).setLayoutX(labelList.get(i).getLayoutX() + offSetX);
+				for (int i = 0; i < customLabelList.size(); i++) {
+					customLabelList.get(i).getLABEL().setLayoutX(customLabelList.get(i).getLABEL().getLayoutX() + offSetX);
 				}
 
 				leftTitle.setLayoutX(leftTitle.getLayoutX() + offSetX);
 				rightTitle.setLayoutX(rightTitle.getLayoutX() + offSetX);
-				// moveTitles();
+				moveTitles();
+				CustomLabel.setMaxWidth((Double)newValue);
+				lblConsole.setText(Double.toString(CustomLabel.maxWidth));
 			}
 
 		});
 		
-		isAddLabel.selectedProperty().addListener(new ChangeListener<Boolean>() {
-		    @Override
-		    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-		    	
-		    
-		    	undoPointer ++;
-		    	System.out.println("UndoPointer is at: " + undoPointer);
-		    	undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-		    	undoStack.get(undoPointer).setAddLabelBox(newValue);
-		    	
-		    }
-		});
-		System.out.println("UndoPointer is at: " + undoPointer);
-		undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-		
 	}
+	
+	//---------------------END OF INITIALIZE-------------------------------
+		
+//		isAddLabel.selectedProperty().addListener(new ChangeListener<Boolean>() {
+//		    @Override
+//		    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//		    	
+//		    
+//		    	undoPointer ++;
+//		    	System.out.println("UndoPointer is at: " + undoPointer);
+//		    	undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+//		    	undoStack.get(undoPointer).setAddLabelBox(newValue);
+//		    	
+//		    }
+//		});
+//		System.out.println("UndoPointer is at: " + undoPointer);
+//		undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+//	
+//	}
+		
 //---------------------END OF INITIALIZE-------------------------------
 	
 
 	public void removeFocus() {
 		centrePane.requestFocus();
-		textArea.textProperty().unbind();
+		
 		// testLabel.setText("No Focus");
 	}
 
@@ -819,201 +868,74 @@ public class Controller implements Initializable {
 		}
 	}
 
-	public void addLabel(MouseEvent initEvent) {
-		if (centrePane.isFocused()) { // sees of the click happened in the proper pane, which is the centrePane
-			lblTmp = new Label("Insert Text " + counter);
-			addLabelHelper(lblTmp, initEvent.getX(), initEvent.getY());
-			undoPointer ++;
-			System.out.println("UndoPointer is at: " + undoPointer);
-			undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-			
-		}
-	}
+//	public void addLabel(MouseEvent initEvent) {
+//		if (centrePane.isFocused()) { // sees of the click happened in the proper pane, which is the centrePane
+//			lblTmp = new Label("Insert Text " + counter);
+//			addLabelHelper(lblTmp, initEvent.getX(), initEvent.getY());
+//			undoPointer ++;
+//			System.out.println("UndoPointer is at: " + undoPointer);
+//			undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+//			
+//		}
+//	}
 
-	public void addLabelHelper(Label lblTmp, Double x, Double y) {
-
-		removeBindToList();
-		lblTmp.textProperty().unbind();
-		// Sets the text of the label created, counter counts how may
-		// labels have been created
-		lblTmp.setMaxWidth(150); // Sets the maximum width of the label, which works with the wrapping of the
-									// label.
-		textArea.setMaxWidth(lblTmp.getMaxWidth()); // Sets the text area maximum width to reflect how the text
-													// looks like in the label
-		lblTmp.setFont(getFont(isBold, isItalic)); // Sets to the font and size to the current font and size
-													// selected
-		lblTmp.setTextFill(selectedTextColour); // Sets the colour with the colour selected
-		lblTmp.setLayoutX(x); // Position the x direction of the label to be on the x position of the
-								// mouse
-		lblTmp.setLayoutY(y); // Position the y direction of the label to be on the y position of the
-								// mouse
-		centrePane.getChildren().add(lblTmp); // Adds the label create to the centrePane
-		Menu.getSelectionModel().select(Home); // Sets the tab to the Home tab
-		lblTmp.setWrapText(true); // Allow label to wrap text
-		// removeFocus(); // Remove the focus
-		counter++; // Adds to the current number of labels
-		labelList.add(lblTmp); // adds to the list of all the labels
-		textArea.setText(lblTmp.getText()); // Set the text area to display the label's text;
-
-		labelAlignment.setValue("Custom");
-
-		if (isShift) { // if shift is enabled, add the label to the focus list
-			focusList.add(lblTmp);
-		} else { // if shit is disabled, remove the focus list and add the label created.
-			removeFocusToList();
-			focusList.add(lblTmp);
-			if (autoFocusText.isSelected()) {
-				Platform.runLater(() -> textArea.requestFocus());
-				textArea.end();
-			}
-		}
-		addFocusToList(); // display what is currently selected
-		lblTmp.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() { // Release of the mouse selects the
-																				// label
-			@Override
-			public void handle(MouseEvent event) {
-				final Label lblTmp = (Label) event.getSource(); // Select the Label
-				Menu.getSelectionModel().select(Home); // Set the tab to Home
-				textArea.setText(lblTmp.getText()); // Set the text area to the selected Label
-				if (isShift) { // If shift is selected, then add the label pressed to the focus List
-					focusList.add(lblTmp);
-				} else { // If shit is not selected, then reset the focus List, and add the label pressed
-							// to the focus List
-					if (!(focusList.size() > 1)) {
-						removeFocusToList();
-						focusList.add(lblTmp);
-					}
-				}
-				addFocusToList(); // Show that the clicked label is selected
-			}
-		});
-
-		lblTmp.onMousePressedProperty().set(new EventHandler<MouseEvent>() { // This sets the initial position the
-																				// mouse was set in, allows for
-																				// smooth dragging to occur
-			@Override
-			public void handle(MouseEvent arg0) {
-				initX = arg0.getX(); // Initial position of the mouse (x)
-				initY = arg0.getY(); // Initial position of the mouse (y)
-
-			}
-		});
-
-		lblTmp.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() { // Moves the Labels on the focus list,
-																				// within the boundaries of x ( 0 <
-																				// x < 1080 ) and y ( 0 < y < 720 ).
-			@Override
-			public void handle(MouseEvent mouseDragged) {
-				if (focusList.contains(mouseDragged.getSource())) {
-					if (isDraggable.isSelected()) {
-						for (int i = 0; i < focusList.size(); i++) {
-							if ((focusList.get(i).getLayoutX() + (mouseDragged.getX() - initX) >= 0)
-									&& (focusList.get(i).getLayoutX() + (mouseDragged.getX() - initX) <= 1080
-											- focusList.get(i).getWidth())) { // Check that it is within the x
-																				// boundaries
-								focusList.get(i)
-										.setLayoutX(focusList.get(i).getLayoutX() + (mouseDragged.getX() - initX));
-							}
-							if ((focusList.get(i).getLayoutY() + (mouseDragged.getY() - initY) >= 0)
-									&& (focusList.get(i).getLayoutY() + (mouseDragged.getY() - initY) <= 720
-											- focusList.get(i).getHeight())) { // Check that it is within the y
-																				// boundaries
-								focusList.get(i)
-										.setLayoutY(focusList.get(i).getLayoutY() + (mouseDragged.getY() - initY));
-							}
-						}
-					}
-				}
-				labelAlignment.setValue("Custom");
-			}
-		});
-
-		lblTmp.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-				System.out.println("Label Text Changed");
-			}
-		});
-
-	}
-	
-	
-
-	public void textDelete() {
-		counter = counter - focusList.size();
-		for (int i = 0; i < focusList.size(); i++) {
-			centrePane.getChildren().remove(focusList.get(i));
-		}
-		removeFocus();
-
-	}
 
 	static void addFocusToList() {
 		
 		for (int i = 0; i < focusList.size(); i++) {
-			focusList.get(i).setStyle("-fx-border-style: dashed;");
+			focusList.get(i).getLABEL().setStyle("-fx-border-style: dashed;");
 		}
 	}
 
 	static void removeFocusToList() {
 		for (int i = 0; i < focusList.size(); i++) {
-			focusList.get(i).setStyle(null);
+			focusList.get(i).getLABEL().setStyle(null);
 		}
 		focusList.clear();
 
 	}
 
-	static void removeBindToList() {
-		for (int i = 0; i < focusList.size(); i++) {
-
-			focusList.get(i).textProperty().unbind();
-		}
-
-	}
-
-	static Font getFont(CheckBox Bold, CheckBox italic) {
-		if (Bold.isSelected()) {
-			selectedTextWeight = FontWeight.BOLD;
-		} else {
-			selectedTextWeight = FontWeight.NORMAL;
-		}
-		if (italic.isSelected()) {
-			selectedTextPosture = FontPosture.ITALIC;
-		} else {
-			selectedTextPosture = FontPosture.REGULAR;
-		}
-		Font result = Font.font(selectedTextFont.getName(), selectedTextWeight, selectedTextPosture, selectedTextSize);
-		return result;
-	}
-
-	public void undo() {
-		if(undoPointer - 1 >= 0) {
-			undoWasClicked = true;
-			undoPointer --;
-			
-			ControllerCopy copy = undoStack.get(undoPointer);
-			this.reinitialize();
-			this.leftCircle.setRadius(copy.leftCircle.getRadius());
-			this.rightCircle.setRadius(copy.rightCircle.getRadius());
-			this.leftTitle.setText(copy.leftTitle.getText());
-			this.rightTitle.setText(copy.rightTitle.getText());
-			this.setCenterTitle(copy.centerTitle.getText());
-			if(this.isAddLabel.isSelected() != copy.addLabelBox) {
-			this.isAddLabel.setSelected(copy.addLabelBox);
-			undoPointer --;
-			}
-			System.out.println("UndoPointer is at: " + undoPointer);
-			
-			for(int i = 0; i< copy.labels.size(); i++) {
-				Label l = copy.labels.get(i);
-				this.addLabelHelper(l, l.getLayoutX(), l.getLayoutY());
+	static void removeCustomLabel() { // this method removes the custom labels from customLabelList based on the custom labels on the focusList
+		for (int i=0;i<focusList.size();i++) {
+			for (int j =0;j<customLabelList.size();j++) {
+				if (focusList.get(i).equals(customLabelList.get(j))) {
+					customLabelList.remove(customLabelList.get(j));
+					
+				}
 			}
 		}
 	}
-	
+
+
+
+//	public void undo() {
+//		if(undoPointer - 1 >= 0) {
+//			undoWasClicked = true;
+//			undoPointer --;
+//			
+//			ControllerCopy copy = undoStack.get(undoPointer);
+//			this.reinitialize();
+//			this.leftCircle.setRadius(copy.leftCircle.getRadius());
+//			this.rightCircle.setRadius(copy.rightCircle.getRadius());
+//			this.leftTitle.setText(copy.leftTitle.getText());
+//			this.rightTitle.setText(copy.rightTitle.getText());
+//			this.setCenterTitle(copy.centerTitle.getText());
+//			if(this.isAddLabel.isSelected() != copy.addLabelBox) {
+//			this.isAddLabel.setSelected(copy.addLabelBox);
+//			undoPointer --;
+//			}
+//			System.out.println("UndoPointer is at: " + undoPointer);
+//			
+//			for(int i = 0; i< copy.labels.size(); i++) {
+//				Label l = copy.labels.get(i);
+//				this.addLabelHelper(l, l.getLayoutX(), l.getLayoutY());
+//			}
+//		}
+//	}
+//	
 	public void reinitialize() {
 	this.centrePane.getChildren().clear();
-	this.labelList.clear();
+	Controller.customLabelList.clear();
 	this.centrePane.getChildren().add(this.leftCircle);
 	this.centrePane.getChildren().add(rightCircle);
 	this.centrePane.getChildren().add(isDraggable);
@@ -1024,6 +946,7 @@ public class Controller implements Initializable {
 	this.centrePane.getChildren().add(this.mainTitle);
 	
 	}
+//
 	public void load() {
 		String path = "";
 		path = this.loader();
@@ -1038,53 +961,66 @@ public class Controller implements Initializable {
 		// clears the centrePane and then reinitalizes it
 		String line = "";// used to copy text from the file
 		LineNumberReader lineReader = new LineNumberReader(new FileReader(path));
+		
 		line = lineReader.readLine();
 		this.reinitialize();
-
+		line = lineReader.readLine();
+		this.mainTitle.setText(line);
+		
+		line = lineReader.readLine();
+		line = lineReader.readLine();
 		this.leftTitle.setText(line);
 
 		line = lineReader.readLine();
-		this.mainTitle.setText(line);
-
 		line = lineReader.readLine();
 		this.rightTitle.setText(line);
-
-		this.leftCircle.setRadius(Double.parseDouble(lineReader.readLine()));
-		this.rightCircle.setRadius(Double.parseDouble(lineReader.readLine()));
+		
+		line = lineReader.readLine();
+		line = lineReader.readLine();
+		this.leftCircle.setRadius(Double.parseDouble(line));
+		
+		line = lineReader.readLine();
+		line = lineReader.readLine();
+		this.rightCircle.setRadius(Double.parseDouble(line));
 
 		line = lineReader.readLine();
 
-		while (!line.contentEquals("----------------LabelEnd-------------------")) {
-			Label tempL = new Label();
-			int lineCount = 0;
-			String tempString = "";
-			while (!line.contentEquals("----------------text----------------")) {
-				if (lineCount == 0) {
-					tempString = tempString + line;
-				} else {
-					tempString = tempString + line + "\n";
-				}
-				line = lineReader.readLine();
-				System.out.println(line + " 6");
+		while (!line.contentEquals("---------- End of Labels ----------")) {
+			//double x = (Double.parseDouble(line));
+			String labelText = "";	
+			double x;
+			double y;
+			double sequence;
+			String toolTipText;
+				if (line.contains("Start of Label")) {
+					line = lineReader.readLine();
+					line = lineReader.readLine();
+					labelText = line;
+					
+					line = lineReader.readLine();
+					line = lineReader.readLine();
+					sequence = (Double.parseDouble(line));
+					
+					line = lineReader.readLine();
+					line = lineReader.readLine();
+					x = (Double.parseDouble(line));
+					
+					line = lineReader.readLine();
+					line = lineReader.readLine();
+					y = (Double.parseDouble(line));
+					
+					line = lineReader.readLine();
+					line = lineReader.readLine();
+					toolTipText = line;
+					
+					CustomLabel tmp = new CustomLabel(labelText,toolTipText);
+					tmp.setLayoutXY(x, y);
+					tmp.setSequence((int) sequence);
+					centrePane.getChildren().add(tmp.getLABEL());
 			}
-
-			if (line != null) {
-				tempL.setText(tempString);
-
 				line = lineReader.readLine();
-				tempL.setLayoutX(Double.parseDouble(line));
-
-				line = lineReader.readLine();
-				tempL.setLayoutY(Double.parseDouble(line));
-				/*
-				 * line= lineReader.readLine(); System.out.println(line + "  9");
-				 * tempL.setTextFill(Paint.valueOf(line));
-				 */
-				this.lblTmp = tempL;
-				this.addLabelHelper(this.lblTmp, tempL.getLayoutX(), tempL.getLayoutY());
-				line = lineReader.readLine();
-
-			}
+		
+			
 
 		}
 
@@ -1152,60 +1088,30 @@ public class Controller implements Initializable {
 
 	public void moveTitles() {
 
-		leftTitle.setLayoutY(leftCircle.getCenterY() - leftCircle.getRadius() + 40);
-		rightTitle.setLayoutY(rightCircle.getCenterY() - rightCircle.getRadius() + 40);
-		leftTitle.setLayoutX(leftCircle.getCenterX() - (leftTitle.getPrefWidth() / 1.5));
-		rightTitle.setLayoutX(rightCircle.getCenterX() - (rightTitle.getPrefWidth() / 3.1));
-
-		if (leftCircle.getCenterY() - leftCircle.getRadius() < rightCircle.getCenterY() - rightCircle.getRadius()) { // Left circle has a higher height
-																													
-					lblConsole.setText("Left is Bigger");	
-					
-					double height = leftCircle.getCenterY()-leftCircle.getRadius();
-					double maximum = mainTitle.getPrefHeight()+30;
-					if (height>maximum) { // Circle is below the threshold
-						mainTitle.setLayoutY(leftCircle.getCenterY()-leftCircle.getRadius()-mainTitle.getPrefHeight() - 15);
-					}else if (height<maximum) {
-			//			lblConsole.setText("Move Down");
-						leftCircle.setCenterY(leftCircle.getCenterY() + (maximum-height));
-					}
-																														
-			
-		} else if (leftCircle.getCenterY() - leftCircle.getRadius() > rightCircle.getCenterY() - rightCircle.getRadius()) { // Right circle has a higher height
-			lblConsole.setText("Right is Bigger");	
-			
-			
-			double height = rightCircle.getCenterY()-rightCircle.getRadius();
-			double maximum = mainTitle.getPrefHeight()+30;
-			if (height>maximum) { // Circle is below the threshold
-				mainTitle.setLayoutY(rightCircle.getCenterY()-rightCircle.getRadius()-mainTitle.getPrefHeight() - 15);
-			}else if (height<maximum) {
-			//	lblConsole.setText("Move Down");
-				rightCircle.setCenterY(rightCircle.getCenterY() + (maximum-height));
-			}
-			
-		}else  {
-			lblConsole.setText("Tie");
-			double height = rightCircle.getCenterY()-rightCircle.getRadius();
-			double maximum = mainTitle.getPrefHeight()+30;
-			if (height>maximum) { // Circle is below the threshold
-				mainTitle.setLayoutY(rightCircle.getCenterY()-rightCircle.getRadius()-mainTitle.getPrefHeight() - 15);
-			}else if (height<maximum) {
-			//	lblConsole.setText("Move Down");
-				rightCircle.setCenterY(rightCircle.getCenterY() + (maximum-height));
-			}
-		}
-
-		leftTitle.setFont(Font.font(leftTitle.getFont().getFamily(), 16 + ((leftCircle.getRadius() - 250) / 20)));
-		rightTitle.setFont(Font.font(rightTitle.getFont().getFamily(), 16 + ((rightCircle.getRadius() - 250) / 20)));
+	
 
 	}
 
 	public void moveLabels(Double offSetX) {
 
-		for (int i = 0; i < labelList.size(); i++) {
-			labelList.get(i).setLayoutX(labelList.get(i).getLayoutX() + offSetX);
+		for (int i = 0; i < customLabelList.size(); i++) {
+			customLabelList.get(i).getLABEL().setLayoutX(customLabelList.get(i).getLABEL().getLayoutX() + offSetX);
 		}
 	}
+	
+	public static Font getFont(String family, double size, boolean isBold, boolean isItalic) {
+		Font result;
+		if (isItalic && isBold) {
+			result  = (Font.font(family, FontWeight.BOLD, FontPosture.ITALIC, size));
+		} else if (isItalic && !isBold) {
+			result = (Font.font(family, FontWeight.NORMAL, FontPosture.ITALIC, size));
+		} else if (!isItalic && isBold) {
+			result  =(Font.font(family, FontWeight.BOLD, FontPosture.REGULAR, size));
+		} else {
+			result  =(Font.font(family, FontWeight.NORMAL, FontPosture.REGULAR, size));
+		}
+		return result;
+	}
 
+	
 }

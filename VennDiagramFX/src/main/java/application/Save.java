@@ -18,24 +18,33 @@ public class Save {
 	
 	public void save(Controller control, File file, double lRadius, double rRadius) throws FileNotFoundException {		
 		PrintWriter printWriter = new PrintWriter(file);
-		
-		printWriter.println(control.getLeftTitle());
-		printWriter.println(control.getMainTitle());
-		printWriter.println(control.getRightTitle());
+		printWriter.println("Main Title:");
+		printWriter.println(Controller.mainTitleText);
+		printWriter.println("Left Title:");
+		printWriter.println(Controller.leftTitleText);
+		printWriter.println("Right Title");
+		printWriter.println(Controller.rightTitleText);
+		printWriter.println("Left Radius");
 		printWriter.println(lRadius);
+		printWriter.println("Right radius");
 		printWriter.println(rRadius);
 		
 		//printWriter.println("------------------------TitlesEnd--------------------");
-		for(int i =0 ; i < control.labelList.size(); i++){
-				Label label = control.labelList.get(i);
-				printWriter.println(label.getText());
-				printWriter.println("----------------text----------------");
-				printWriter.println(label.getLayoutX()+"");
-				printWriter.println(label.getLayoutY()+"");
-				//printWriter.println(label.getFont().toString());
-				//printWriter.println(label.getTextFill().toString());
+		for(int i =0 ; i < Controller.customLabelList.size(); i++){
+				printWriter.println("----------Start of Label----------");
+				CustomLabel tmp = Controller.customLabelList.get(i);
+				printWriter.println("Label Text:");
+				printWriter.println(tmp.getLabelText());
+				printWriter.println("Label sequence:");
+				printWriter.println(tmp.getSequence());
+				printWriter.println("Layout X: ");
+				printWriter.println(tmp.getLABEL().getLayoutX());
+				printWriter.println("Layout Y: ");
+				printWriter.println(tmp.getLABEL().getLayoutY());
+				printWriter.println("Tooltip Text: ");
+				printWriter.println(tmp.getToolTip().getText());			
 			}
-		printWriter.println("----------------LabelEnd-------------------"); 
+		printWriter.println("---------- End of Labels ----------"); 
 		
 		
 		printWriter.close();
