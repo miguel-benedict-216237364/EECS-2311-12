@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 public class Save {
 	DataOutputStream dataOutStream;
@@ -42,7 +45,32 @@ public class Save {
 				printWriter.println("Layout Y: ");
 				printWriter.println(tmp.getLABEL().getLayoutY());
 				printWriter.println("Tooltip Text: ");
-				printWriter.println(tmp.getToolTip().getText());			
+				printWriter.println(tmp.getToolTip().getText());	
+				
+				printWriter.println("Font Name: ");
+				printWriter.println(tmp.getLABEL().getFont().getFamily());
+				printWriter.println("Size: ");
+				printWriter.println(tmp.getLABEL().getFont().getSize());
+				boolean isItalic = false;
+				boolean isBold = false;
+				
+				Font test = tmp.getLABEL().getFont();
+				if (tmp.getLABEL().getFont().getName().contains("Bold")) {
+					isBold = true;
+				}else{
+					isBold = false;
+				}
+				if (tmp.getLABEL().getFont().getName().contains("Italic")) {
+					isItalic=true;
+				}else{
+					isItalic = false;
+				}
+				printWriter.println("Bold: ");
+				printWriter.println(isBold);
+				printWriter.println("Italic: ");
+				printWriter.println(isItalic);
+				printWriter.println("Colour: ");
+				printWriter.println(tmp.getLABEL().getTextFill().toString());
 			}
 		printWriter.println("---------- End of Labels ----------"); 
 		
