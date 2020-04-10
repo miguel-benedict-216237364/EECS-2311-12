@@ -1174,7 +1174,7 @@ public class Controller implements Initializable {
 
 		lineReader.close();
 	}
-
+//
 	private String loader() {
 		final FileChooser filechooser = new FileChooser();
 		Stage stage = (Stage) Window.getScene().getWindow();
