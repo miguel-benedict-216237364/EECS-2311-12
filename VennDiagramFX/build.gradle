@@ -1,8 +1,9 @@
 plugins {
   id 'application'
   id 'org.openjfx.javafxplugin' version '0.0.8'
+  id 'java'
 }
-apply plugin: 'java'
+
 jar{
 	manifest{
 		attributes(
