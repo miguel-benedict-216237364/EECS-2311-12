@@ -7,7 +7,9 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = 'application.Main'
+application{
+	mainClassName = 'application.Main'
+}
 jar {
     manifest {
         attributes 'Main-Class': 'application.Main'
