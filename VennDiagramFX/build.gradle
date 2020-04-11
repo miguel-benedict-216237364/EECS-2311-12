@@ -9,7 +9,7 @@ repositories {
 jar{
 	manifest{
 		attributes(	
-     	 'Main-Class': 'application.Main'		
+     	 'Main-Class': '.VennDiagramFX.src.main.java.application.Main'		
      	 )
 	}
 }
