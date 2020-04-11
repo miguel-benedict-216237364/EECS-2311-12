@@ -33,5 +33,13 @@ run {
         systemProperty "java.library.path", "C:\tmp"
     }
 }
+sourceSets {
+  main {
+    resources {
+        srcDirs = ["src/main/java"]
+        includes = ["**/*.fxml"]
+    }
+  }
+}
 
-mainClassName = 'org.openjfx.MainApp'
+mainClassName = 'application.Main'
