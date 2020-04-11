@@ -8,9 +8,8 @@ repositories {
 }
 jar{
 	manifest{
-		attributes(
-		
-     	 'Main-Class': 'application.Main'		
+		attributes(	
+     	 'Main-Class': 'com.application.Main'		
      	 )
 	}
 }
