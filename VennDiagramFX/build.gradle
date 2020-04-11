@@ -1,3 +1,4 @@
+ mainClassName = 'application.Main'
  plugins {
   id 'application'
   id 'org.openjfx.javafxplugin' version '0.0.8'
@@ -10,7 +11,7 @@ repositories {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.application.Main.Class'
+        attributes 'Main-Class': 'application.Main'
     }
 }
 repositories {
@@ -44,4 +45,3 @@ sourceSets {
   }
 }
 
-mainClassName = 'application.Main'
