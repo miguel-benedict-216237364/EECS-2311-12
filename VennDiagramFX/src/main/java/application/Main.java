@@ -23,10 +23,7 @@ public class Main extends Application {
 			mainStage = primaryStage;
 			Parent mainRoot = FXMLLoader.load(getClass().getResource("/application/mainFXML.fxml"));
 			mainScene = new Scene(mainRoot, 1280, 720);	
-		
-			
-			
-			mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		//mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			mainStage.setScene(mainScene);
 			mainStage.sizeToScene();
 			mainStage.requestFocus();
