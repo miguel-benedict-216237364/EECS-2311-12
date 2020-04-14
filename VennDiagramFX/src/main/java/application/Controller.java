@@ -343,6 +343,7 @@ public class Controller implements Initializable {
 		labelAlignment.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				
 				if (designTabComboBox.getValue().equals("Left Circle")) { // left Circle is selected
 					ArrayList<CustomLabel> tmp = Model.getLeftLabel(customLabelList, leftCircle, rightCircle);
 					double height = defaultYAlignment;
@@ -638,10 +639,7 @@ public class Controller implements Initializable {
 		
 		//Event Listener to see when the mouse has been released from the slider
 		sizeSlider.setOnMouseReleased((MouseEvent event) -> {
-			undoPointer ++;
-			System.out.println("UndoPointer is at: " + undoPointer);
-			undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-			
+			addControllerCopy();			
 		});
 		
 		sizeSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -811,9 +809,7 @@ public class Controller implements Initializable {
 							lblConsole.setText(customLabel.getLABEL().getText());
 							
 							//addLabelUndo
-							undoPointer ++;
-							System.out.println("UndoPointer is at: " + undoPointer);
-							undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+							addControllerCopy();
 							
 
 							if (event.isShiftDown()) {
@@ -964,9 +960,10 @@ public class Controller implements Initializable {
 			}
 			
 		});
-		
-	System.out.println("UndoPointer is at: " + undoPointer);
-	undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+	
+		//Initializes the undo stack
+		System.out.println("UndoPointer is at: " + undoPointer);
+		undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
 	
 	
 	
@@ -1061,16 +1058,15 @@ public class Controller implements Initializable {
 			for(int i = 0; i < this.customLabelList.size(); i ++) {
 				centrePane.getChildren().remove(this.customLabelList.get(i).getLABEL());				
 			}
+			customLabelList.clear();
 			
-			
-			/*for(int i = 0; i< copy.labels.size(); i++) {
+			for(int i = 0; i< copy.labels.size(); i++) {
 				CustomLabel labelFromCopy = copy.labels.get(i);
 				CustomLabel labelToAdd = new CustomLabel(labelFromCopy.getLabelText(), labelFromCopy.getADDITIONAL_TEXT());
 				labelToAdd.setLayoutXY(labelFromCopy.getLABEL().getLayoutX(), labelFromCopy.getLABEL().getLayoutY());
 				centrePane.getChildren().add(labelToAdd.getLABEL());
-				lblConsole.setText(labelToAdd.getLABEL().getText());
-				
-			}*/
+				lblConsole.setText(labelToAdd.getLABEL().getText());				
+			}
 		}
 	}
 	
@@ -1291,7 +1287,7 @@ public class Controller implements Initializable {
 			this.centrePane.getChildren().remove(evaluationList.get(0).getLABEL());
 			evaluationList.remove(0);
 		}
-		
+		undoPointer = 0;
 		focusList.clear();
 		this.mainTitle.setText("Insert Title");
 		this.mainTitle.setOpacity(0.5);
@@ -1430,7 +1426,12 @@ public class Controller implements Initializable {
 				this.centrePane.getChildren().remove(evaluationList.get(i).getLABEL());
 			}
 		}
+		
+		for(int i = 0; i < customLabelList.size(); i++) {
+			this.centrePane.getChildren().remove(customLabelList.get(i).getLABEL());
+		}
 		evaluationList.clear();
+		customLabelList.clear();
 		this.evaluationBox.getChildren().clear();
 	}
 	
@@ -1563,9 +1564,16 @@ public class Controller implements Initializable {
 		}
 
 	
-
+		
 	
 	
 	
+	}
+	
+	public void addControllerCopy() {
+		undoPointer ++;
+		System.out.println("UndoPointer is at: " + undoPointer);
+		undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+		
 	}
 }
