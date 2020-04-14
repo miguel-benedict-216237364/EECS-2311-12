@@ -8,7 +8,7 @@ import javafx.scene.shape.Circle;
 
 public class ControllerCopy {
 	
-	ArrayList<Label> labels;
+	ArrayList<CustomLabel> labels;
 	Circle leftCircle;
 	Circle rightCircle;
 	TextField leftTitle;
@@ -17,8 +17,8 @@ public class ControllerCopy {
 	boolean addLabelBox = true;
 	
 	
-	public ControllerCopy(ArrayList<Label> l, Circle leftC, Circle rightC, TextField left, TextField right, TextField center) {
-		labels = new ArrayList<Label>();
+	public ControllerCopy(ArrayList<CustomLabel> l, Circle leftC, Circle rightC, TextField left, TextField right, TextField center) {
+		labels = new ArrayList<CustomLabel>();
 		leftCircle = new Circle();
 		rightCircle = new Circle();
 		leftTitle = new TextField(left.getText());
@@ -45,7 +45,7 @@ public String toString() {
 	if(labels.size() == 0) {
 		return "No labels yet....";
 	}else {
-		return labels.get(labels.size()-1).getText();
+		return labels.get(labels.size()-1).getLabelText();
 	}
 }
 	

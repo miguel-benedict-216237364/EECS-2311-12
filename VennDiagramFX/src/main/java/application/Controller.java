@@ -1048,7 +1048,7 @@ public class Controller implements Initializable {
 			System.out.println("UndoPointer is at: " + undoPointer);
 			
 			for(int i = 0; i< copy.labels.size(); i++) {
-				Label l = copy.labels.get(i);
+				CustomLabel l = copy.labels.get(i);
 				
 			}
 		}
