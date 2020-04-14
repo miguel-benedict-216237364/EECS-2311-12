@@ -212,6 +212,8 @@ public class Controller implements Initializable {
 	static Tooltip labelTooltip = new Tooltip();
 	
 	static ArrayList<ControllerCopy> undoStack = new ArrayList<ControllerCopy>();
+	
+	static ArrayList<ControllerCopy> redoStack = new ArrayList<ControllerCopy>();
   
 	static ArrayList<TextField> textFieldFocus = new ArrayList<TextField>();
 	
@@ -228,7 +230,11 @@ public class Controller implements Initializable {
 	public static boolean isDraggableBoolean = true;
 
 	static ObservableList<TextField> textFieldTitle = FXCollections.observableArrayList(tf -> new Observable[] { tf.textProperty() });
+	
 	int undoPointer = 0;
+	
+	int redoPointer = 0;
+	
 	boolean undoWasClicked = false;
 
 
@@ -962,7 +968,7 @@ public class Controller implements Initializable {
 		});
 	
 		//Initializes the undo stack
-		System.out.println("UndoPointer is at: " + undoPointer);
+		System.out.println("UndoPointer is at: " + undoPointer + "Stack size is: " + undoStack.size());
 		undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
 	
 	
@@ -1043,34 +1049,51 @@ public class Controller implements Initializable {
 		}
 	}
 
-
+	public void redo() {
+		if(!redoStack.isEmpty()) {
+			redoPointer --;
+			ControllerCopy copy = redoStack.get(redoPointer);
+			undoRedoHelper(copy);
+			redoStack.remove(redoPointer);			
+			addControllerCopy();			
+		}
+	}
 
 	public void undo() {
 		if(undoPointer - 1 >= 0) {
 			undoWasClicked = true;
+			
+			redoStack.add(redoPointer, undoStack.get(undoPointer));
+			redoPointer ++;
+			
 			undoPointer --;	
 			System.out.println("UndoPointer is at: " + undoPointer);
 			ControllerCopy copy = undoStack.get(undoPointer);			
-		    this.leftCircle.setRadius(copy.leftCircle.getRadius());
-			this.rightCircle.setRadius(copy.rightCircle.getRadius());
-			this.leftTitle.setText(copy.leftTitle.getText());
-			this.rightTitle.setText(copy.rightTitle.getText());			
-			for(int i = 0; i < this.customLabelList.size(); i ++) {
-				centrePane.getChildren().remove(this.customLabelList.get(i).getLABEL());				
-			}
-			customLabelList.clear();
-			
-			for(int i = 0; i< copy.labels.size(); i++) {
-				CustomLabel labelFromCopy = copy.labels.get(i);
-				CustomLabel labelToAdd = new CustomLabel(labelFromCopy.getLabelText(), labelFromCopy.getADDITIONAL_TEXT());
-				labelToAdd.setLayoutXY(labelFromCopy.getLABEL().getLayoutX(), labelFromCopy.getLABEL().getLayoutY());
-				centrePane.getChildren().add(labelToAdd.getLABEL());
-				lblConsole.setText(labelToAdd.getLABEL().getText());				
-			}
+		    undoRedoHelper(copy);
+		    undoStack.remove(undoPointer+1);
+		    
 		}
 	}
 	
 
+	public void undoRedoHelper(ControllerCopy copy) {
+		this.leftCircle.setRadius(copy.leftCircle.getRadius());
+		this.rightCircle.setRadius(copy.rightCircle.getRadius());
+		this.leftTitle.setText(copy.leftTitle.getText());
+		this.rightTitle.setText(copy.rightTitle.getText());			
+		for(int i = 0; i < this.customLabelList.size(); i ++) {
+			centrePane.getChildren().remove(this.customLabelList.get(i).getLABEL());				
+		}
+		customLabelList.clear();
+		
+		for(int i = 0; i< copy.labels.size(); i++) {
+			CustomLabel labelFromCopy = copy.labels.get(i);
+			CustomLabel labelToAdd = new CustomLabel(labelFromCopy.getLabelText(), labelFromCopy.getADDITIONAL_TEXT());
+			labelToAdd.setLayoutXY(labelFromCopy.getLABEL().getLayoutX(), labelFromCopy.getLABEL().getLayoutY());
+			centrePane.getChildren().add(labelToAdd.getLABEL());
+			lblConsole.setText(labelToAdd.getLABEL().getText());				
+		}
+	}
 	public void load() {
 		String path = "";
 		path = this.loader();
@@ -1574,6 +1597,7 @@ public class Controller implements Initializable {
 		undoPointer ++;
 		System.out.println("UndoPointer is at: " + undoPointer);
 		undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-		
+		redoStack.clear();
+		redoPointer = 0;		
 	}
 }
