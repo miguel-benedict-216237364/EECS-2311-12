@@ -1029,33 +1029,32 @@ public class Controller implements Initializable {
 
 
 
-//	public void undo() {
-//		if(undoPointer - 1 >= 0) {
-//			undoWasClicked = true;
-//			undoPointer --;
-//			
-//			ControllerCopy copy = undoStack.get(undoPointer);
-//			this.reinitialize();
-//			this.leftCircle.setRadius(copy.leftCircle.getRadius());
-//			this.rightCircle.setRadius(copy.rightCircle.getRadius());
-//			this.leftTitle.setText(copy.leftTitle.getText());
-//			this.rightTitle.setText(copy.rightTitle.getText());
-//			this.setCenterTitle(copy.centerTitle.getText());
-//			if(this.isAddLabel.isSelected() != copy.addLabelBox) {
-//			this.isAddLabel.setSelected(copy.addLabelBox);
-//			undoPointer --;
-//			}
-//			System.out.println("UndoPointer is at: " + undoPointer);
-//			
-//			for(int i = 0; i< copy.labels.size(); i++) {
-//				Label l = copy.labels.get(i);
-//				this.addLabelHelper(l, l.getLayoutX(), l.getLayoutY());
-//			}
-//		}
-//	}
-//	
+	public void undo() {
+		if(undoPointer - 1 >= 0) {
+			undoWasClicked = true;
+			undoPointer --;
+			
+			ControllerCopy copy = undoStack.get(undoPointer);
+			
+		this.leftCircle.setRadius(copy.leftCircle.getRadius());
+			this.rightCircle.setRadius(copy.rightCircle.getRadius());
+			this.leftTitle.setText(copy.leftTitle.getText());
+			this.rightTitle.setText(copy.rightTitle.getText());
+			this.setCenterTitle(copy.centerTitle.getText());
+			if(this.isAddLabel.isSelected() != copy.addLabelBox) {
+			this.isAddLabel.setSelected(copy.addLabelBox);
+			undoPointer --;
+			}
+			System.out.println("UndoPointer is at: " + undoPointer);
+			
+			for(int i = 0; i< copy.labels.size(); i++) {
+				Label l = copy.labels.get(i);
+				
+			}
+		}
+	}
 	
-//
+
 	public void load() {
 		String path = "";
 		path = this.loader();
