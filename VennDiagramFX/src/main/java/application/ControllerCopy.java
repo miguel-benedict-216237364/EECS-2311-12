@@ -8,15 +8,25 @@ import javafx.scene.shape.Circle;
 
 public class ControllerCopy {
 	
+	boolean leftCircleChanged; 
+	boolean rightCircleChanged;
+	boolean customLabelListChanged;
+	boolean centerTitleChanged;
+	boolean leftTitleChanged;
+	boolean rightTitleChanged;
+	
+	
 	ArrayList<CustomLabel> labels;
 	Circle leftCircle;
 	Circle rightCircle;
 	TextField leftTitle;
 	TextField rightTitle;
 	TextField centerTitle;
-	boolean addLabelBox = true;
 	
 	
+	public ControllerCopy() {
+		
+	}
 	public ControllerCopy(ArrayList<CustomLabel> l, Circle leftC, Circle rightC, TextField left, TextField right, TextField center) {
 		labels = new ArrayList<CustomLabel>();
 		leftCircle = new Circle();
@@ -35,8 +45,25 @@ public class ControllerCopy {
 	
 	}
 	
-	public void setAddLabelBox(boolean b) {
-		this.addLabelBox = b;
+	public void makeAllTrue() {
+		leftCircleChanged = true; 
+		 rightCircleChanged = true; 
+		customLabelListChanged = true; 
+		 centerTitleChanged = true; 
+		 leftTitleChanged = true; 
+		 rightTitleChanged = true; 
+	}
+	public void changeLeftCircle(Circle c) {
+		leftCircle = new Circle();
+		leftCircle.setRadius(c.getRadius());
+		this.leftCircleChanged = true;
+	}
+	
+	public void changeRightCircle(Circle c) {
+		rightCircle = new Circle();
+		rightCircle.setRadius(c.getRadius());
+		this.rightCircleChanged = true;
+		
 	}
 	
 @Override
