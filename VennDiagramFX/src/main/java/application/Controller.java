@@ -635,10 +635,19 @@ public class Controller implements Initializable {
 				}
 			}
 		});
-
+		
+		//Event Listener to see when the mouse has been released from the slider
+		sizeSlider.setOnMouseReleased((MouseEvent event) -> {
+			undoPointer ++;
+			System.out.println("UndoPointer is at: " + undoPointer);
+			undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+			
+		});
+		
 		sizeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				
 				if (designTabComboBox.getValue().equals("Select All")) {
 
 					sizeSlider.setValue(newValue.intValue());
@@ -667,8 +676,7 @@ public class Controller implements Initializable {
 						leftCircle.setCenterX(-rightCircle.getRadius() + rightCircle.getCenterX());
 					}
 				}
-			
-
+				
 			}
 
 		});
@@ -801,6 +809,12 @@ public class Controller implements Initializable {
 							customLabel.getLABEL().setLayoutY(event.getY());
 							centrePane.getChildren().add(customLabel.getLABEL());
 							lblConsole.setText(customLabel.getLABEL().getText());
+							
+							//addLabelUndo
+							undoPointer ++;
+							System.out.println("UndoPointer is at: " + undoPointer);
+							undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+							
 
 							if (event.isShiftDown()) {
 								focusList.add(customLabel);
@@ -951,6 +965,11 @@ public class Controller implements Initializable {
 			
 		});
 		
+	System.out.println("UndoPointer is at: " + undoPointer);
+	undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
+	
+	
+	
 	}
 	
 	//---------------------END OF INITIALIZE-------------------------------
@@ -1032,25 +1051,26 @@ public class Controller implements Initializable {
 	public void undo() {
 		if(undoPointer - 1 >= 0) {
 			undoWasClicked = true;
-			undoPointer --;
-			
-			ControllerCopy copy = undoStack.get(undoPointer);
-			
-		this.leftCircle.setRadius(copy.leftCircle.getRadius());
+			undoPointer --;	
+			System.out.println("UndoPointer is at: " + undoPointer);
+			ControllerCopy copy = undoStack.get(undoPointer);			
+		    this.leftCircle.setRadius(copy.leftCircle.getRadius());
 			this.rightCircle.setRadius(copy.rightCircle.getRadius());
 			this.leftTitle.setText(copy.leftTitle.getText());
-			this.rightTitle.setText(copy.rightTitle.getText());
-			this.setCenterTitle(copy.centerTitle.getText());
-			if(this.isAddLabel.isSelected() != copy.addLabelBox) {
-			this.isAddLabel.setSelected(copy.addLabelBox);
-			undoPointer --;
+			this.rightTitle.setText(copy.rightTitle.getText());			
+			for(int i = 0; i < this.customLabelList.size(); i ++) {
+				centrePane.getChildren().remove(this.customLabelList.get(i).getLABEL());				
 			}
-			System.out.println("UndoPointer is at: " + undoPointer);
 			
-			for(int i = 0; i< copy.labels.size(); i++) {
-				CustomLabel l = copy.labels.get(i);
+			
+			/*for(int i = 0; i< copy.labels.size(); i++) {
+				CustomLabel labelFromCopy = copy.labels.get(i);
+				CustomLabel labelToAdd = new CustomLabel(labelFromCopy.getLabelText(), labelFromCopy.getADDITIONAL_TEXT());
+				labelToAdd.setLayoutXY(labelFromCopy.getLABEL().getLayoutX(), labelFromCopy.getLABEL().getLayoutY());
+				centrePane.getChildren().add(labelToAdd.getLABEL());
+				lblConsole.setText(labelToAdd.getLABEL().getText());
 				
-			}
+			}*/
 		}
 	}
 	
