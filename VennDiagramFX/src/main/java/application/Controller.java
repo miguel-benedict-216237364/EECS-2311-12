@@ -1055,7 +1055,9 @@ public class Controller implements Initializable {
 			ControllerCopy copy = redoStack.get(redoPointer);
 			undoRedoHelper(copy);
 			redoStack.remove(redoPointer);			
-			addControllerCopy();			
+			undoPointer ++;
+			System.out.println("UndoPointer is at: " + undoPointer);
+			undoStack.add(undoPointer, new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));			
 		}
 	}
 
@@ -1065,6 +1067,7 @@ public class Controller implements Initializable {
 			
 			redoStack.add(redoPointer, undoStack.get(undoPointer));
 			redoPointer ++;
+			System.out.println("redoPointer: " + redoPointer + "Redo Stack Size: " + redoStack.size());
 			
 			undoPointer --;	
 			System.out.println("UndoPointer is at: " + undoPointer);
@@ -1077,10 +1080,27 @@ public class Controller implements Initializable {
 	
 
 	public void undoRedoHelper(ControllerCopy copy) {
-		this.leftCircle.setRadius(copy.leftCircle.getRadius());
-		this.rightCircle.setRadius(copy.rightCircle.getRadius());
-		this.leftTitle.setText(copy.leftTitle.getText());
-		this.rightTitle.setText(copy.rightTitle.getText());			
+		
+		leftCircle.setRadius(copy.leftCircle.getRadius());
+		leftCircle.setLayoutX(copy.leftCircle.getLayoutX());
+		leftCircle.setLayoutY(copy.leftCircle.getLayoutY());
+		leftCircle.setCenterX(copy.leftCircle.getCenterX());
+		leftCircle.setCenterY(copy.leftCircle.getCenterY());
+		
+		rightCircle.setRadius(copy.rightCircle.getRadius());
+		rightCircle.setLayoutX(copy.rightCircle.getLayoutX());
+		rightCircle.setLayoutY(copy.rightCircle.getLayoutY());
+		rightCircle.setCenterX(copy.rightCircle.getCenterX());
+		rightCircle.setCenterY(copy.rightCircle.getCenterY());
+		
+		leftTitle.setText(copy.leftTitle.getText());
+		leftTitle.setLayoutX(copy.leftTitle.getLayoutX());
+		leftTitle.setLayoutY(copy.leftTitle.getLayoutY());
+		
+		rightTitle.setText(copy.rightTitle.getText());
+		rightTitle.setLayoutX(copy.rightTitle.getLayoutX());
+		rightTitle.setLayoutY(copy.rightTitle.getLayoutY());
+		
 		for(int i = 0; i < this.customLabelList.size(); i ++) {
 			centrePane.getChildren().remove(this.customLabelList.get(i).getLABEL());				
 		}
