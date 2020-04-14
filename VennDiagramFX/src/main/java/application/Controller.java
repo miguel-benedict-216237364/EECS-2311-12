@@ -635,10 +635,10 @@ public class Controller implements Initializable {
 				if (designTabComboBox.getValue().equals("Select All")) {
 				} else if (designTabComboBox.getValue().equals("Left Circle")) {
 					sizeSlider.setValue(leftCircle.getRadius());
-					colourPicker.setValue((Color) leftCircle.getFill());
+					//colourPicker.setValue((Color) leftCircle.getFill());					
 				} else if (designTabComboBox.getValue().equals("Right Circle")) {
 					sizeSlider.setValue(rightCircle.getRadius());
-					colourPicker.setValue((Color) rightCircle.getFill());
+					//colourPicker.setValue((Color) rightCircle.getFill());					
 				}
 			}
 		});
@@ -647,6 +647,7 @@ public class Controller implements Initializable {
 		sizeSlider.setOnMouseReleased((MouseEvent event) -> {
 			addControllerCopy();			
 		});
+		
 		
 		sizeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -692,10 +693,13 @@ public class Controller implements Initializable {
 				if (designTabComboBox.getValue().equals("Select All")) {
 					leftCircle.setFill(colourPicker.getValue());
 					rightCircle.setFill(colourPicker.getValue());
+					addControllerCopy();
 				} else if (designTabComboBox.getValue().equals("Left Circle")) {
 					leftCircle.setFill(colourPicker.getValue());
+					addControllerCopy();
 				} else if (designTabComboBox.getValue().equals("Right Circle")) {
 					rightCircle.setFill(colourPicker.getValue());
+					addControllerCopy();
 				}
 			}
 		});
@@ -1086,12 +1090,15 @@ public class Controller implements Initializable {
 		leftCircle.setLayoutY(copy.leftCircle.getLayoutY());
 		leftCircle.setCenterX(copy.leftCircle.getCenterX());
 		leftCircle.setCenterY(copy.leftCircle.getCenterY());
+		leftCircle.setFill(copy.leftCircle.getFill());
 		
 		rightCircle.setRadius(copy.rightCircle.getRadius());
 		rightCircle.setLayoutX(copy.rightCircle.getLayoutX());
 		rightCircle.setLayoutY(copy.rightCircle.getLayoutY());
 		rightCircle.setCenterX(copy.rightCircle.getCenterX());
 		rightCircle.setCenterY(copy.rightCircle.getCenterY());
+		rightCircle.setFill(copy.rightCircle.getFill());
+		
 		
 		leftTitle.setText(copy.leftTitle.getText());
 		leftTitle.setLayoutX(copy.leftTitle.getLayoutX());

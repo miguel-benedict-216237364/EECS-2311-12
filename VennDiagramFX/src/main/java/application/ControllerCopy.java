@@ -45,6 +45,7 @@ public class ControllerCopy {
 		leftCircle.setLayoutY(leftC.getLayoutY());
 		leftCircle.setCenterX(leftC.getCenterX());
 		leftCircle.setCenterY(leftC.getCenterY());
+		leftCircle.setFill(leftC.getFill());
 
 		rightCircle.setRadius(rightC.getRadius());
 		rightCircle.setRadius(rightC.getRadius());
@@ -52,6 +53,7 @@ public class ControllerCopy {
 		rightCircle.setLayoutY(rightC.getLayoutY());
 		rightCircle.setCenterX(rightC.getCenterX());
 		rightCircle.setCenterY(rightC.getCenterY());
+		rightCircle.setFill(rightC.getFill());
 
 		centerTitle = new TextField(center.getText());
 		for (int i = 0; i < l.size(); i++) {
