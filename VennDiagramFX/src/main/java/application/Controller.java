@@ -42,6 +42,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -469,6 +470,8 @@ public class Controller implements Initializable {
 							tmp.get(i).getLABEL().setLayoutY(height);
 						}
 					}
+					
+					
 
 					// Right Circle
 					tmp = Model.getRightLabel(customLabelList, leftCircle, rightCircle);
@@ -586,6 +589,10 @@ public class Controller implements Initializable {
 				for (int i = 0; i < focusList.size(); i++) {
 					focusList.get(i).getLABEL().setTextFill(selectedTextColour);
 				}
+				if(focusList.size() != 0) {
+					addControllerCopy();
+				}
+				
 				removeFocus();
 			}
 		});
@@ -596,6 +603,9 @@ public class Controller implements Initializable {
 				isBoldBoolean = isBold.isSelected();
 				for (int i = 0; i < focusList.size(); i++) {
 					focusList.get(i).getLABEL().setFont(getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean));
+				}
+				if(focusList.size() != 0) {
+					addControllerCopy();
 				}
 				removeFocus();
 			}
@@ -609,11 +619,14 @@ public class Controller implements Initializable {
 				for (int i = 0; i < focusList.size(); i++) {
 					focusList.get(i).getLABEL().setFont(getFont(selectedTextFont, selectedTextSize, isBoldBoolean,  isItalicBoolean));
 				}
+				if(focusList.size() != 0) {
+					addControllerCopy();
+				}
 				removeFocus();
 			}
 		});
 
-	
+		
 
 		// Set sliders to default
 		tfSlider.textProperty().bindBidirectional(sizeSlider.valueProperty(), NumberFormat.getNumberInstance());
@@ -685,7 +698,8 @@ public class Controller implements Initializable {
 			}
 
 		});
-
+		
+		
 		// Circle Colour Picker
 		colourPicker.valueProperty().addListener(new ChangeListener<Color>() {
 			@Override
@@ -767,7 +781,8 @@ public class Controller implements Initializable {
 				
 			}
 		});
-
+		
+		
 		centrePane.focusedProperty().addListener(new ChangeListener<Boolean>() {
 
 			@Override
@@ -1117,6 +1132,8 @@ public class Controller implements Initializable {
 			CustomLabel labelFromCopy = copy.labels.get(i);
 			CustomLabel labelToAdd = new CustomLabel(labelFromCopy.getLabelText(), labelFromCopy.getADDITIONAL_TEXT());
 			labelToAdd.setLayoutXY(labelFromCopy.getLABEL().getLayoutX(), labelFromCopy.getLABEL().getLayoutY());
+			labelToAdd.getLABEL().setFont(labelFromCopy.getLABEL().getFont());
+			labelToAdd.getLABEL().setTextFill(labelFromCopy.getLABEL().getTextFill());
 			centrePane.getChildren().add(labelToAdd.getLABEL());
 			lblConsole.setText(labelToAdd.getLABEL().getText());				
 		}

@@ -2,16 +2,12 @@ package application;
 
 import java.util.ArrayList;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 public class CustomLabel {
@@ -69,6 +65,8 @@ public class CustomLabel {
 		this.toolTip.setMaxWidth(150);
 		
 		customLabelList.add(this);
+		
+		
 		this.LABEL.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -83,9 +81,10 @@ public class CustomLabel {
 					}
 				}
 				Controller.addFocusToList(); // Show that the clicked label is selected
+				
 			}
 		});
-
+				
 		this.LABEL.onMousePressedProperty().set(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -126,6 +125,44 @@ public class CustomLabel {
 		
 	}
 
+	CustomLabel(String text, String additionalText, Double x, Double y) {
+		
+		counter++;
+		sequence++;
+		this.sequence= counter; // Set Default Text
+		Font font = Controller.getFont(Controller.selectedTextFont, Controller.selectedTextSize, Controller.isBoldBoolean, Controller.isItalicBoolean);
+		this.LABEL = new Label(); // Create new object Label		
+		this.LABEL.setFont(font);
+		this.LABEL.setLayoutX(x);
+		this.LABEL.setLayoutY(y);
+		this.LABEL.setTextFill(Controller.selectedTextColour);
+		if (text.trim().length()<=0) {
+			this.LABEL.setText("Insert Text " );
+		}else {
+			this.LABEL.setText(text);
+		}
+		
+		this.LABEL.setVisible(true);
+		this.LABEL.setDisable(false);
+		this.LABEL.setMaxWidth(150);
+		this.LABEL.setWrapText(true);
+
+
+		this.toolTip = new Tooltip(); // Create new Tooltip Label
+		// Set the default properties for the panel
+		Tooltip.install(LABEL, this.toolTip);
+		if (additionalText.trim().length()<=0) {
+			this.toolTip.setText("Additional Information can be added here");
+		}else {
+			this.toolTip.setText(additionalText);
+		}
+	
+		this.toolTip.setShowDelay(Duration.millis(250));
+		this.toolTip.setFont(Font.font("Times New Roman", 12));
+		this.toolTip.setWrapText(true);
+		this.toolTip.setMaxWidth(150);		
+	}
+	
 
 	
 	CustomLabel(CustomLabel customLabel){ // Used for the purposes of the creating a new CustomLabel for evaluation mode
@@ -168,6 +205,7 @@ public class CustomLabel {
 				
 					
 					focusList.add(findCustomLabel(lblTmp,evaluationList));
+					
 				} else { // If shit is not selected, then reset the focus List, and add the label pressed
 							// to the focus List
 					if (!(focusList.size() > 1)) {
