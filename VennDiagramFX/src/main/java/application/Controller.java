@@ -797,7 +797,7 @@ public class Controller implements Initializable {
 		});
 
 		// Adds a new CustomLable to the centrePane
-		centrePane.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
+		centrePane.onMouseReleasedProperty().set(new EventHandler<MouseEvent>(){
 
 			@Override
 			public void handle(MouseEvent event) {

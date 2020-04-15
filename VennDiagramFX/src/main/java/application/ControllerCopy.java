@@ -62,7 +62,7 @@ public class ControllerCopy {
 			addLabel.setLayoutXY(copyLabel.getLayoutX(),copyLabel.getLayoutY());
 			addLabel.setFont(copyLabel.getFont());
 			addLabel.setTextFill(copyLabel.getTextFill());
-			labels.add(addLabel);
+			 labels.add(addLabel);
 		}
 
 	}

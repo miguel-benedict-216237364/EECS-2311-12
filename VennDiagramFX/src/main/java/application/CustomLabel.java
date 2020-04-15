@@ -67,7 +67,7 @@ public class CustomLabel extends Label{
 		this.toolTip.setMaxWidth(150);*/
 		
 		this.initializeLabel(text, additionalText);
-		//customLabelList.add(this);
+		
 		
 
 		/*

@@ -15,7 +15,7 @@ public class Save {
 	
 	public void save(Controller control, File file, double lRadius, double rRadius) throws FileNotFoundException {		
 		PrintWriter printWriter = new PrintWriter(file);
-		printWriter.println("Main Title:");
+		 printWriter.println("Main Title:");
 		printWriter.println(Controller.mainTitleText);
 		printWriter.println("Left Title:");
 		printWriter.println(Controller.leftTitleText);
