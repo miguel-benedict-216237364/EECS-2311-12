@@ -54,10 +54,15 @@ public class ControllerCopy {
 		rightCircle.setCenterX(rightC.getCenterX());
 		rightCircle.setCenterY(rightC.getCenterY());
 		rightCircle.setFill(rightC.getFill());
-
+		
+		
 		centerTitle = new TextField(center.getText());
 		for (int i = 0; i < l.size(); i++) {
-			labels.add(l.get(i));
+			CustomLabel copyLabel = l.get(i);
+			CustomLabel addLabel = new CustomLabel(copyLabel.getLabelText(), copyLabel.getADDITIONAL_TEXT(), copyLabel.getLABEL().getLayoutX(),copyLabel.getLABEL().getLayoutY());
+			addLabel.getLABEL().setFont(copyLabel.getLABEL().getFont());
+			addLabel.getLABEL().setTextFill(copyLabel.getLABEL().getTextFill());
+			labels.add(addLabel);
 		}
 
 	}
