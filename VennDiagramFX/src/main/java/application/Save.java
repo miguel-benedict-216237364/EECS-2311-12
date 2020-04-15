@@ -3,14 +3,8 @@ package application;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 
 public class Save {
 	DataOutputStream dataOutStream;
@@ -21,7 +15,7 @@ public class Save {
 	
 	public void save(Controller control, File file, double lRadius, double rRadius) throws FileNotFoundException {		
 		PrintWriter printWriter = new PrintWriter(file);
-		printWriter.println("Main Title:");
+		 printWriter.println("Main Title:");
 		printWriter.println(Controller.mainTitleText);
 		printWriter.println("Left Title:");
 		printWriter.println(Controller.leftTitleText);
@@ -37,30 +31,30 @@ public class Save {
 				printWriter.println("----------Start of Label----------");
 				CustomLabel tmp = Controller.customLabelList.get(i);
 				printWriter.println("Label Text:");
-				printWriter.println(tmp.getLabelText());
+				printWriter.println(tmp.getText());
 				printWriter.println("Label sequence:");
 				printWriter.println(tmp.getSequence());
 				printWriter.println("Layout X: ");
-				printWriter.println(tmp.getLABEL().getLayoutX());
+				printWriter.println(tmp.getLayoutX());
 				printWriter.println("Layout Y: ");
-				printWriter.println(tmp.getLABEL().getLayoutY());
+				printWriter.println(tmp.getLayoutY());
 				printWriter.println("Tooltip Text: ");
 				printWriter.println(tmp.getToolTip().getText());	
 				
 				printWriter.println("Font Name: ");
-				printWriter.println(tmp.getLABEL().getFont().getFamily());
+				printWriter.println(tmp.getFont().getFamily());
 				printWriter.println("Size: ");
-				printWriter.println(tmp.getLABEL().getFont().getSize());
+				printWriter.println(tmp.getFont().getSize());
 				boolean isItalic = false;
 				boolean isBold = false;
 				
-				Font test = tmp.getLABEL().getFont();
-				if (tmp.getLABEL().getFont().getName().contains("Bold")) {
+				//Font test = tmp.getFont();
+				if (tmp.getFont().getName().contains("Bold")) {
 					isBold = true;
 				}else{
 					isBold = false;
 				}
-				if (tmp.getLABEL().getFont().getName().contains("Italic")) {
+				if (tmp.getFont().getName().contains("Italic")) {
 					isItalic=true;
 				}else{
 					isItalic = false;
@@ -70,7 +64,7 @@ public class Save {
 				printWriter.println("Italic: ");
 				printWriter.println(isItalic);
 				printWriter.println("Colour: ");
-				printWriter.println(tmp.getLABEL().getTextFill().toString());
+				printWriter.println(tmp.getTextFill().toString());
 			}
 		printWriter.println("---------- End of Labels ----------"); 
 		
