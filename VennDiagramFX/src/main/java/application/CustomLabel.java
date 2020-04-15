@@ -5,54 +5,56 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-public class CustomLabel {
+public class CustomLabel extends Label{
 
-	private Label LABEL; 
+	
 	private Tooltip toolTip;
 	private int sequence = 0;
 
 	
 	public static int counter = 0;
-	public static Label lblTmp = new Label();
+	//public static Label lblTmp = new Label();
 	public static ArrayList<CustomLabel> focusList = Controller.focusList;
 	public static ArrayList<CustomLabel> customLabelList = Controller.customLabelList;
 	public static ArrayList<CustomLabel> evaluationList = Controller.evaluationList;
 	public static double initX = 0;
 	public static double initY = 0;
-	public	static  double maxWidth=0;
+	public static double maxWidth=0;
 	public static double maxHeight=0;
 	
 
 
 	CustomLabel(String text, String additionalText) {
 	
-		counter++;
+		/*counter++;
 		sequence++;
 		this.sequence= counter; // Set Default Text
-		Font font = Controller.getFont(Controller.selectedTextFont, Controller.selectedTextSize, Controller.isBoldBoolean, Controller.isItalicBoolean);
-		this.LABEL = new Label(); // Create new object Label		
-		this.LABEL.setFont(font);
-		this.LABEL.setTextFill(Controller.selectedTextColour);
+		Font font = Controller.getFont(Controller.selectedTextFont, Controller.selectedTextSize, Controller.isBoldBoolean, Controller.isItalicBoolean);	
+		this.setFont(font);
+		this.setTextFill(Controller.selectedTextColour);
 		if (text.trim().length()<=0) {
-			this.LABEL.setText("Insert Text " );
+			this.setText("Insert Text " );
 		}else {
-			this.LABEL.setText(text);
+			this.setText(text);
 		}
 		
-		this.LABEL.setVisible(true);
-		this.LABEL.setDisable(false);
-		this.LABEL.setMaxWidth(150);
-		this.LABEL.setWrapText(true);
+		this.setVisible(true);
+		this.setDisable(false);
+		this.setMaxWidth(150);
+		this.setWrapText(true);
 
 
 		this.toolTip = new Tooltip(); // Create new Tooltip Label
 		// Set the default properties for the panel
-		Tooltip.install(LABEL, this.toolTip);
+		Tooltip.install(this, this.toolTip);
 		if (additionalText.trim().length()<=0) {
 			this.toolTip.setText("Additional Information can be added here");
 		}else {
@@ -62,12 +64,14 @@ public class CustomLabel {
 		this.toolTip.setShowDelay(Duration.millis(250));
 		this.toolTip.setFont(Font.font("Times New Roman", 12));
 		this.toolTip.setWrapText(true);
-		this.toolTip.setMaxWidth(150);
+		this.toolTip.setMaxWidth(150);*/
 		
-		customLabelList.add(this);
+		this.initializeLabel(text, additionalText);
+		//customLabelList.add(this);
 		
-		
-		this.LABEL.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
+
+		/*
+		this.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				final Label lblTmp = (Label) event.getSource(); // Select the Label
@@ -85,7 +89,7 @@ public class CustomLabel {
 			}
 		});
 				
-		this.LABEL.onMousePressedProperty().set(new EventHandler<MouseEvent>() {
+		this.onMousePressedProperty().set(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -95,95 +99,54 @@ public class CustomLabel {
 			}
 
 		});
-
-		this.LABEL.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
+*/
+		this.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {		
 				final Label lblTmp = (Label) event.getSource(); // Select the Label 
 					if (Controller.isDraggableBoolean  && focusList.contains(CustomLabel.findCustomLabel(lblTmp, customLabelList))) {
 						for (int i = 0; i < focusList.size(); i++) {
-							if ((focusList.get(i).getLABEL().getLayoutX() + (event.getX() - initX) >= 0)
-									&& (focusList.get(i).getLABEL().getLayoutX() + (event.getX() - initX) <= maxWidth
-											- focusList.get(i).getLABEL().getWidth())) { // Check that it is within the x
+							if ((focusList.get(i).getLayoutX() + (event.getX() - initX) >= 0)
+									&& (focusList.get(i).getLayoutX() + (event.getX() - initX) <= maxWidth
+											- focusList.get(i).getWidth())) { // Check that it is within the x
 																				// boundaries
-								focusList.get(i).getLABEL()
-										.setLayoutX(focusList.get(i).getLABEL().getLayoutX() + (event.getX() - initX));
+								focusList.get(i).setLayoutX(focusList.get(i).getLayoutX() + (event.getX() - initX));
+								
 							}
-							if ((focusList.get(i).getLABEL().getLayoutY() + (event.getY() - initY) >= 0)
-									&& (focusList.get(i).getLABEL().getLayoutY() + (event.getY() - initY) <= maxHeight
-											- focusList.get(i).getLABEL().getHeight())) { // Check that it is within the y
+							if ((focusList.get(i).getLayoutY() + (event.getY() - initY) >= 0)
+									&& (focusList.get(i).getLayoutY() + (event.getY() - initY) <= maxHeight
+											- focusList.get(i).getHeight())) { // Check that it is within the y
 																				// boundaries
-								focusList.get(i).getLABEL()
-										.setLayoutY(focusList.get(i).getLABEL().getLayoutY() + (event.getY() - initY));
+								focusList.get(i).setLayoutY(focusList.get(i).getLayoutY() + (event.getY() - initY));
 							}
 						}
+						
 					}
 			}
+			
 		});
-
-		
+			
 	}
-
-	CustomLabel(String text, String additionalText, Double x, Double y) {
 		
-		counter++;
-		sequence++;
-		this.sequence= counter; // Set Default Text
-		Font font = Controller.getFont(Controller.selectedTextFont, Controller.selectedTextSize, Controller.isBoldBoolean, Controller.isItalicBoolean);
-		this.LABEL = new Label(); // Create new object Label		
-		this.LABEL.setFont(font);
-		this.LABEL.setLayoutX(x);
-		this.LABEL.setLayoutY(y);
-		this.LABEL.setTextFill(Controller.selectedTextColour);
-		if (text.trim().length()<=0) {
-			this.LABEL.setText("Insert Text " );
-		}else {
-			this.LABEL.setText(text);
-		}
-		
-		this.LABEL.setVisible(true);
-		this.LABEL.setDisable(false);
-		this.LABEL.setMaxWidth(150);
-		this.LABEL.setWrapText(true);
-
-
-		this.toolTip = new Tooltip(); // Create new Tooltip Label
-		// Set the default properties for the panel
-		Tooltip.install(LABEL, this.toolTip);
-		if (additionalText.trim().length()<=0) {
-			this.toolTip.setText("Additional Information can be added here");
-		}else {
-			this.toolTip.setText(additionalText);
-		}
-	
-		this.toolTip.setShowDelay(Duration.millis(250));
-		this.toolTip.setFont(Font.font("Times New Roman", 12));
-		this.toolTip.setWrapText(true);
-		this.toolTip.setMaxWidth(150);		
-	}
-	
-
-	
 	CustomLabel(CustomLabel customLabel){ // Used for the purposes of the creating a new CustomLabel for evaluation mode
 		this.sequence= customLabel.getSequence(); // Set Default Text
-		Font font =customLabel.LABEL.getFont();
-		this.LABEL = new Label(); // Create new object Label		
-		this.LABEL.setFont(font);
-		this.LABEL.setTextFill(customLabel.getLABEL().getTextFill());
-		this.LABEL.setText(customLabel.getLabelText());
-		this.LABEL.setLayoutX(0.0);
-		this.LABEL.setLayoutY(0.0);
+		Font font =customLabel.getFont();
+		this.setFont(font);
+		this.setTextFill(customLabel.getTextFill());
+		this.setText(customLabel.getText());
+		this.setLayoutX(0.0);
+		this.setLayoutY(0.0);
 		
-		this.LABEL.setVisible(true);
-		this.LABEL.setDisable(false);
-		this.LABEL.setMaxWidth(150);
-		this.LABEL.setWrapText(true);
+		this.setVisible(true);
+		this.setDisable(false);
+		this.setMaxWidth(150);
+		this.setWrapText(true);
 
 
 		this.toolTip = new Tooltip(); // Create new Tooltip Label
 		// Set the default properties for the panel
-		Tooltip.install(LABEL, this.toolTip);
+		Tooltip.install(this, this.toolTip);
 	
 			this.toolTip.setText(customLabel.getToolTip().getText());
 		
@@ -197,7 +160,7 @@ public class CustomLabel {
 	
 	
 		
-		this.LABEL.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
+		this.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				final Label lblTmp = (Label) event.getSource(); // Select the Label
@@ -217,7 +180,7 @@ public class CustomLabel {
 			}
 		});
 
-		this.LABEL.onMousePressedProperty().set(new EventHandler<MouseEvent>() {
+		this.onMousePressedProperty().set(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
@@ -228,26 +191,26 @@ public class CustomLabel {
 
 		});
 
-		this.LABEL.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
+		this.onMouseDraggedProperty().set(new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				final Label lblTmp = (Label) event.getSource(); // Select the Label 
 					if (Controller.isDraggableBoolean  && focusList.contains(CustomLabel.findCustomLabel(lblTmp, evaluationList))) {
 						for (int i = 0; i < focusList.size(); i++) {
-							if ((focusList.get(i).getLABEL().getLayoutX() + (event.getX() - initX) >= 0)
-									&& (focusList.get(i).getLABEL().getLayoutX() + (event.getX() - initX) <= maxWidth
-											- focusList.get(i).getLABEL().getWidth())) { // Check that it is within the x
+							if ((focusList.get(i).getLayoutX() + (event.getX() - initX) >= 0)
+									&& (focusList.get(i).getLayoutX() + (event.getX() - initX) <= maxWidth
+											- focusList.get(i).getWidth())) { // Check that it is within the x
 																				// boundaries
-								focusList.get(i).getLABEL()
-										.setLayoutX(focusList.get(i).getLABEL().getLayoutX() + (event.getX() - initX));
+								focusList.get(i)
+										.setLayoutX(focusList.get(i).getLayoutX() + (event.getX() - initX));
 							}
-							if ((focusList.get(i).getLABEL().getLayoutY() + (event.getY() - initY) >= 0)
-									&& (focusList.get(i).getLABEL().getLayoutY() + (event.getY() - initY) <= maxHeight
-											- focusList.get(i).getLABEL().getHeight())) { // Check that it is within the y
+							if ((focusList.get(i).getLayoutY() + (event.getY() - initY) >= 0)
+									&& (focusList.get(i).getLayoutY() + (event.getY() - initY) <= maxHeight
+											- focusList.get(i).getHeight())) { // Check that it is within the y
 																				// boundaries
-								focusList.get(i).getLABEL()
-										.setLayoutY(focusList.get(i).getLABEL().getLayoutY() + (event.getY() - initY));
+								focusList.get(i)
+										.setLayoutY(focusList.get(i).getLayoutY() + (event.getY() - initY));
 							}
 						}
 					}
@@ -258,14 +221,43 @@ public class CustomLabel {
 	}
 	
 	
-	
-	public Label getLABEL() {
-		return this.LABEL;
-	}
+	public void initializeLabel(String text, String additionalText) {
+		counter++;
+		sequence++;
+		this.sequence= counter; // Set Default Text
+		Font font = Controller.getFont(Controller.selectedTextFont, Controller.selectedTextSize, Controller.isBoldBoolean, Controller.isItalicBoolean);	
+		this.setFont(font);
+		this.setTextFill(Controller.selectedTextColour);
+		if (text.trim().length()<=0) {
+			this.setText("Insert Text " );
+		}else {
+			this.setText(text);
+		}
+		
+		this.setVisible(true);
+		this.setDisable(false);
+		this.setMaxWidth(150);
+		this.setWrapText(true);
 
-	public void setLABEL(Label lABEL) {
-		LABEL = lABEL;
+
+		this.toolTip = new Tooltip(); // Create new Tooltip Label
+		// Set the default properties for the panel
+		Tooltip.install(this, this.toolTip);
+		if (additionalText.trim().length()<=0) {
+			this.toolTip.setText("Additional Information can be added here");
+		}else {
+			this.toolTip.setText(additionalText);
+		}
+	
+		this.toolTip.setShowDelay(Duration.millis(250));
+		this.toolTip.setFont(Font.font("Times New Roman", 12));
+		this.toolTip.setWrapText(true);
+		this.toolTip.setMaxWidth(150);
+		
 	}
+	
+	
+
 
 	public Tooltip getToolTip() {
 		return toolTip;
@@ -283,39 +275,23 @@ public class CustomLabel {
 		this.sequence = in;
 	}
 
-	public String getLabelText() {
-		return this.getLABEL().getText();
-	}
-
-	public void setLabelText(String mAIN_TEXT) {
-		this.getLABEL().setText(mAIN_TEXT);
-	}
-
-	public String getADDITIONAL_TEXT() {
+	public String getAdditionalText() {
 		return this.getToolTip().getText();
 	}
 
-	public void setADDITIONAL_TEXT(String aDDITIONAL_TEXT) {
-		this.getToolTip().setText(aDDITIONAL_TEXT);;
+	public void setAdditionalText(String additonalText) {
+		this.getToolTip().setText(additonalText);
 	}
 
 	public void setLayoutXY(double x, double y) {
-		this.getLABEL().setLayoutX(x);
-		this.getLABEL().setLayoutY(y);
+		this.setLayoutX(x);
+		this.setLayoutY(y);
 	}
-	public static void setMaxWidth(double value) {
-		maxWidth = value;
-	}
-	
-	public static void setMaxHeight(double value) {
-		maxHeight = value;
-	}
-	
 	
 	public static CustomLabel findCustomLabel(Label label,ArrayList<CustomLabel> fromList) {
 		CustomLabel result = null;
 		for (int i =0;i<fromList.size();i++) {
-			if (fromList.get(i).getLABEL().equals(label)) {
+			if (fromList.get(i).equals(label)) {
 				result = fromList.get(i);
 				break;
 			}
@@ -324,9 +300,9 @@ public class CustomLabel {
 	}
 	
 	public static boolean compareCustomLabel(CustomLabel labelx, CustomLabel labely) {
-		System.out.println("Comparison between " + labelx.getLabelText() + " and " + labely.getLabelText());
+		System.out.println("Comparison between " + labelx.getText() + " and " + labely.getText());
 		boolean result= true;
-		if (!labelx.getLabelText().equals(labely.getLabelText())) {
+		if (!labelx.getText().equals(labely.getText())) {
 			System.out.println("Text is false");
 			return false;
 		}
@@ -342,6 +318,45 @@ public class CustomLabel {
 		return result;
 	}
 	
+	//returns a copy of this label
+	public CustomLabel labelCopy() {
+		CustomLabel custom = new CustomLabel(this.getText(), this.getAdditionalText());
+		custom.setFont(this.getFont());
+		custom.setTextFill(this.getTextFill());
+		
+		return custom;
+	}
+	
+	//checks if this label has the same font size etc as another label
+	public boolean equals(CustomLabel c) {
+		System.out.println("Size");
+		System.out.println(this.getFont().getSize() == c.getFont().getSize());
+		System.out.println("Style");
+		System.out.println(this.getFont().getStyle() == c.getFont().getStyle());
+		System.out.println("AdditionalText");
+		System.out.println(getAdditionalText() == c.getAdditionalText());
+		System.out.println("Text");
+		System.out.println(this.getText() == c.getText());
+		System.out.println("Family");
+		System.out.println(this.getFont().getFamily() == c.getFont().getFamily());
+		System.out.println("TextFill");
+		System.out.println(this.getTextFill()== c.getTextFill());
+		
+		return 
+			this.getFont().getSize() == c.getFont().getSize()
+			&&
+			this.getFont().getStyle() == c.getFont().getStyle()
+			&&
+			this.getText() == c.getText()
+			&&
+			this.getAdditionalText() == c.getAdditionalText()
+			&&
+			this.getFont().getFamily() == c.getFont().getFamily()
+			&&
+			this.getTextFill() == c.getTextFill();
+		
+		
+	}
 	
 
 }

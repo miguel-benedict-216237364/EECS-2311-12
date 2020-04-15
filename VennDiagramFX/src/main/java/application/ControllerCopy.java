@@ -2,7 +2,6 @@ package application;
 
 import java.util.ArrayList;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Circle;
 
@@ -59,9 +58,10 @@ public class ControllerCopy {
 		centerTitle = new TextField(center.getText());
 		for (int i = 0; i < l.size(); i++) {
 			CustomLabel copyLabel = l.get(i);
-			CustomLabel addLabel = new CustomLabel(copyLabel.getLabelText(), copyLabel.getADDITIONAL_TEXT(), copyLabel.getLABEL().getLayoutX(),copyLabel.getLABEL().getLayoutY());
-			addLabel.getLABEL().setFont(copyLabel.getLABEL().getFont());
-			addLabel.getLABEL().setTextFill(copyLabel.getLABEL().getTextFill());
+			CustomLabel addLabel = new CustomLabel(copyLabel.getText(), copyLabel.getAdditionalText());
+			addLabel.setLayoutXY(copyLabel.getLayoutX(),copyLabel.getLayoutY());
+			addLabel.setFont(copyLabel.getFont());
+			addLabel.setTextFill(copyLabel.getTextFill());
 			labels.add(addLabel);
 		}
 
@@ -95,7 +95,7 @@ public class ControllerCopy {
 		if (labels.size() == 0) {
 			return "No labels yet....";
 		} else {
-			return labels.get(labels.size() - 1).getLabelText();
+			return labels.get(labels.size() - 1).getText();
 		}
 	}
 
