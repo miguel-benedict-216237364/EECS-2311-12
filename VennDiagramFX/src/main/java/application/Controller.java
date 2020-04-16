@@ -19,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -32,7 +33,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -49,8 +49,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Controller implements Initializable {
@@ -88,8 +90,6 @@ public class Controller implements Initializable {
 	private Tab Home;
 	@FXML
 	private Tab Design;
-	@FXML
-	public Label lblConsole;
 	@FXML
 	private TextArea TA;
 	@FXML
@@ -226,6 +226,10 @@ public class Controller implements Initializable {
 	
 	boolean labelSelected;
 	
+	int oldSliderValue;
+	
+	int newSliderValue;
+	
 	int counter = 1;
 	boolean undoWasClicked = false;
 
@@ -249,7 +253,7 @@ public class Controller implements Initializable {
 //		});
 		// END
 
-//		lblConsole.setVisible(false);	
+
 		disableEvaluation();
 		presentationBox.getItems().add("Normal");
 		presentationBox.getItems().add("Evaluation");
@@ -646,10 +650,20 @@ public class Controller implements Initializable {
 				}
 			}
 		});
-
+		
+		sizeSlider.setOnMouseClicked((MouseEvent event) -> {
+			oldSliderValue = (int) sizeSlider.getValue();
+		});
+		
 		// Event Listener to see when the mouse has been released from the slider
 		sizeSlider.setOnMouseReleased((MouseEvent event) -> {
-			addControllerCopy();
+			newSliderValue = (int) sizeSlider.getValue();
+			if(oldSliderValue != newSliderValue && oldSliderValue != 0) {
+				leftCircle.setCenterX(415);
+				rightCircle.setCenterX(665);
+				moveTitles();
+				addControllerCopy();
+			}
 		});
 
 		sizeSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -683,7 +697,7 @@ public class Controller implements Initializable {
 						leftCircle.setCenterX(-rightCircle.getRadius() + rightCircle.getCenterX());
 					}
 				}
-
+				moveTitles();
 			}
 
 		});
@@ -745,11 +759,12 @@ public class Controller implements Initializable {
 						for (int i = 0; i < customLabelList.size(); i++) {
 							focusList.add(customLabelList.get(i));
 						}
-						lblConsole.setText(Integer.toString(customLabelList.size()));
+						
 						addFocusToList();
+						setDisableHomeItems(false);
 					} else if (keyPressed.getCode() == KeyCode.DELETE) {
 						CustomLabel tmp = null;
-
+						
 						while (focusList.size() != 0) {
 							tmp = focusList.get(focusList.size() - 1);
 							for (int i = 0; i < customLabelList.size(); i++) {
@@ -758,9 +773,11 @@ public class Controller implements Initializable {
 									focusList.remove(focusList.size() - 1);
 									customLabelList.remove(tmp);
 									CustomLabel.counter--;
+									addControllerCopy();
 								}
 							}
 						}
+						
 					}
 				}
 
@@ -829,7 +846,7 @@ public class Controller implements Initializable {
 							customLabel.setLayoutY(event.getY());
 							customLabelList.add(customLabel);
 							centrePane.getChildren().add(customLabel);
-							lblConsole.setText(customLabel.getText());
+							
 							setDisableHomeItems(false);
 							labelSelected = true;
 							selectedLabel = customLabel;
@@ -848,15 +865,15 @@ public class Controller implements Initializable {
 							}
 							addFocusToList();
 
-							if (autoFocusText.isSelected()) {
+							/*if (autoFocusText.isSelected()) {
 								Platform.runLater(() -> textField.requestFocus());
-							}
+							}*/
 
 						}
 						if(isNotOnTop && event.getClickCount() == 1 ) { //checking to see if the click was not on a label and if the click count was 1
 							setDisableHomeItems(true);		
 							if(labelSelected && !selectedLabel.equals(selectedLabelOriginalCopy)) { //checking to see if a lablel was previously selected 
-								System.out.print("ASDFSADFSDF" + selectedLabel.equals(selectedLabelOriginalCopy));
+								
 								addControllerCopy();
 							}
 							
@@ -878,7 +895,7 @@ public class Controller implements Initializable {
 				} else if (focusList.size() == 1) {
 					textField.setText(focusList.get(0).getText());
 					additionalText.setText(focusList.get(0).getToolTip().getText());
-					Platform.runLater(() -> textField.requestFocus());
+					//Platform.runLater(() -> textField.requestFocus());
 				}
 			}
 
@@ -897,14 +914,6 @@ public class Controller implements Initializable {
 			}
 
 		});
-		
-		
-		textField.setOnKeyReleased(t -> {
-	        if (t.getCode() == KeyCode.ENTER) {
-	            addControllerCopy();
-	            t.consume();
-	        }
-	    });
 		
 		
 		evaluationPane.onMouseReleasedProperty().set(new EventHandler<MouseEvent>() {
@@ -947,8 +956,8 @@ public class Controller implements Initializable {
 				isDraggable.setLayoutY(centrePane.getHeight() - 20);
 				isAddLabel.setLayoutY(isDraggable.getLayoutY() - 20);
 				autoFocusText.setLayoutY(isAddLabel.getLayoutY() - 20);
-				lblConsole.setText(Double.toString(isDraggable.getLayoutY()));
-				moveTitles();
+				
+				
 				CustomLabel.maxHeight = ((Double) newValue);
 				exitNormal.setLayoutY(centrePane.getHeight() - 30);
 			}
@@ -973,19 +982,15 @@ public class Controller implements Initializable {
 
 				mainTitle.setLayoutX(mainTitle.getLayoutX() + offSetX);
 
-				// lblConsole.setText(Double.toString(offSetX));
+				
 				leftCircle.setCenterX(leftCircle.getCenterX() + offSetX);
 				rightCircle.setCenterX(rightCircle.getCenterX() + offSetX);
 
-				for (int i = 0; i < customLabelList.size(); i++) {
-//					customLabelList.get(i).setLayoutX(customLabelList.get(i).getLayoutX() + offSetX);
-				}
-
 				leftTitle.setLayoutX(leftTitle.getLayoutX() + offSetX);
 				rightTitle.setLayoutX(rightTitle.getLayoutX() + offSetX);
-				moveTitles();
+				
 				CustomLabel.maxWidth = ((Double) newValue);
-				lblConsole.setText(Double.toString(CustomLabel.maxWidth));
+				
 				exitNormal.setLayoutX(15);
 			}
 
@@ -1134,15 +1139,15 @@ public class Controller implements Initializable {
 		
 		for(int i = 0; i < customLabelList.size(); i++ ) {
 			centrePane.getChildren().add(customLabelList.get(i));
-			lblConsole.setText(customLabelList.get(i).getText());
+			
 			
 		}
 		
 		addFocusToList();
 
-		if (autoFocusText.isSelected()) {
+	/*	if (autoFocusText.isSelected()) {
 			Platform.runLater(() -> textField.requestFocus());
-		}
+		}*/
 		
 	}
 
@@ -1161,7 +1166,10 @@ public class Controller implements Initializable {
 		// clears the centrePane and then reinitalizes it
 		String line = "";// used to copy text from the file
 		LineNumberReader lineReader = new LineNumberReader(new FileReader(path));
-
+		
+		for (int i = 0; i < customLabelList.size(); i++) {
+			centrePane.getChildren().remove(customLabelList.get(i));
+		}
 		line = lineReader.readLine();
 		HardReset();
 		line = lineReader.readLine();
@@ -1253,12 +1261,13 @@ public class Controller implements Initializable {
 				} else {
 					centrePane.getChildren().add(tmp);
 				}
+				customLabelList.add(tmp);
 			}
 			line = lineReader.readLine();
 
 		}
 		System.out.println("Loaded");
-
+		System.out.println(customLabelList.size());
 		lineReader.close();
 	}
 
@@ -1323,7 +1332,18 @@ public class Controller implements Initializable {
 	}
 
 	public void moveTitles() {
+		 leftTitle.setLayoutY(leftCircle.getCenterY()-leftCircle.getRadius() + 15);
+	        rightTitle.setLayoutY(rightCircle.getCenterY()-rightCircle.getRadius()+ 15);
 
+	        leftTitle.setLayoutX(leftCircle.getCenterX() - (leftTitle.getPrefWidth()/2)-15);
+	        rightTitle.setLayoutX(rightCircle.getCenterX() - (rightTitle.getPrefWidth()/2)+15);
+
+	        double size = leftCircle.getRadius()/15.625;
+
+	        leftTitle.setFont(Font.font(leftTitle.getFont().getFamily(), size));
+	        size = rightCircle.getRadius()/15.625;
+	        rightTitle.setFont(Font.font(rightTitle.getFont().getFamily(), size));
+	       
 	}
 
 	public void moveLabels(Double offSetX) {
@@ -1467,13 +1487,14 @@ public class Controller implements Initializable {
 		this.exitEvaluation.setVisible(true);
 		this.autoFocusText.setSelected(false);
 		this.isAddLabel.setSelected(false);
-
+		System.out.println(customLabelList.size());
 		for (int i = 0; i < customLabelList.size(); i++) {
 			CustomLabel tmp = new CustomLabel(customLabelList.get(i));
 			evaluationList.add(tmp);
 			tmp.setLayoutX(0.0);
 			tmp.setLayoutY(0.0);
 			this.evaluationBox.getChildren().add(tmp);
+			System.out.println("It Reaches");
 			System.out.println(tmp.getParent().toString());
 		}
 
@@ -1709,9 +1730,16 @@ public class Controller implements Initializable {
 		isItalic.setDisable(b);
 	}	
 	
-	public CustomLabel labelCopy(CustomLabel c) {
-		CustomLabel labelCopy = new CustomLabel(c.getText(), c.getAdditionalText());
-		
-		return labelCopy;
+	public void aboutbox() {
+		 final Stage dialog = new Stage();
+         dialog.initModality(Modality.APPLICATION_MODAL);
+         //dialog.initOwner(primaryStage);
+         VBox dialogVbox = new VBox(20);
+         Text t = new Text("Benedict Miguel 216237364" + "\n" + "Edward Shirinian 214456818");
+         dialogVbox.getChildren().add(t);
+         Scene dialogScene = new Scene(dialogVbox, 300, 200);
+         dialog.setScene(dialogScene);
+         dialog.show();
 	}
+	
 }

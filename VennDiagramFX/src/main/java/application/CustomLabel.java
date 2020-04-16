@@ -254,6 +254,7 @@ public class CustomLabel extends Label{
 		this.toolTip.setWrapText(true);
 		this.toolTip.setMaxWidth(150);
 		
+		
 	}
 	
 	
@@ -329,19 +330,6 @@ public class CustomLabel extends Label{
 	
 	//checks if this label has the same font size etc as another label
 	public boolean equals(CustomLabel c) {
-		System.out.println("Size");
-		System.out.println(this.getFont().getSize() == c.getFont().getSize());
-		System.out.println("Style");
-		System.out.println(this.getFont().getStyle() == c.getFont().getStyle());
-		System.out.println("AdditionalText");
-		System.out.println(getAdditionalText() == c.getAdditionalText());
-		System.out.println("Text");
-		System.out.println(this.getText() == c.getText());
-		System.out.println("Family");
-		System.out.println(this.getFont().getFamily() == c.getFont().getFamily());
-		System.out.println("TextFill");
-		System.out.println(this.getTextFill()== c.getTextFill());
-		
 		return 
 			this.getFont().getSize() == c.getFont().getSize()
 			&&
