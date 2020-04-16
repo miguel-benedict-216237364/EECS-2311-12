@@ -379,6 +379,7 @@ public class Controller implements Initializable {
 							tmp.get(i).setLayoutY(height);
 						}
 					}
+					addControllerCopy();
 				} else if (designTabComboBox.getValue().equals("Right Circle")) { // Right Circle is selected
 					ArrayList<CustomLabel> tmp = Model.getRightLabel(customLabelList, leftCircle, rightCircle);
 					double height = defaultYAlignment;
@@ -418,7 +419,7 @@ public class Controller implements Initializable {
 							tmp.get(i).setLayoutY(height);
 						}
 					}
-
+					addControllerCopy();
 				} else if (designTabComboBox.getValue().equals("Select All")) { // Centre Justified
 
 					ArrayList<CustomLabel> tmp = Model.getLeftLabel(customLabelList, leftCircle, rightCircle);
@@ -498,7 +499,7 @@ public class Controller implements Initializable {
 							tmp.get(i).setLayoutY(height);
 						}
 					}
-
+					addControllerCopy();
 				}
 				ArrayList<CustomLabel> tmp = Model.getMiddleLabel(customLabelList, leftCircle, rightCircle);
 				double height = defaultYAlignment;
@@ -617,15 +618,6 @@ public class Controller implements Initializable {
 				removeFocus();
 			}
 		});
-		
-		centrePane.setOnDragDone(new EventHandler<DragEvent>() {
-			public void handle(DragEvent event) {
-				/* mouse moved away, remove the graphical cues */
-				System.out.println("Drag Over");
-
-				event.consume();
-			}
-		});
 
 		// Set sliders to default
 		tfSlider.textProperty().bindBidirectional(sizeSlider.valueProperty(), NumberFormat.getNumberInstance());
@@ -674,7 +666,7 @@ public class Controller implements Initializable {
 
 					rightCircle.setCenterX((centrePane.getWidth() / 2) + radius);
 					leftCircle.setCenterX((centrePane.getWidth() / 2) - radius);
-
+					
 				} else if (designTabComboBox.getValue().equals("Left Circle")) {
 					sizeSlider.setValue(newValue.intValue());
 					leftCircle.setRadius(sizeSlider.getValue());
@@ -1024,7 +1016,6 @@ public class Controller implements Initializable {
 		});
 
 		// Initializes the undo stack
-		System.out.println("UndoPointer is at: " + undoPointer + "Stack size is: " + undoStack.size());
 		undoStack.add(undoPointer,
 				new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
 		setDisableHomeItems(true);
@@ -1046,17 +1037,6 @@ public class Controller implements Initializable {
 			}
 		}
 	}
-
-//	public void addLabel(MouseEvent initEvent) {
-//		if (centrePane.isFocused()) { // sees of the click happened in the proper pane, which is the centrePane
-//			lblTmp = new Label("Insert Text " + counter);
-//			addLabelHelper(lblTmp, initEvent.getX(), initEvent.getY());
-//			undoPointer ++;
-//			System.out.println("UndoPointer is at: " + undoPointer);
-//			undoStack.add(undoPointer, new ControllerCopy(labelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-//			
-//		}
-//	}
 
 	static void addFocusToList() {
 
@@ -1092,7 +1072,6 @@ public class Controller implements Initializable {
 			undoRedoHelper(copy);
 			redoStack.remove(redoPointer);
 			undoPointer++;
-			System.out.println("UndoPointer is at: " + undoPointer);
 			undoStack.add(undoPointer,
 					new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
 		}
@@ -1104,10 +1083,8 @@ public class Controller implements Initializable {
 
 			redoStack.add(redoPointer, undoStack.get(undoPointer));
 			redoPointer++;
-			System.out.println("redoPointer: " + redoPointer + "Redo Stack Size: " + redoStack.size());
 
 			undoPointer--;
-			System.out.println("UndoPointer is at: " + undoPointer);
 			ControllerCopy copy = undoStack.get(undoPointer);
 			undoRedoHelper(copy);
 			undoStack.remove(undoPointer + 1);
@@ -1659,10 +1636,9 @@ public class Controller implements Initializable {
 
 	public void addControllerCopy() {
 		undoPointer++;
-		System.out.println("UndoPointer is at: " + undoPointer);
 		undoStack.add(undoPointer,
 				new ControllerCopy(customLabelList, leftCircle, rightCircle, leftTitle, rightTitle, mainTitle));
-		
+		System.out.println("added");
 		redoStack.clear();
 		redoPointer = 0;
 	}
