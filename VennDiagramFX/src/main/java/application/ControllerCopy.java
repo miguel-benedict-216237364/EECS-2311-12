@@ -15,7 +15,7 @@ public class ControllerCopy {
 	boolean rightTitleChanged;
 
 	ArrayList<CustomLabel> labels;
-	Circle leftCircle;
+	 Circle leftCircle;
 	Circle rightCircle;
 	TextField leftTitle;
 	TextField rightTitle;

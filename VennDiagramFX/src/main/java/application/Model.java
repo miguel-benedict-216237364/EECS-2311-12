@@ -8,7 +8,7 @@ import javafx.scene.shape.Circle;
 
 public class Model {
 
-	static ArrayList<CustomLabel> getLeftLabel(ArrayList<CustomLabel> list, Circle leftCircle, Circle rightCircle) {
+	 static ArrayList<CustomLabel> getLeftLabel(ArrayList<CustomLabel> list, Circle leftCircle, Circle rightCircle) {
 		ArrayList<CustomLabel>  result = new ArrayList<CustomLabel>();
 		
 		
