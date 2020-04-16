@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
+
+
+
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -22,7 +22,7 @@ public class CustomLabel extends Label{
 	
 	public static int counter = 0;
 	//public static Label lblTmp = new Label();
-	public static ArrayList<CustomLabel> focusList = Controller.focusList;
+	 public static ArrayList<CustomLabel> focusList = Controller.focusList;
 	public static ArrayList<CustomLabel> customLabelList = Controller.customLabelList;
 	public static ArrayList<CustomLabel> evaluationList = Controller.evaluationList;
 	public static double initX = 0;

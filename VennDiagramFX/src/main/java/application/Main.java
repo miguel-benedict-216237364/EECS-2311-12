@@ -25,7 +25,7 @@ public class Main extends Application {
 			mainScene = new Scene(mainRoot, 1280, 720);	
 		//mainScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			mainStage.setScene(mainScene);
-			mainStage.sizeToScene();
+			 mainStage.sizeToScene();
 			mainStage.requestFocus();
 			mainStage.show();
 			

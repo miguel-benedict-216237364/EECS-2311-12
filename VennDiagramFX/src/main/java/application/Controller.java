@@ -9,7 +9,6 @@ import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -624,7 +623,7 @@ public class Controller implements Initializable {
 		});
 
 		// Set sliders to default
-		tfSlider.textProperty().bindBidirectional(sizeSlider.valueProperty(), NumberFormat.getNumberInstance());
+		 tfSlider.textProperty().bindBidirectional(sizeSlider.valueProperty(), NumberFormat.getNumberInstance());
 		colourPicker.setValue(defaultColour);
 		rightCircle.setFill(defaultColour);
 		leftCircle.setFill(defaultColour);

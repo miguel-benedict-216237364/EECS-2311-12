@@ -382,7 +382,7 @@
 											AnchorPane.bottomAnchor="105.0" AnchorPane.leftAnchor="10.0"
 											AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
 											<content>
-												<VBox fx:id="evaluationBox" />
+												 <VBox fx:id="evaluationBox" />
 											</content>
 										</ScrollPane>
 									</children>
