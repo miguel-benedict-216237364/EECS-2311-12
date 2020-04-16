@@ -66,15 +66,8 @@
 												<Font name="Times New Roman" size="16.0" />
 											</font>
 										</Button>
-										<Button disable="true" focusTraversable="false"
-											layoutX="-1.0" layoutY="160.0" mnemonicParsing="false"
-											prefHeight="40.0" prefWidth="125.0" text="Help">
-											<font>
-												<Font name="Times New Roman" size="16.0" />
-											</font>
-										</Button>
 										<Button disable="false" focusTraversable="false"
-											layoutX="-1.0" layoutY="260.0" mnemonicParsing="false"
+											layoutX="-1.0" layoutY="210" mnemonicParsing="false"
 											prefHeight="40.0" prefWidth="125.0" text="Undo"
 											onMouseClicked="#undo">
 											<font>
@@ -82,7 +75,7 @@
 											</font>
 										</Button>
 										<Button disable="false" focusTraversable="false"
-											layoutX="-1.0" layoutY="310.0" mnemonicParsing="false"
+											layoutX="-1.0" layoutY="260" mnemonicParsing="false"
 											prefHeight="40.0" prefWidth="125.0" text="Redo"
 											onMouseClicked="#redo">
 											<font>
@@ -100,7 +93,7 @@
 											</font>
 										</TextField>
 										<Button disable="false" focusTraversable="false"
-											layoutX="-1.0" layoutY="210.0" mnemonicParsing="false"
+											layoutX="-1.0" layoutY="160" mnemonicParsing="false"
 											prefHeight="40.0" prefWidth="125.0" text="About Us"
 											onMouseClicked="#aboutbox">
 											<font>
@@ -305,21 +298,21 @@
 													maxHeight="1.7976931348623157E308" maxWidth="177.0"
 													minHeight="25.0" minWidth="177.0" />
 												<Button fx:id="loadEvaluation" disable="false"
-													focusTraversable="false" layoutX="27.0" layoutY="165.0"
+													focusTraversable="false" layoutX="65" layoutY="165.0"
 													mnemonicParsing="false" onMouseClicked="#load"
 													prefHeight="30.0" prefWidth="60.0" text="Load">
 													<font>
 														<Font name="Times New Roman" size="12.0" />
 													</font>
 												</Button>
-												<Button fx:id="removeEvaluation" disable="false"
+											<!--  	<Button fx:id="removeEvaluation" disable="true"
 													focusTraversable="false" layoutX="98.0" layoutY="165.0"
 													mnemonicParsing="false" prefHeight="30.0" prefWidth="60.0"
 													text="Remove">
 													<font>
 														<Font name="Times New Roman" size="12.0" />
 													</font>
-												</Button>
+												</Button> -->
 											</children>
 										</Pane>
 										<Button disable="false" focusTraversable="false"
@@ -455,7 +448,7 @@
 											<font>
 												<Font name="Times New Roman" size="12.0" />
 											</font>
-										</CheckBox>
+										</CheckBox> 
 										<Button fx:id="exitNormal" disable="false"
 											focusTraversable="false" layoutX="1030.0" layoutY="687.0"
 											mnemonicParsing="false" onMouseClicked="#backNormal"
