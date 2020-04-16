@@ -12,6 +12,7 @@ This release includes:
 	- Scaling circles to always have an intersection
 
 CAN'T RUN THE JAR FILE
+	- The circleCI shows no error in publishing releases on github.
 	- This is a common issue when it comes to releasing JavaFX programs using gradle and circleCI.
 	Our team was not able to solve the problem. If you are having issues running the jar file
 	you can use an IDE to run the program.
