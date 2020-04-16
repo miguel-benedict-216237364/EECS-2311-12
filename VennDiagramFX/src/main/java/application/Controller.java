@@ -1595,7 +1595,7 @@ public class Controller implements Initializable {
 		this.lblEvaluation.setDisable(true);
 		this.lblLoadedEvaluation.setDisable(true);
 		this.loadEvaluation.setDisable(true);
-		this.removeEvaluation.setDisable(true);
+		//this.removeEvaluation.setDisable(true);
 		this.tfEvaluation.setDisable(true);
 
 	}
@@ -1604,7 +1604,7 @@ public class Controller implements Initializable {
 		this.lblEvaluation.setDisable(false);
 		this.lblLoadedEvaluation.setDisable(false);
 		this.loadEvaluation.setDisable(false);
-		this.removeEvaluation.setDisable(false);
+		//this.removeEvaluation.setDisable(false);
 		this.tfEvaluation.setDisable(false);
 	}
 
@@ -1682,7 +1682,6 @@ public class Controller implements Initializable {
 			public void handle(MouseEvent event) {
 				initX = event.getX(); // Initial position of the mouse (x)
 				initY = event.getY(); // Initial position of the mouse (y)
-				setDisableHomeItems(false);
 			}
 
 		});
@@ -1734,11 +1733,16 @@ public class Controller implements Initializable {
          dialog.initModality(Modality.APPLICATION_MODAL);
          //dialog.initOwner(primaryStage);
          VBox dialogVbox = new VBox(20);
-         Text t = new Text("Benedict Miguel 216237364" + "\n" + "Edward Shirinian 214456818");
-         dialogVbox.getChildren().add(t);
+         Label l = new Label();
+         l.setText("Prabhjyot Grewal 216195547" +"\n"+"Benedict Miguel 216237364" + "\n" + "Edward Shirinian 214456818");
+         dialog.setTitle("About Us");
+         dialogVbox.getChildren().add(l);
          Scene dialogScene = new Scene(dialogVbox, 300, 200);
+         l.setWrapText(true);
          dialog.setScene(dialogScene);
          dialog.show();
 	}
+	
+	
 	
 }

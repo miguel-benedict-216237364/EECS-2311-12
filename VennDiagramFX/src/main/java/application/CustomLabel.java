@@ -186,7 +186,7 @@ public class CustomLabel extends Label{
 			public void handle(MouseEvent event) {
 				 initX = event.getX(); // Initial position of the mouse (x)
 				 initY = event.getY(); // Initial position of the mouse (y)
-
+				 
 			}
 
 		});
