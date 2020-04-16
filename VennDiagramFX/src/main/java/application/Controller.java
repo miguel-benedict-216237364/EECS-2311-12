@@ -226,6 +226,10 @@ public class Controller implements Initializable {
 	
 	boolean labelSelected;
 	
+	int oldSliderValue;
+	
+	int newSliderValue;
+	
 	int counter = 1;
 	boolean undoWasClicked = false;
 
@@ -646,10 +650,17 @@ public class Controller implements Initializable {
 				}
 			}
 		});
-
+		
+		sizeSlider.setOnMouseClicked((MouseEvent event) -> {
+			oldSliderValue = (int) sizeSlider.getValue();
+		});
+		
 		// Event Listener to see when the mouse has been released from the slider
 		sizeSlider.setOnMouseReleased((MouseEvent event) -> {
+			newSliderValue = (int) sizeSlider.getValue();
+			if(oldSliderValue != newSliderValue && oldSliderValue != 0) {
 			addControllerCopy();
+			}
 		});
 
 		sizeSlider.valueProperty().addListener(new ChangeListener<Number>() {
